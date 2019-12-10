@@ -1,0 +1,68 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MCK-Digital Updates</title>
+  <base href="./">
+  <link rel="manifest" href="{% static 'manifest.json' %}">
+  <meta name="theme-color" content="#529bd7">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="-1">
+  
+  <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'styles.v3.css' %}">
+</head>
+<body>
+    <app-root>
+        <span style="
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            padding: 5px;
+            z-index: 100;">
+            Loading...
+        </span>
+    </app-root>
+    <script type="text/javascript" src="{% static '0.870ebc67b1d0a494ed03.js' %}"></script>
+    <script type="text/javascript" src="{% static '1.fda36c164b6dee186a8e.js' %}"></script>
+    <script type="text/javascript" src="{% static '2.008bb66f510be9159403.js' %}"></script>
+    <script type="text/javascript" src="{% static '3.09be92e6bae1ed5aa050.js' %}"></script>
+    <script type="text/javascript" src="{% static 'runtime.v3.js' %}"></script>
+    <script type="text/javascript" src="{% static 'polyfills.v3.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main.v3.js' %}"></script>
+
+  <noscript>
+    <h3 style="color: #529bd7; font-family: Helvetica; margin: 2rem;">
+      Sorry, but app is not available without javascript
+    </h3>
+  </noscript>
+  <script type="text/javascript">
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register("{% static 'sw.js' %}").then(function(registration) {
+        console.log('Service Worker registered');
+      }).catch(function(err) {
+        console.log('Service Worker registration failed: ', err);
+      });
+    } else {
+      console.log('Service Worker is not supported in this browser.');
+    }
+    if (location.protocol != 'https:'){
+      location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+    }
+  </script>
+
+</body>
+</html>
+
+

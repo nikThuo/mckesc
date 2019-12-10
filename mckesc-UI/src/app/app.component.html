@@ -1,0 +1,21 @@
+<mat-sidenav-container [autosize]="true">
+  <mat-sidenav *ngIf="loggedin" mode="side" opened>
+    <app-nav></app-nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar *ngIf="loggedin">
+      <mat-toolbar-row>
+        <span>MCK Digital</span>
+        <span style="flex: 1 1 auto;"></span>
+        <span><small>{{user_names}}</small> | <small>{{project_name}}</small></span>
+        <button mat-icon-button routerLink="/auth/settings">
+          <mat-icon>settings</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <div class="router-outlet">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

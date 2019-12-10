@@ -1,0 +1,139 @@
+<p class="d-flex justify-content-center"><b>Edit Update</b></p>
+<mat-dialog-content class="mat-typography">
+
+  <div [formGroup]='nameForm' class="row">
+    <mat-form-field  class="col-md-12">
+      <input
+        matInput 
+        formControlName='name'
+        #searchBoxName
+        [matAutocomplete]="autoname"
+        (keyup)="searchName(searchBoxName.value)"
+        placeholder="Update's name" 
+        name="name">
+    </mat-form-field>
+    <mat-autocomplete #autoname="matAutocomplete">
+      <mat-option
+        *ngFor="let name of result_name"
+        [value]="name.name">
+        {{name?.name}} &nbsp;
+      </mat-option>
+    </mat-autocomplete>
+  </div>  
+  <form #regForm="ngForm" class="row">
+    <mat-form-field class="col-md-4">
+      <mat-select 
+        placeholder="Channel received" 
+        required 
+        [(ngModel)]="update_ecs.channel_received" 
+        name="channel_received">
+        <mat-option value="Email">Email</mat-option>
+        <mat-option value="Chat(WhatsApp)">Chat(WhatsApp)</mat-option>
+        <mat-option value="Skype">Skype</mat-option>
+        <mat-option value="Phone Call">Phone Call</mat-option>
+        <mat-option value="Text Message">Text Message</mat-option>
+        <mat-option value="Verbal">Verbal</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-md-4">
+      <input 
+        matInput
+        required 
+        [value]="update_ecs.date_received"
+        [matDatepicker]="picker1" 
+        placeholder="Date received" 
+        [(ngModel)]="update_ecs.date_received" 
+        name="date_received">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+    <div class="col-md-4">
+      <label>Time received</label>
+      <input
+        type="time"
+        required 
+        [(ngModel)]="update_ecs.time_received" 
+        name="time_received">
+    </div>
+    <mat-form-field  class="col-md-6">
+      <input
+        matInput 
+        placeholder="From Name" 
+        [(ngModel)]="update_ecs.from_name" 
+        name="from_name">
+    </mat-form-field>
+    <mat-form-field  class="col-md-6">
+        <!-- required -->
+      <input
+        matInput 
+        placeholder="From Email" 
+        [(ngModel)]="update_ecs.from_email" 
+        name="from_email">
+    </mat-form-field>
+    <mat-form-field  class="col-md-12">
+      <textarea
+        required
+        matInput 
+        placeholder="Contents" 
+        [(ngModel)]="update_ecs.contents"
+        matTextareaAutosize
+        matAutosizeMinRows="5"
+        matAutosizeMaxRows="8"
+        name="contents"></textarea>
+    </mat-form-field>
+    
+    <!-- <div 
+      ng2FileDrop
+      [ngClass]="{'drop-file-over': hasBaseDropZoneOver}"
+      (fileOver)="fileOverBase($event)"
+      [uploader]="uploader"
+      class="area">
+      <div id="dropZone">Drop files here</div>
+    </div> -->
+    <input type="file" ng2FileSelect [uploader]="uploader" multiple/>
+
+    <mat-card class="col-md-12" style="background-color: #ececec; margin: 1em 0;">
+      <span *ngIf="uploader?.queue?.length != 0">Your files: {{ uploader?.queue?.length }}</span>
+      <mat-list *ngFor="let item of uploader.queue">
+       <mat-list-item>
+        {{ item?.file?.name }}
+        <span style="flex: 1 1 auto;"></span>
+        <mat-icon (click)="deleteFile(item);" style="color: #ef6774; cursor: pointer; float: right;">delete</mat-icon>
+       </mat-list-item>
+      </mat-list>
+    </mat-card>
+
+    <!-- <mat-form-field class="col-md-6">
+      <mat-select 
+        placeholder="Channel communicated" 
+        required 
+        [(ngModel)]="update_ecs.channel_communicated" 
+        name="channel_communicated">
+        <mat-option value="Pre-Shift">Pre-Shift</mat-option>
+        <mat-option value="Post-Shift">Post-Shift</mat-option>
+        <mat-option value="Email">Email</mat-option>
+        <mat-option value="Skype">Skype</mat-option>
+        <mat-option value="Floor Walk">Floor Walk</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="col-md-6">
+      <label>Time cascade</label>
+      <input
+        type="time"
+        required 
+        [(ngModel)]="update_ecs.time_cascaded" 
+        name="time_cascaded">
+    </div> -->
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end" style="background: #cccccc;">
+  <button
+    [disabled]="regForm.invalid"
+    mat-raised-button 
+    (click)="updateEscalation()"
+    style="background-color: lightblue;">
+    Save
+  </button>
+  &nbsp;
+  <button mat-raised-button mat-dialog-close style="margin-right: 1.2em;">Close</button>
+</mat-dialog-actions>

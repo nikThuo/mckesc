@@ -1,0 +1,14 @@
+.spacer {
+  flex: 1 1 auto;
+}
+.mytable{
+	zoom: 0.7;
+	background-color: #ffffff;
+}
+table {
+  width: 100%;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}

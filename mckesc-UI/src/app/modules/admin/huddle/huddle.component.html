@@ -1,0 +1,241 @@
+<div class="row m-1">
+	<mat-card class="col-md-12">
+		<div class="row">
+			<div class="col-md-12">
+			<mat-toolbar style="background-color: #ffffff; margin-bottom: 4px;">
+				<h4>Huddles</h4>
+				<span style="flex: 1 1 auto;"></span>
+				<mat-chip-list *ngIf="isAdmin">
+				  <mat-chip (click)="openForm()" style="background-color: lightblue;">
+				  	<mat-icon>add</mat-icon> New Huddle
+				  </mat-chip>
+				</mat-chip-list>
+			</mat-toolbar>
+			</div>
+		</div>
+	</mat-card>
+		
+	<mat-card *ngIf="visible" [@slideInOut] class="col-md-12">
+		<form #huddleForm="ngForm" class="row">
+			<p class="col-md-12" style="text-align: center; background-color: #0095da; color: #ffffff; font-weight: bold; ">PRE & POST SHIFT ANALYSIS</p>
+	    <mat-form-field class="col-md-4">
+				<mat-select 
+					placeholder="Shift Name" 
+	        required 
+	        [(ngModel)]="new_huddle.shift_name" 
+	        name="shift_name">
+			  	<mat-option value="Pre-Shift">Pre-Shift</mat-option>
+			  	<mat-option value="Post-Shift">Post-Shift</mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-form-field class="col-md-4">
+			  <mat-select placeholder="Conducted By" [formControl]="admin_present" multiple>
+			    <mat-select-trigger>
+		      	{{admin_present.value?.length}} selected
+			    </mat-select-trigger>
+			  	<mat-option *ngFor="let user of admin_list" [value]="user.id">{{user.first_name}} {{user.last_name}}</mat-option>
+			  </mat-select>
+			</mat-form-field>
+
+	    <mat-form-field class="col-md-4">
+	      <input
+	        matInput
+	        required 
+	        [matDatepicker]="picker1" 
+	        placeholder="Date Held" 
+	        [(ngModel)]="new_huddle.date" 
+	        name="date">
+	        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+	      <mat-datepicker #picker1></mat-datepicker>
+	    </mat-form-field>
+		</form>
+		<br>
+		<div class="row">
+			<p class="col-md-12" style="text-align: center; background-color: #0095da; color: #ffffff; font-weight: bold; ">Huddle Discussion Notes</p>
+	    <div class="col-md-12">
+	      <table class="row" style="text-align: left; white-space: nowrap; overflow: auto;">
+	        <tbody class="col-md-12" *ngFor="let item of agenda_list">
+	          <tr>
+	            <td class="mytd" scope="row"> {{item}} </td>
+							<td class="mytd" style="padding: 0.7em;"><mat-icon (click)="removeItem(item);" style="cursor: pointer;background-color: #ef6774; border-radius: 0.4em; color: #ffffff;">remove</mat-icon></td>
+	          </tr>
+	        </tbody>
+					<tbody class="myrow col-md-12">
+						<td class="mytd">
+							<form (submit)="pileItem(agenda.agenda);">
+								<input
+									class="form-control"
+									matInput 
+									placeholder="Discussion" 
+									[(ngModel)]="agenda.agenda" 
+									name="agenda">
+								</form>
+						</td>
+						<td class="mytd" style="padding: 0.7em;"><mat-icon (click)="pileItem(agenda.agenda);" style="cursor: pointer; background-color: lightgreen; border-radius: 0.4em;">add</mat-icon></td>
+					</tbody>
+	      </table>
+	    </div>
+
+			<p class="col-md-12 mt-2" style="text-align: center; background-color: #0095da; color: #ffffff; font-weight: bold; ">Huddle Actions</p>
+	    <div class="col-md-12">
+	      <table class="row" style="text-align: left; white-space: nowrap; overflow: auto;">
+	        <tbody class="col-md-12" *ngFor="let item of action_list">
+	          <tr class="myrow">
+	            <td class="mytd" scope="row"> {{item}} </td>
+							<td class="mytd" style="padding: 0.7em;"><mat-icon (click)="removeAction(item);" style="cursor: pointer;background-color: #ef6774; border-radius: 0.4em; color: #ffffff;">remove</mat-icon></td>
+	          </tr>
+	        </tbody>
+					<tbody class="myrow col-md-12">
+						<td class="mytd">
+							<form (submit)="pileAction(action.action);">
+								<input
+									class="form-control"
+									matInput 
+									placeholder="Action" 
+									[(ngModel)]="action.action" 
+									name="action">
+							</form>
+						</td>
+						<td class="mytd" style="padding: 0.7em;"><mat-icon (click)="pileAction(action.action);" style="cursor: pointer; background-color: lightgreen; border-radius: 0.4em;">add</mat-icon></td>
+					</tbody>
+	      </table>
+	    </div>
+			<p class="col-md-12 mt-2" style="text-align: center; background-color: #0095da; color: #ffffff; font-weight: bold; ">File Attachment</p>
+	    <div class="col-md-12">
+			  <input 
+			  	type="file" 
+			  	(change)="onFileChange($event)" 
+			  	#fileInput 
+			  	required
+			  	class="col-md-3"
+			  	id="file">
+			</div>
+
+			<p class="col-md-12 mt-2" style="text-align: center; background-color: #0095da; color: #ffffff; font-weight: bold; ">Attendees</p>
+			<mat-form-field style="width: 100%">
+			  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+			</mat-form-field>
+			<table mat-table [dataSource]="dataSourceAttendees" class="mat-elevation-z8" style="width: 100%; text-align: left; white-space: nowrap; overflow: auto;">
+			  <ng-container matColumnDef="check">
+			    <th mat-header-cell *matHeaderCellDef>
+			      <mat-checkbox 
+			      	(change)="$event ? masterToggle() : null"
+		          [checked]="selection.hasValue() && isAllSelected()"
+		          [indeterminate]="selection.hasValue() && !isAllSelected()">
+			      </mat-checkbox>
+			    </th>
+			    <td mat-cell *matCellDef="let row">
+			      <mat-checkbox 
+			      	(click)="$event.stopPropagation()"
+		          (change)="$event ? selection.toggle(row) : null"
+		          [checked]="selection.isSelected(row)">
+			      </mat-checkbox>
+			    </td>
+			  </ng-container>
+			  <ng-container matColumnDef="name">
+			    <th mat-header-cell *matHeaderCellDef> Name </th>
+			    <td mat-cell *matCellDef="let element">{{element.first_name}} {{element.last_name}}</td>
+			  </ng-container>
+			  <tr mat-header-row *matHeaderRowDef="displayedColumnsAttendees"></tr>
+			  <tr mat-row *matRowDef="let row; columns: displayedColumnsAttendees;"></tr>
+			</table>
+		  <mat-paginator style="width: 100%" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator>
+
+	  </div>
+		<div class="row mt-2">
+		  <div class="col-md-12">
+		    <div class="d-flex justify-content-center">
+		    	<button
+		    		[disabled]="
+		    			huddleForm.invalid || 
+		    			agenda_list.length == 0 || 
+		    			action_list.length == 0 || 
+		    			selection.selected.length == 0 ||
+		    			admin_present.value?.length == 0"
+		    		mat-raised-button
+		    		(click)="createHuddle()"
+		    		style="background-color: lightblue;">
+		    		Save
+		    	</button>
+		    	&nbsp;
+		    	<button mat-raised-button (click)="closeForm()"> Cancel </button>
+		    </div>
+		  </div>
+		</div>
+	</mat-card>
+
+	<mat-card class="col-md-12 mt-2">
+  	<form #dateForm="ngForm" class="row">
+      <mat-form-field class="col-md-4">
+        <input 
+          matInput
+          required 
+          [matDatepicker]="picker1" 
+          placeholder="Date from" 
+          [(ngModel)]="huddle_report.datefrom" 
+          name="datefrom">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="col-md-4">
+        <input 
+          matInput
+          required 
+          [matDatepicker]="picker2" 
+          placeholder="Date to" 
+          [(ngModel)]="huddle_report.dateto" 
+          name="dateto">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+      <br>
+      <div class="col-md-4">
+        <button
+          [disabled]="dateForm.invalid" 
+          mat-raised-button 
+          (click)="fetchHuddles()"
+          style="background-color: #94d8ff;">
+          Filter
+          <i *ngIf="loading_filter" class="fa fa-spinner fa-spin"></i>
+        </button>
+      </div>
+		</form>
+
+		<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="text-align: left; white-space: nowrap; overflow: auto; width: 100%;">
+		  <ng-container matColumnDef="shift_name">
+		    <th mat-header-cell *matHeaderCellDef> Shift Name </th>
+		    <td mat-cell *matCellDef="let element">{{element.shift_name}} </td>
+		  </ng-container>
+		  <ng-container matColumnDef="total_agents">
+		    <th mat-header-cell *matHeaderCellDef> Total Agents </th>
+		    <td mat-cell *matCellDef="let element">{{element.total_agents}} </td>
+		  </ng-container>
+		  <ng-container matColumnDef="date">
+		    <th mat-header-cell *matHeaderCellDef> Date Held </th>
+		    <td mat-cell *matCellDef="let element">{{element.date}} </td>
+		  </ng-container>
+		  <ng-container matColumnDef="user">
+		    <th mat-header-cell *matHeaderCellDef> User </th>
+		    <td mat-cell *matCellDef="let element">{{element.user__first_name}} {{element.user__last_name}} </td>
+		  </ng-container>
+		  <ng-container matColumnDef="created_at">
+		    <th mat-header-cell *matHeaderCellDef> Created at </th>
+		    <td mat-cell *matCellDef="let element">{{element.created_at | date : 'y-MM-dd h:mm a'}} </td>
+		  </ng-container>
+		  <ng-container matColumnDef="details">
+		    <th mat-header-cell *matHeaderCellDef> # </th>
+		    <td mat-cell *matCellDef="let element">
+					<mat-chip-list>
+					  <mat-chip (click)="openHuddleDetailDialog(element);">
+					  	More details
+					  </mat-chip>
+					</mat-chip-list>
+		    </td>
+		  </ng-container>
+		  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		</table>
+	  <!-- <mat-paginator z[pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator> -->
+
+	</mat-card>
+</div>

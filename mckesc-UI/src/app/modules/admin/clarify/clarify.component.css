@@ -1,0 +1,19 @@
+.chat-ms-right{
+	float: right;
+	background-color: #cccccc;
+	padding: 0.5em;
+	border-radius: 1em;
+	width: 70%;
+	margin-top: 1em;
+	text-align: right;
+}
+
+.chat-ms-left{
+	float: left;
+	background-color: #a2e6a8;
+	padding: 0.5em;
+	border-radius: 1em;
+	width: 70%;
+	margin-top: 1em;
+	text-align:left; 
+}

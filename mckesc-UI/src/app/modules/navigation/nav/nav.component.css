@@ -1,0 +1,51 @@
+ul, li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+ul {
+	background-color: #16508e;
+	width: 200px;
+	height: 85%;
+}
+
+ul.closed {
+	width: 53px;
+	
+	li > span { display: none; }
+}
+
+.active { 
+	background-color: #0095da;
+	color: #ffffff;
+}
+li:hover { 
+	background-color: #0095da; 
+	color: #ffffff;
+}
+
+li {
+	cursor: pointer;
+	color: #ffffff;
+	font-size: 1em;
+	vertical-align: middle;
+	padding: 1em;
+	display: flex;
+	flex-wrap: wrap;
+
+	mat-icon {
+		margin-right: .5em;
+	}
+
+	span {
+		display: inline-flex;
+		align-items: center;
+	}
+}
+
+li.org-logo > img {
+	/*width: 10px;*/
+	height: 40px;
+	margin-right: 1em;
+	border-radius: 0.4em;
+}

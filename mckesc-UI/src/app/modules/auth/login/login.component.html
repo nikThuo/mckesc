@@ -1,0 +1,82 @@
+<div class="container-fluid" style="background-color: #0095da;">
+	<div *ngIf="default" style="height: 100vh; margin: 0;">
+		<div class="row row-eq-height centered">
+			<div class="col-md-6">
+				<img src="static/assets/images/mck_logo.png" class="img" style="max-height: calc(100%); max-width: calc(100%);">
+				<br>
+				<br>
+				<p style="color: #ffffff;">Digital Updates</p>
+			</div>
+			<div class="col-md-6">
+				<div class="row row-eq-height" style="height: calc(100%);">
+					<div class="col-md-12"></div>
+					<div class="col-md-12">
+						<form #loginForm="ngForm" *ngIf="login">
+							<div class="row"> 
+								<mat-form-field class="col-md-12">
+									<input 
+										required 
+										matInput 
+										placeholder="Username or email" 
+										[(ngModel)]="post_user.username" 
+										name="username">
+								</mat-form-field>
+								<mat-form-field class="col-md-12">
+									<input 
+										required
+										type="password" 
+										matInput 
+										placeholder="Password" 
+										[(ngModel)]="post_user.password" 
+										name="password">
+								</mat-form-field>
+								<div class="col-md-12">
+									<button [disabled]="loginForm.invalid" mat-raised-button (click)="loginUser();" >Login >></button>
+									&nbsp;&nbsp; <u (click)="resetView();" style="cursor: pointer;"><small>Forgot Password?</small></u>
+								</div>
+							</div>
+						</form>
+						<form #resetForm="ngForm"  *ngIf="reset">
+							<div class="row"> 
+								<mat-form-field class="col-md-12">
+									<input 
+										required 
+										type="email" 
+										matInput 
+										placeholder="Enter your email address" 
+										[(ngModel)]="reset_pass.email" 
+										name="email">
+								</mat-form-field>
+								<div class="col-md-12">
+									<button 
+										[disabled]="resetForm.invalid" 
+										mat-raised-button 
+										(click)="resetPassword();">
+										Reset Password <span *ngIf="!loading" > >> </span>
+										<i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+									</button>
+									&nbsp;&nbsp; <u (click)="loginView();" style="cursor: pointer;"><small>Login</small></u>
+									<br>
+									<small *ngIf="pass_error_message">{{pass_error_message}}</small>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="col-md-12"></div>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
+		  <strong>Password reset succesfully</strong> , please check your email :-)
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div *ngIf="fail" class="alert alert-danger alert-dismissible fade show" role="alert">
+		  <strong>Password reset failed :-(</strong>
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+	</div>
+</div>

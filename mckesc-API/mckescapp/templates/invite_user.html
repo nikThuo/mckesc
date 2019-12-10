@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Invite User</title>
+</head>
+<body>
+	<div style="width: 800px; font-family: 'Sans-serif'">
+		<div style="background-color: #0095da; align-content: center; margin-bottom: 3em;">
+			<img style="display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+			  padding: 1em;" src="https://lv.technobrainbpo.com/mckesc/static/assets/images/mck_logo.png" alt="MCK logo">
+		</div>
+	  <p style="color: #333333; font-size: 1.3em;">Welcome to Multichoice Digital Updates, {{info.first_name}} {{info.last_name}}.</p>
+	  <p>This is a randomly generated password  <b> {{info.password}}</b></p>
+	  <p>Use your email address : <b>{{info.email}}</b> or username : <b>{{info.username}}</b> against the password provided above to log in and reset the password.</p>
+	  <div style="text-align: center;">
+		  <p>Click the button to get started</p>
+	  	<a href="https://lv.technobrainbpo.com/mckesc">
+	  		<button style="
+				  background-color: #0095da;
+				  border: none;
+				  color: white;
+				  cursor: pointer;
+				  padding: 15px 32px;
+				  text-align: center;
+				  text-decoration: none;
+				  display: inline-block;
+				  font-size: 16px;">
+					Log In
+				</button>
+	  	</a>
+		  <p>If the button does not work copy; 
+		  	<a href="https://lv.technobrainbpo.com/mckesc">
+		  		<span style="color: blue; cursor: pointer;">
+		  			<u>https://lv.technobrainbpo.com/mckesc</u>
+		  		</span>
+		  	</a> 
+		  	and paste to your browser
+		  </p>
+		</div>
+		<div style="background-color: #CCC; align-content: center; text-align: center; margin-top: 5em;">
+			<i>Powered By: </i>
+			<img style="display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+			  height: 40px;
+			  padding: 1em;" src="https://lv.technobrainbpo.com/mckesc/static/assets/images/logo.png" alt="TBL logo">
+		</div>
+	</div>
+</body>
+</html>

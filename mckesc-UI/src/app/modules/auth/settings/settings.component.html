@@ -1,0 +1,61 @@
+<!-- <admin-nav></admin-nav> -->
+
+<mat-card class="m-1">
+	<div class="row">
+		<div class="col-md-4 offset-4">
+			Manage Account
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-6 offset-3">
+			<span><b>Email</b></span>: <a href="mailto:{{user_email}}">{{user_email}}</a>
+			<!-- <mat-form-field style="width: 100%;">
+		    <input matInput placeholder="Email Address">
+		  </mat-form-field> -->
+		</div>	
+		<br>
+		<div class="col-md-6 offset-3" style="font-size: 0.7em;">
+			<span><b>Password</b></span>
+			<mat-form-field style="width: 100%;">
+		    <input 
+		    	type="password" 
+		    	matInput 
+		    	[(ngModel)]="password_reset.password"
+		    	name="password" 
+		    	placeholder="Current Password">
+		  </mat-form-field>
+			<div [formGroup]="passwordFormGroup">
+				<mat-form-field style="width: 100%;">
+			    <input 
+			    	#newPass
+			    	matInput 
+			    	type="password" 
+			    	placeholder="New Password" 
+			    	formControlName="password">
+			  </mat-form-field>
+				<mat-form-field style="width: 100%;">
+			    <input 
+			    	#rptPass
+			    	matInput 
+			    	type="password"
+			    	placeholder="Confirm New Password" 
+			    	formControlName="repeatPassword">
+			    	<!-- [(ngModel)]="password_reset.password_reset" -->
+			    	<!-- name="password_reset"   -->
+			  </mat-form-field>
+        <p 
+        	style="color: red;" 
+        	*ngIf="passwordFormGroup.controls.repeatPassword.errors?.required && passwordFormGroup.controls.repeatPassword.touched">
+        	Confirm new password is required
+        </p>
+        <p 
+        	style="color: red;" 
+        	*ngIf="passwordFormGroup.errors?.doesMatchPassword">
+        	Password does not match
+        </p>
+			  <button mat-raised-button  [disabled]="!passwordFormGroup.valid" (click)="resetPass();">Update Password</button>
+			</div>
+		</div>
+	</div>
+</mat-card>

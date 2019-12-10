@@ -1,0 +1,28 @@
+<ul [ngClass]="{'opened': sideNavOpened, 'closed': !sideNavOpened}">
+	<li class="org-logo">
+	<!-- <li (click)="toggleSideNav()" class="org-logo"> -->
+		<img src="/mckesc/static/assets/images/mck_logo.png">
+		<!-- <span style="color: #514d69;">Techno </span> <span style="color: #fa7f34;">Brain</span> -->
+		<!-- <span >Techno Brain</span> -->
+	</li>
+	<mat-divider></mat-divider>
+	
+	<li 
+		*ngFor="let item of menu" 
+		class="row"
+		[routerLink]="item.path"
+		[ngClass]="{active: isActive(item)}"
+		>
+			<mat-icon>{{item.icon}}</mat-icon>
+			<span>{{item.name}}</span>
+	</li>
+	
+	<li (click)="logout();">
+		<mat-icon>exit_to_app</mat-icon>
+		<span>Logout</span>
+	</li>
+</ul>
+<div style="bottom: 15%;">	
+	<p><small><i>Powered By:</i></small></p>
+	<img src="/mckesc/static/assets/images/logo.png" style="height: auto; width: 200px;">
+</div>

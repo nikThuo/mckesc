@@ -1,0 +1,152 @@
+<div class="row m-1">
+	<mat-card class="col-md-12">
+		<div class="row">
+			<div class="col-md-12">
+			<mat-toolbar style="background-color: #ffffff; margin-bottom: 4px;">
+				<h4>Clarifications</h4>
+        <span style="flex: 1 1 auto;"></span>
+				<mat-chip-list *ngIf="!isAdmin">
+				  <mat-chip (click)="openForm()" style="background-color: lightblue;">
+				  	<mat-icon>add</mat-icon> New
+				  </mat-chip>
+				</mat-chip-list>
+			</mat-toolbar>
+			</div>
+		</div>
+	</mat-card>
+
+	<mat-card *ngIf="visible" [@slideInOut] class="col-md-12">
+	  <div [formGroup]='nameForm' class="row">
+	    <mat-form-field  class="col-md-12">
+	      <input
+	        matInput 
+	        formControlName='name'
+	        #searchBoxName
+	        [matAutocomplete]="autoname"
+	        (keyup)="searchName(searchBoxName.value)"
+	        placeholder="Subject" 
+	        name="subject">
+	    </mat-form-field>
+	    <mat-autocomplete #autoname="matAutocomplete">
+	      <mat-option
+	        *ngFor="let subject of result_subjects"
+	        [value]="subject.subject">
+	        {{subject?.subject}} &nbsp;
+	      </mat-option>
+	    </mat-autocomplete>
+	  </div>
+		<form #regForm="ngForm" class="row">
+			<mat-form-field class="col-md-12">
+				<textarea
+					matInput 
+					placeholder="Message" 
+					matTextareaAutosize
+					matAutosizeMinRows="3"
+					matAutosizeMaxRows="8"
+					[(ngModel)]="new_clarify.clarification"
+					name="clarification"></textarea>
+			</mat-form-field>
+		</form>
+		<div class="row">
+		  <div class="col-md-12">
+		    <div class="d-flex justify-content-center">
+		    	<button
+		    		[disabled]="regForm.invalid || isSaving"
+		    		mat-raised-button 
+		    		(click)="createClarification(new_clarify.clarification)"
+		    		style="background-color: lightblue;">
+		    		<mat-icon>send</mat-icon>
+		    		<i *ngIf="isSaving" class="fa fa-spinner fa-spin"></i>
+		    	</button>
+		    	&nbsp;
+		    	<button
+		    		mat-raised-button 
+		    		(click)="closeForm()">
+		    		Cancel
+		    	</button>
+		    </div>
+		  </div>
+		</div>
+	</mat-card>
+
+	<mat-card class="col-md-12 mt-2">
+		<!-- <mat-tab-group (selectedTabChange)="filterList($event.tab.textLabel)">
+		  <mat-tab label="1"> 
+		    <ng-template mat-tab-label>
+		      <span>Open</span>
+		    </ng-template>
+		  </mat-tab>
+		  <mat-tab label="2">
+		    <ng-template mat-tab-label>
+		      <span>Pending</span>
+		    </ng-template>
+		  </mat-tab>
+		  <mat-tab label="3">
+		    <ng-template mat-tab-label>
+		      <span>Closed</span>
+		    </ng-template>
+		  </mat-tab>
+		</mat-tab-group> -->
+
+		<mat-accordion>
+		  <mat-expansion-panel *ngFor="let clarify of to_clarify">
+		    <mat-expansion-panel-header (click)="fetchMessages(clarify?.id);">
+		      <mat-panel-title>
+		       {{clarify?.subject}}
+		      </mat-panel-title>
+		    </mat-expansion-panel-header>
+				<div class="row">
+					<div class="col-md-12" style="overflow: auto; height:300px;"  #scrollMe [scrollTop]="scrollMe.scrollHeight">
+						<div *ngFor="let msg of messages" style="width: 100%;">
+							<div id="msg-data" class="row">
+								<div class="col-md-12 col-sm-12 col-xm-12">
+									<div>
+									  <span *ngIf="msg?.sender?.id == userId || msg?.responder?.id == userId" class="chat-ms-right">
+										  <small *ngIf="msg?.sender != null">{{msg?.sender.first_name}} {{msg?.sender.last_name}}</small>					  	
+										  <small *ngIf="msg?.responder != null">{{msg?.responder.first_name}} {{msg?.responder.last_name}}</small>					  	
+									  	<br>
+									  	{{msg?.clarification}}
+									  	<br>
+										  <small>{{msg?.created_at | timeAgo}}</small>					  	
+									  </span>
+									  <span *ngIf="msg?.sender?.id != userId && msg?.responder?.id != userId" class="chat-ms-left">
+									  	{{msg?.clarification}}
+									  	<br>
+										  <small>{{msg?.created_at | timeAgo}}</small>
+									  </span>
+								  </div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<mat-form-field class="col-md-12">
+	          <mat-divider style="border-top-color: black;"></mat-divider>
+						<textarea
+							matInput 
+							placeholder="Message" 
+							matTextareaAutosize
+							matAutosizeMinRows="3"
+							matAutosizeMaxRows="8"
+							[(ngModel)]="new_clarify.clarification"
+							name="clarification"></textarea>
+					</mat-form-field>
+				  <div class="col-md-12">
+				    <div class="d-flex justify-content-center">
+				    	<button
+				    		mat-raised-button 
+				    		(click)="respondClarification(new_clarify.clarification, clarify?.id)"
+				    		style="background-color: lightblue;">
+				    		<mat-icon>send</mat-icon>
+				    		<i *ngIf="isSaving" class="fa fa-spinner fa-spin"></i>
+				    	</button>
+				    </div>
+				  </div>
+				</div>
+		  </mat-expansion-panel>
+		</mat-accordion>
+	</mat-card>
+
+</div>
+
+<!-- <create class="row m-1" *ngIf="isAdmin"></create>
+<review class="row m-1" *ngIf="!isAdmin"></review> -->

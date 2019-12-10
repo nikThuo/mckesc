@@ -1,0 +1,79 @@
+<div class="container">
+	<mat-toolbar style="background-color: lightblue;">New User</mat-toolbar>
+	<form #regForm="ngForm" class="row">
+		<mat-form-field  class="col-md-6">
+			<input
+				required
+				(click)="onkeyup()" 
+				matInput 
+				placeholder="First Name" 
+				[(ngModel)]="new_user.first_name" 
+				name="first_name">
+		</mat-form-field>
+		<mat-form-field  class="col-md-6">
+			<input
+				required
+				(click)="onkeyup()" 
+				matInput 
+				placeholder="Last Name" 
+				[(ngModel)]="new_user.last_name" 
+				name="last_name">
+		</mat-form-field>
+		<div [formGroup]='userForm' class="col-md-6">
+			<mat-form-field style="width: 92%;">
+				<input
+					required
+					(click)="onkeyup()" 
+					matInput 
+					formControlName='username'
+			    #searchBoxUsername
+		  	  (keyup)="(searchBoxUsername.value)"
+					placeholder="Username" 
+					name="username">
+			</mat-form-field>
+			<mat-icon *ngIf="username_exist" style="color: red;">highlight_off</mat-icon>
+			<mat-icon *ngIf="username_not_exist" style="color: green;">check_circle</mat-icon>
+		</div>
+    <mat-form-field class="col-md-6">
+			<mat-select 
+				placeholder="User Type" 
+        required 
+        [(ngModel)]="new_user.user_type" 
+        name="user_type">
+		  	<mat-option value="1">Admin</mat-option>
+		  	<mat-option value="2">Agent</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<div [formGroup]="emailForm" class="col-md-12">
+			<mat-form-field style="width: 90%;">
+				<input 
+					required
+					(click)="onkeyup()" 
+					type="email" 
+					matInput 
+					placeholder="Email" 
+					formControlName="email" 
+					name="email">
+			</mat-form-field>
+			<mat-icon *ngIf="email_exist" style="color: red;">highlight_off</mat-icon>
+			<mat-icon *ngIf="email_not_exist" style="color: green;">check_circle</mat-icon>
+		</div>
+	</form>
+	<div class="row">
+    <div class="col-md-6">
+    	<button
+    		[disabled]="regForm.invalid || email_exist || username_exist"
+    		mat-raised-button 
+    		(click)="addUser()"
+    		style="background-color: lightblue;">
+    		Save
+    	</button>
+    	&nbsp;
+    	<button mat-raised-button (click)="onNoClick()"> Close </button>
+    </div>
+		<div class="col-md-4">
+    	<mat-spinner *ngIf="savinguser" [diameter]="35"></mat-spinner>
+    	<span><small style="color: red">{{error}}</small></span>
+    </div>
+	</div>
+</div>

@@ -1,0 +1,3128 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.14
+-- Dumped by pg_dump version 9.5.14
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: Attachment; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public."Attachment" (
+    id integer NOT NULL,
+    file character varying(100) NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone,
+    escalation_id integer NOT NULL
+);
+
+
+ALTER TABLE public."Attachment" OWNER TO root;
+
+--
+-- Name: Attachment_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public."Attachment_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Attachment_id_seq" OWNER TO root;
+
+--
+-- Name: Attachment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public."Attachment_id_seq" OWNED BY public."Attachment".id;
+
+
+--
+-- Name: Clarification; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public."Clarification" (
+    id integer NOT NULL,
+    clarification character varying(255) NOT NULL,
+    viewed boolean NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone,
+    responder_id integer,
+    sender_id integer,
+    subject_id integer NOT NULL
+);
+
+
+ALTER TABLE public."Clarification" OWNER TO root;
+
+--
+-- Name: ClarificationSubject; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public."ClarificationSubject" (
+    id integer NOT NULL,
+    subject character varying(255) NOT NULL,
+    viewed boolean NOT NULL,
+    clarification_status integer NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone,
+    responder_id integer,
+    sender_id integer NOT NULL
+);
+
+
+ALTER TABLE public."ClarificationSubject" OWNER TO root;
+
+--
+-- Name: ClarificationSubject_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public."ClarificationSubject_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."ClarificationSubject_id_seq" OWNER TO root;
+
+--
+-- Name: ClarificationSubject_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public."ClarificationSubject_id_seq" OWNED BY public."ClarificationSubject".id;
+
+
+--
+-- Name: Clarification_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public."Clarification_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Clarification_id_seq" OWNER TO root;
+
+--
+-- Name: Clarification_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public."Clarification_id_seq" OWNED BY public."Clarification".id;
+
+
+--
+-- Name: Escalation; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public."Escalation" (
+    id integer NOT NULL,
+    date_received character varying(999) NOT NULL,
+    time_received character varying(999) NOT NULL,
+    from_email character varying(999),
+    from_name character varying(999),
+    name character varying(999),
+    contents character varying(9999) NOT NULL,
+    channel_received character varying(999) NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public."Escalation" OWNER TO root;
+
+--
+-- Name: Escalation_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public."Escalation_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Escalation_id_seq" OWNER TO root;
+
+--
+-- Name: Escalation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public."Escalation_id_seq" OWNED BY public."Escalation".id;
+
+
+--
+-- Name: Huddle; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public."Huddle" (
+    id integer NOT NULL,
+    shift_name character varying(999) NOT NULL,
+    date character varying(999) NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone,
+    user_id integer NOT NULL,
+    image character varying(100)
+);
+
+
+ALTER TABLE public."Huddle" OWNER TO root;
+
+--
+-- Name: HuddleAction; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public."HuddleAction" (
+    id integer NOT NULL,
+    action character varying(999) NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone,
+    huddle_id integer NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public."HuddleAction" OWNER TO root;
+
+--
+-- Name: HuddleAction_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public."HuddleAction_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."HuddleAction_id_seq" OWNER TO root;
+
+--
+-- Name: HuddleAction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public."HuddleAction_id_seq" OWNED BY public."HuddleAction".id;
+
+
+--
+-- Name: HuddleAgenda; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public."HuddleAgenda" (
+    id integer NOT NULL,
+    agenda character varying(999) NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone,
+    huddle_id integer NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public."HuddleAgenda" OWNER TO root;
+
+--
+-- Name: HuddleAgenda_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public."HuddleAgenda_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."HuddleAgenda_id_seq" OWNER TO root;
+
+--
+-- Name: HuddleAgenda_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public."HuddleAgenda_id_seq" OWNED BY public."HuddleAgenda".id;
+
+
+--
+-- Name: HuddleAttendanceView; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public."HuddleAttendanceView" (
+    id integer NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone,
+    huddle_id integer NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public."HuddleAttendanceView" OWNER TO root;
+
+--
+-- Name: HuddleAttendanceView_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public."HuddleAttendanceView_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."HuddleAttendanceView_id_seq" OWNER TO root;
+
+--
+-- Name: HuddleAttendanceView_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public."HuddleAttendanceView_id_seq" OWNED BY public."HuddleAttendanceView".id;
+
+
+--
+-- Name: Huddle_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public."Huddle_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Huddle_id_seq" OWNER TO root;
+
+--
+-- Name: Huddle_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public."Huddle_id_seq" OWNED BY public."Huddle".id;
+
+
+--
+-- Name: UserUpdateView; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public."UserUpdateView" (
+    id integer NOT NULL,
+    viewed boolean NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone,
+    escalation_id integer NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public."UserUpdateView" OWNER TO root;
+
+--
+-- Name: UserUpdateView_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public."UserUpdateView_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."UserUpdateView_id_seq" OWNER TO root;
+
+--
+-- Name: UserUpdateView_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public."UserUpdateView_id_seq" OWNED BY public."UserUpdateView".id;
+
+
+--
+-- Name: accounts_user; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.accounts_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(150) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(150) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL,
+    user_type integer NOT NULL
+);
+
+
+ALTER TABLE public.accounts_user OWNER TO root;
+
+--
+-- Name: accounts_user_groups; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.accounts_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.accounts_user_groups OWNER TO root;
+
+--
+-- Name: accounts_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.accounts_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.accounts_user_groups_id_seq OWNER TO root;
+
+--
+-- Name: accounts_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.accounts_user_groups_id_seq OWNED BY public.accounts_user_groups.id;
+
+
+--
+-- Name: accounts_user_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.accounts_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.accounts_user_id_seq OWNER TO root;
+
+--
+-- Name: accounts_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.accounts_user_id_seq OWNED BY public.accounts_user.id;
+
+
+--
+-- Name: accounts_user_user_permissions; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.accounts_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.accounts_user_user_permissions OWNER TO root;
+
+--
+-- Name: accounts_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.accounts_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.accounts_user_user_permissions_id_seq OWNER TO root;
+
+--
+-- Name: accounts_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.accounts_user_user_permissions_id_seq OWNED BY public.accounts_user_user_permissions.id;
+
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.auth_group (
+    id integer NOT NULL,
+    name character varying(150) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO root;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO root;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.auth_group_id_seq OWNED BY public.auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO root;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO root;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.auth_group_permissions_id_seq OWNED BY public.auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO root;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO root;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.auth_permission_id_seq OWNED BY public.auth_permission.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO root;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO root;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.django_admin_log_id_seq OWNED BY public.django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO root;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO root;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.django_content_type_id_seq OWNED BY public.django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_migrations OWNER TO root;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+--
+
+CREATE SEQUENCE public.django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_migrations_id_seq OWNER TO root;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+--
+
+ALTER SEQUENCE public.django_migrations_id_seq OWNED BY public.django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: root
+--
+
+CREATE TABLE public.django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO root;
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Attachment" ALTER COLUMN id SET DEFAULT nextval('public."Attachment_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Clarification" ALTER COLUMN id SET DEFAULT nextval('public."Clarification_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."ClarificationSubject" ALTER COLUMN id SET DEFAULT nextval('public."ClarificationSubject_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Escalation" ALTER COLUMN id SET DEFAULT nextval('public."Escalation_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Huddle" ALTER COLUMN id SET DEFAULT nextval('public."Huddle_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAction" ALTER COLUMN id SET DEFAULT nextval('public."HuddleAction_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAgenda" ALTER COLUMN id SET DEFAULT nextval('public."HuddleAgenda_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAttendanceView" ALTER COLUMN id SET DEFAULT nextval('public."HuddleAttendanceView_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."UserUpdateView" ALTER COLUMN id SET DEFAULT nextval('public."UserUpdateView_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user ALTER COLUMN id SET DEFAULT nextval('public.accounts_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user_groups ALTER COLUMN id SET DEFAULT nextval('public.accounts_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('public.accounts_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_group ALTER COLUMN id SET DEFAULT nextval('public.auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_permission ALTER COLUMN id SET DEFAULT nextval('public.auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.django_admin_log ALTER COLUMN id SET DEFAULT nextval('public.django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.django_content_type ALTER COLUMN id SET DEFAULT nextval('public.django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.django_migrations ALTER COLUMN id SET DEFAULT nextval('public.django_migrations_id_seq'::regclass);
+
+
+--
+-- Data for Name: Attachment; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public."Attachment" (id, file, updated_at, created_at, escalation_id) FROM stdin;
+2	Branches_locations_and_working_hours.xlsx	2019-05-29 19:22:26.018771+03	2019-05-29 19:22:26.018801+03	2
+4	Auto_fail.PNG	2019-06-01 13:56:46.044163+03	2019-06-01 13:56:46.044191+03	5
+13	DSTV_WEEKLY_HIGHLIGHTS_3_-_9_JUNE_-_NORTHERN__BOUQUETS_V1_EUJUGG1.pdf	2019-06-03 11:19:37.24578+03	2019-06-03 11:19:37.24581+03	10
+14	GOTV_WEEKLY_HIGHLIGHTS_3_-_9_JUN_-_NORTHERN__BOUQUETS_V1_cW8PJty.pdf	2019-06-03 11:19:37.282608+03	2019-06-03 11:19:37.282638+03	10
+15	Double_Double_DTHAll_packages.docx	2019-06-04 18:43:55.709059+03	2019-06-04 18:43:55.709089+03	11
+16	Double_Double_DTT_Max_Plus__Value.docx	2019-06-04 18:43:55.725782+03	2019-06-04 18:43:55.72581+03	11
+17	DTH_Pay_1_higher_view_2_months_on_higher_package.docx	2019-06-04 18:43:55.742532+03	2019-06-04 18:43:55.742561+03	11
+18	DTT_Pay_1_higher_view_2_months_on_higher_package.docx	2019-06-04 18:43:55.754275+03	2019-06-04 18:43:55.754303+03	11
+19	Summary_of_the_campaign.xlsx	2019-06-04 18:43:55.77112+03	2019-06-04 18:43:55.771148+03	11
+20	AFRICA_MAGIC_EPIC_MOVIES_-_JUNE_2019_-_UPDATED.xlsx	2019-06-04 19:19:48.292263+03	2019-06-04 19:19:48.292287+03	12
+21	CATCH-UP_-_JUNE_2019.xlsx	2019-06-04 19:19:48.314719+03	2019-06-04 19:19:48.314748+03	12
+22	CONTENT_PLANNER_-_NORTHERN_JUNE19-V1.pdf	2019-06-04 19:19:48.331893+03	2019-06-04 19:19:48.331922+03	12
+23	SUPERSPORT_JUNE_LIVE.xlsx	2019-06-04 19:19:48.348587+03	2019-06-04 19:19:48.348616+03	12
+24	AFCON_2019_-_Schedule_1_.xlsx	2019-06-05 15:29:20.493946+03	2019-06-05 15:29:20.493975+03	13
+25	autofail.PNG	2019-06-06 09:39:32.317679+03	2019-06-06 09:39:32.317713+03	14
+28	DSTV_WEEKLY_HIGHLIGHTS_10-16_JUNE_-_NORTHERN__BOUQUETS_V1.pdf	2019-06-07 16:35:15.183238+03	2019-06-07 16:35:15.183271+03	18
+29	DSTV_WEEKLY_HIGHLIGHTS_10-16_JUNE_-_NORTHERN__BOUQUETS_V1_BAG70rs.pdf	2019-06-09 09:03:39.778035+03	2019-06-09 09:03:39.778065+03	19
+30	KEN_DTT_Disconnected_60-360_Max_DaboDabo.xlsx	2019-06-10 21:31:41.282836+03	2019-06-10 21:31:41.282865+03	21
+31	KEN_DTT_Disconnected_60-360_Plus_Upgrade_DaboDabo.xlsx	2019-06-10 21:31:41.299914+03	2019-06-10 21:31:41.299944+03	21
+32	KEN_DTT_Disconnected_60-360_Value_Upgrade_DaboDabo.xlsx	2019-06-10 21:31:41.316776+03	2019-06-10 21:31:41.316804+03	21
+33	Capture_-11.PNG	2019-06-11 12:18:10.588878+03	2019-06-11 12:18:10.588908+03	22
+\.
+
+
+--
+-- Name: Attachment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public."Attachment_id_seq"', 33, true);
+
+
+--
+-- Data for Name: Clarification; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public."Clarification" (id, clarification, viewed, updated_at, created_at, responder_id, sender_id, subject_id) FROM stdin;
+1	Clarification	f	2019-06-06 16:03:59.134578+03	2019-06-06 16:03:59.134605+03	\N	105	1
+2	hello	f	2019-06-06 16:11:36.456199+03	2019-06-06 16:11:36.456225+03	1	\N	1
+3	heloo, sdfkjsdl	f	2019-06-07 08:10:57.105998+03	2019-06-07 08:10:57.106025+03	\N	105	2
+4	okay	f	2019-06-07 08:11:16.045693+03	2019-06-07 08:11:16.045721+03	1	\N	2
+\.
+
+
+--
+-- Data for Name: ClarificationSubject; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public."ClarificationSubject" (id, subject, viewed, clarification_status, updated_at, created_at, responder_id, sender_id) FROM stdin;
+1	CLARIFICATION	f	1	2019-06-06 16:11:36.433671+03	2019-06-06 16:03:59.109505+03	\N	105
+2	CLARIFICATION ON DSTV	f	1	2019-06-07 08:11:16.02142+03	2019-06-07 08:10:57.088119+03	\N	105
+\.
+
+
+--
+-- Name: ClarificationSubject_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public."ClarificationSubject_id_seq"', 2, true);
+
+
+--
+-- Name: Clarification_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public."Clarification_id_seq"', 4, true);
+
+
+--
+-- Data for Name: Escalation; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public."Escalation" (id, date_received, time_received, from_email, from_name, name, contents, channel_received, updated_at, created_at, user_id) FROM stdin;
+2	Wed May 29 2019 00:00:00 GMT+0300 (East Africa Time)	15:31	patrick.solomon@technobrainbpo.com	Patrick Solomon	BRANCHES, LOCATIONS AND WORKING HOURS	Please note, MultiChoice Kenya recently converted the Kisumu Service Centre into a full-fledged customer service Branch dedicated to serve both DStv and GOtv subscribers in Kisumu town.  \n \n	Email	2019-05-29 19:22:25.992887+03	2019-05-29 19:22:25.992922+03	90
+4	Thu May 30 2019 00:00:00 GMT+0300 (East Africa Time)	13:33	\N	MCK	BONGA POINTS	Hi Team,\n\n This is to confirm that it is possible to pay for the subscription using Bonga points.\n\n Please note, 5 Bonga points is equivalent to 1 Kenyan shillings.\n\nProvided below is the procedure of how one can access the points. \nDial *126#\nSelect Lipa na Bonga Points\nPay bill(444900)\nInput Smartcard number or IUC number\nEnter amount (Enter your subscription amount, for example: If you are making payment for the Access package input Kes.950)\nPress Okay\n	Email	2019-05-31 09:51:08.909875+03	2019-05-31 09:51:08.909901+03	92
+5	Fri May 31 2019 00:00:00 GMT+0300 (East Africa Time)	12:36	Job.Mogire@ke.multichoice.com	Job Mogire	AUTO FAIL 	Customer inquire about E-66 error code on GOtv platform but he was not assisted accordingly.\n\nIssues noted.\n\n•\tCustomer’s query was not resolved.\n\n•\tProduct knowledge and customer education were poorly displayed.\n	Email	2019-06-01 13:56:46.01547+03	2019-06-01 13:56:46.015506+03	92
+10	Mon Jun 03 2019 00:00:00 GMT+0300 (East Africa Time)	11:14	Operations.Nipashe@ke.multichoice.com	Operations Nipashe	WEEKLY CONTENT HIGHLIGHTS	Dear Team,\n\nFind  attached  this week’s highlights on DStv and GOtv platforms.\n\nWhat to  look forward to ;\n \n1.\tThe FIFA U20 World Cup (On-Going)\n           Sat, 25 May 2019 – Sat, 15 Jun 2019 - SS7/ SS9/ SLGO/ SL2G\n\n2.\tFIFA Women’s World Cup \n          Starts Fri 7 June - Sun 7 July - SS3/ SS4/ SL2G/ SL3G\n \n3.\tICC Cricket World Cup (On-Going)\n30 May to 14 July - SS2\n\n4.\tTelkom Netball League (On-Going)\n          May - 8 June – FINALS - SL5G / SS10\n\n5.\tUEFA EURO 2020 Qualifiers - MATCH THREE\n          Fri 7 June - Tues 11 June\n         SS3/ SS10/ SS7/ SS9/ SL5G/ SL4G\n\n6.\tUEFA NATIONAS LEAGUE FINAL\n       5th June: Semi-final 1: Portugal vs Switzerland (SS3/SL4G)\n          6th  June: Semi-final 2: Netherlands vs England  (SS3/ SL4G)\n          9th  June: Final (SS3)\n \nKind Regards,\nCX and Care Department\n	Email	2019-06-03 11:19:37.211386+03	2019-06-03 11:19:37.211422+03	92
+11	Thu Jun 06 2019 00:00:00 GMT+0300 (East Africa Time)	17:40	<Operations.Nipashe@ke.multichoice.com>	Operations Nipashe 	CVM CAMPAIGNS FAQS	Dear Team,\n\nKindly note that we are running CVM campaigns (Double Double and Pay 1 month higher view 2 months) targeting selected customers on DStv and GOtv platforms.\n\nPlease see  attached FAQ’s for more details.\n\nN/B\n\tOffer will be valid to customers who make payment within 7 days after being contacted\n\tExtra month does NOT include Xtraview and PVR  fees or any add on\n\tSelected customers will be contacted through SMS and outbound IVR\n\tQualified customers  will receive a call or SMS\nCampaign Name\tOffer Details\tFAQs\n\n\n\n	Email	2019-06-04 18:43:55.679593+03	2019-06-04 18:43:55.679629+03	90
+12	Tue Jun 04 2019 00:00:00 GMT+0300 (East Africa Time)	19:10	Operations.Nipashe@ke.multichoice.com	Operations Nipashe 	CONTENT PLAN	Dear all,\n \nPlease find the attached ;\n\n1.\tContent Planner  June 2019\n2.\tAfrica Magic Epic Fresh Movie titles\n3.\tJune SuperSport Live Schedule.\n4.\tJune Catch Up titles\n \nBelow are sporting events to  look forward to besides the exciting GE content available this month of June 2019;\n \n1. The FIFA U20 World Cup \n     Sat, 25 May 2019 – Sat, 15 Jun 2019 - SS7A/ SLGO\n \n \n2. FIFA Women’s World Cup \n    Fri 7 June - Sun 7 July - SS3/ SS4/ SL2G/ SL3G\n \n3. Formula One\n    09-Jun-2019 - Grand Prix Du Canada Race - SS6\n    23-Jun-2019 - Grand Prix De France Race - SS5\n    30-Jun-2019 - Austria Grand Prix Race - SS6\n \n4. IAAF Diamond League\n    16 June: Rabat\n    20 June: Eugene\n \n5. IAAF World Challenge League\n    20 June: 58th Ostrava Golden Spike\n \n6. ICC Cricket World Cup\n    30 May to 14 July - SS2\n \n7. Telkom Netball League\n     10 May - 8 June\n \n8. TOTAL Africa Cup Of Nations\n     21 June - 19 July 2019\n\n9. UEFA EURO 2020 Qualifiers - MATCH THREE\n7 June - 11 June\n \n10. UEFA NATIONAS LEAGUE FINAL\n      5 June: Semi-final 1: Portugal vs Switzerland \n      6 June: Semi-final 2: Netherlands vs England \n      9 June: Final \n	Email	2019-06-04 19:19:48.246896+03	2019-06-04 19:19:48.246928+03	90
+13	Tue May 28 2019 00:00:00 GMT+0300 (East Africa Time)	13:55	Muiru@ke.multichoice.com	Diana Muiru	AFRICAN CUP OF NATION (AFCON)	Dear Team,\n\n Please be advised that TOTAL Africa Cup Of Nations will officially kick of on 21 June - 19 July 2019.\n\nSubscribers on GOtv Plus package will view selected matches while GOtv Max package subscribers will view all the matches.\n\nDStv subscribers on Access package will view selected matches while DStv Family and above subscription will view all the matches\n\nGOtv-SEL 2, 4 and 5\nDStv -SS7, SS8 and SS10\n	Email	2019-06-05 15:29:20.468939+03	2019-06-05 15:29:20.468975+03	92
+14	Wed Jun 05 2019 00:00:00 GMT+0300 (East Africa Time)	12:26	Job.Mogire@ke.multichoice.com	Job	AUTO FAIL 	Hi Esther,\n\nBelow is your response to Maitch B.\n\nIssues noted.\n\n•\tCustomer’s query was not answered.\n\n•\tCustomer education was not done.\n\n•\tProduct knowledge display was lacking.\n	Email	2019-06-06 09:39:32.279524+03	2019-06-06 09:39:32.27956+03	92
+18	Fri Jun 07 2019 00:00:00 GMT+0300 (East Africa Time)	13:46	Operations.Nipashe@ke.multichoice.com	Operation Nipashe 	CONTENT HIGHLIGHTS: SAT 8 JUNE - SUN 16 JUNE 2019	Dear All,\n\nPlease find the attached weekly highlights for the upcoming week.\n\nWhat to look forward to ;\n\n1.\tGE highlights \n\n            10 Jun – 22 Jul: Big Little Lies YR2 (New Season – Express From The US): Mon @21:00   CH102\n\n            10 Jun – 12 Aug: The Handmaid’s Tale YR3 ( New Season – Express From The US):  Mon @22:00  CH102\n\n            13 Jun – 27 Jun: Little Women YR1 (Brand New Mini - Series): Thurs @22:00  CH102\n\n\n2.\tSports highlights \n\n\nFORMULA ONE: \nSun 9 Jun: Grand Prix Du Canada Race: 18:30: SS6 \n\n\nCRICKET: \nSat 8 June: ICC Cricket World Cup: England vs Bangladesh: 11:00: SS2\n                                                          Afghanistan vs New Zealand: 14:00: SS6\nSun 9 June: ICC Cricket World Cup: India vs Australia: 11:00: SS2\n\nTENNIS: \nRoland Garros: Women Doubles Final: 11:30: SS5\nRoland Garros: Men Final: 15:00: SS5\n\nNETBALL: \nSat 8 June: Telkom Netball League: Final: 17:45: SL5G / SS10\n\nFOOTBALL: UEFA EURO 2020 Qualifiers\nSat 8 June: Estonia vs Northern Ireland: 17:50: S10 / SL4G / SS3\nMatchday 3: Belgium vs Kazakhstan: 20:35: S10\nMatchday 3: Greece vs Italy: 20:35: S11 / SL5G\nMatchday 3: Turkey vs France: 20:35: SL4G / SS3\nMatchday 3: Belarus vs Germany: 20:35:  SS7\n\nFOOTBALL: UEFA Nations League Finals\nSun 9 June: Final: 20:35: SS3\n\nMIXED MARTIAL ARTS: UFC\nSun 9 June: Henry Cejudo vs Marlon Martes: 04:00: S11/ SS6\n\n\nKind Regards,\nCX & Care Department\n	Email	2019-06-07 16:35:15.129515+03	2019-06-07 16:35:15.129552+03	92
+19	Fri Jun 07 2019 00:00:00 GMT+0300 (East Africa Time)	13:46	Operations.Nipashe@ke.multichoice.com	Operations Nipashe	CONTENT HIGHLIGHTS: SAT 8 JUNE - SUN 16 JUNE 2019	 Dear All,\n\nPlease find the attached weekly highlights for the upcoming week.\n\nWhat to look forward to ;\n\n1.\tGE highlights \n\n            10 Jun – 22 Jul: Big Little Lies YR2 (New Season – Express From The US): Mon @21:00   CH102\n\n            10 Jun – 12 Aug: The Handmaid’s Tale YR3 ( New Season – Express From The US):  Mon @22:00  CH102\n\n            13 Jun – 27 Jun: Little Women YR1 (Brand New Mini - Series): Thurs @22:00  CH102\n\n\n2.\tSports highlights \n\n\nFORMULA ONE: \nSun 9 Jun: Grand Prix Du Canada Race: 18:30: SS6 \n\n\nCRICKET: \nSat 8 June: ICC Cricket World Cup: England vs Bangladesh: 11:00: SS2\n                                                          Afghanistan vs New Zealand: 14:00: SS6\nSun 9 June: ICC Cricket World Cup: India vs Australia: 11:00: SS2\n\nTENNIS: \nRoland Garros: Women Doubles Final: 11:30: SS5\nRoland Garros: Men Final: 15:00: SS5\n\nNETBALL: \nSat 8 June: Telkom Netball League: Final: 17:45: SL5G / SS10\n\nFOOTBALL: UEFA EURO 2020 Qualifiers\nSat 8 June: Estonia vs Northern Ireland: 17:50: S10 / SL4G / SS3\nMatchday 3: Belgium vs Kazakhstan: 20:35: S10\nMatchday 3: Greece vs Italy: 20:35: S11 / SL5G\nMatchday 3: Turkey vs France: 20:35: SL4G / SS3\nMatchday 3: Belarus vs Germany: 20:35:  SS7\n\nFOOTBALL: UEFA Nations League Finals\nSun 9 June: Final: 20:35: SS3\n\nMIXED MARTIAL ARTS: UFC\nSun 9 June: Henry Cejudo vs Marlon Martes: 04:00: S11/ SS6\n\n\nKind Regards,\nCX & Care Department	Email	2019-06-09 09:03:39.752498+03	2019-06-09 09:03:39.752535+03	89
+20	Mon Jun 10 2019 00:00:00 GMT+0300 (East Africa Time)	17:31	<Operations.Nipashe@ke.multichoice.com>	Operations Nipashe 	UPDATE: GOTV CHANNEL REMOVAL  FROM GOTV VALUE : CHANNEL REMOVAL SUSPENDED	Dear Team,\n\nPlease note the planned removal of Disney Junior CH 60  from the GOtv Value package that was scheduled to take place on the 7th June 2019  has been suspended. \n\nThe channel is therefore available to customers on GOtv Value.\n\nSee below FAQs to help you respond to customers with related queries.\n\n\tAre you still going to remove Disney Jr from my package?\nNo – the channel will continue to be available on your package.\n\n\tWhy are you no longer removing it?\nWe’ve taken the decision to not go ahead with the channel removal until further notice. Our business constantly reviews its package offering to make sure our customers enjoy the best digital television experience at great value. Our GOtv packages are offered at various price points to make them affordable to more customers. To enjoy a wider variety of exciting local and international entertainment the upcoming AFCON from 21 June plus riveting soapies, movies, music, kiddies programming and more, we recommend upgrading to GOtv Plus or GOtv Max. \n\n\nKind Regards,\nCX & Care Department\n	Email	2019-06-10 17:59:20.29528+03	2019-06-10 17:59:20.295319+03	90
+21	Mon Jun 10 2019 00:00:00 GMT+0300 (East Africa Time)	16:55	Operations.Nipashe@ke.multichoice.com	Operations Nipashe 	 DABO DABO GOTV SMS	Dear Team ,\n\nPlease take note of the below SMS messages sent to the attached customers;\n\n\nCampaign \tTarget\tMessage\nDabo Dabo \tMax\tPata 1 month free! Pay 999 for IUC XXXXXXXXXX and enjoy 2 months of GOtv MAX at no extra cost. Offer ends on 15/6/2019. T&Cs apply\nUpgrade Dabo Dabo \tPlus\tPata 1 month free! Pay 999 for IUC XXXXXXXXXX and enjoy 2 months of GOtv MAX at no extra cost. Upgrade is in 48 hours. Offer ends on 15/6/2019. T&Cs apply\nUpgrade Dabo Dabo \tValue\tata 1 month free! Pay 749 for IUC XXXXXXXXXX and enjoy 2 months of GOtv PLUS at no extra cost. Upgrade is in 48 hours. Offer ends on 15/6/2019. T&Cs apply\n\n\nKind Regards,\nCX & Care Department.\n________________________________________\n	Email	2019-06-10 21:31:41.257745+03	2019-06-10 21:31:41.257781+03	90
+22	Tue Jun 11 2019 00:00:00 GMT+0300 (East Africa Time)	11:19	Job Mogire <Job.Mogire@ke.multichoice.com>	JOB	AUTO FAIL 	Below is the response to Mathews,\n\nIssues noted \n\n•\tProduct knowledge display was lacking on Xtraview set up.\n\n•\tCustomer education was lacking ie on the new set up of Xtraview without the heartbeat \n         connection.\n	Email	2019-06-11 12:18:10.571505+03	2019-06-11 12:18:10.571541+03	92
+23	Wed Jun 12 2019 00:00:00 GMT+0300 (East Africa Time)	15:56	\N	Winfrida Juma	CHATS	Agents to close chats with in 3 minutes if there is no engagements.	Verbal	2019-06-12 17:44:08.015723+03	2019-06-12 17:44:08.015759+03	154
+\.
+
+
+--
+-- Name: Escalation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public."Escalation_id_seq"', 23, true);
+
+
+--
+-- Data for Name: Huddle; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public."Huddle" (id, shift_name, date, updated_at, created_at, user_id, image) FROM stdin;
+2	Pre-Shift	2019-05-30	2019-05-30 09:28:33.76512+03	2019-05-30 09:28:33.765155+03	92	\N
+6	Pre-Shift	2019-05-31	2019-05-31 09:23:56.345631+03	2019-05-31 09:23:56.345668+03	89	\N
+54	Pre-Shift	2019-06-01	2019-06-01 08:57:33.113174+03	2019-06-01 08:57:33.113209+03	92	\N
+55	Pre-Shift	2019-06-02	2019-06-02 10:54:25.59203+03	2019-06-02 10:54:25.592066+03	89	\N
+56	Pre-Shift	2019-06-03	2019-06-03 08:28:50.513083+03	2019-06-03 08:28:50.513119+03	92	\N
+57	Pre-Shift	2019-06-03	2019-06-03 16:00:19.291112+03	2019-06-03 16:00:19.291148+03	90	
+58	Pre-Shift	2019-06-04	2019-06-04 08:25:22.447322+03	2019-06-04 08:25:22.447358+03	92	
+59	Pre-Shift	2019-06-05	2019-06-05 17:43:45.06661+03	2019-06-05 17:43:45.066645+03	90	Autofail_5th_June_3.PNG
+60	Pre-Shift	2019-06-06	2019-06-06 08:49:39.21273+03	2019-06-06 08:49:39.212767+03	92	
+61	Pre-Shift	2019-06-06	2019-06-06 16:52:29.325846+03	2019-06-06 16:52:29.325886+03	90	
+62	Pre-Shift	2019-06-07	2019-06-07 09:02:38.695647+03	2019-06-07 09:02:38.695683+03	92	autofail_emma.PNG
+63	Pre-Shift	2019-06-09	2019-06-09 11:36:10.704848+03	2019-06-09 11:36:10.704885+03	89	Auto_Fail.PNG
+64	Pre-Shift	2019-06-10	2019-06-10 09:26:42.778154+03	2019-06-10 09:26:42.77819+03	92	
+65	Pre-Shift	2019-06-11	2019-06-11 08:38:12.809115+03	2019-06-11 08:38:12.809152+03	92	
+66	Pre-Shift	2019-06-12	2019-06-12 17:26:46.592303+03	2019-06-12 17:26:46.592341+03	154	
+\.
+
+
+--
+-- Data for Name: HuddleAction; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public."HuddleAction" (id, action, updated_at, created_at, huddle_id, user_id) FROM stdin;
+2	Agents to use the provided information above to answer customers query	2019-05-30 09:28:34.301173+03	2019-05-30 09:28:34.3012+03	2	92
+9	Agents to verify the accounts	2019-05-31 09:23:56.723084+03	2019-05-31 09:23:56.723112+03	6	89
+11	Agents to use the information provided above to answer customers query	2019-06-01 08:57:33.639546+03	2019-06-01 08:57:33.639572+03	54	92
+12	Work on AHT to clear the backlog	2019-06-02 10:54:25.911915+03	2019-06-02 10:54:25.911941+03	55	89
+13	All the agents to use the information provided above to handle customers query accordingly 	2019-06-03 08:28:50.993807+03	2019-06-03 08:28:50.993833+03	56	92
+14	Agents to be careful and not disipostion as information only	2019-06-03 16:00:19.620938+03	2019-06-03 16:00:19.620968+03	57	90
+15	Agents warned against Autofail, always seek advice from Team leader whenever they are not sure on how to answer clients	2019-06-03 16:00:19.637308+03	2019-06-03 16:00:19.637335+03	57	90
+16	Everyone to go through the updates, this will help with answering customers query accordingly and to avoid auto fails	2019-06-04 08:25:22.966396+03	2019-06-04 08:25:22.966424+03	58	92
+17	agents advised on the ongoing retention campaign, advised to check on updates tool for more information	2019-06-05 17:43:45.591627+03	2019-06-05 17:43:45.591654+03	59	90
+18	Agents advised on areas of auto-fails, auto-fails scenarios for agents who have scored zero cascaded down to agents	2019-06-05 17:43:45.60277+03	2019-06-05 17:43:45.602797+03	59	90
+19	All the information provided above to b e used by CSR so as to answer customers queries accordingly 	2019-06-06 08:49:39.960841+03	2019-06-06 08:49:39.960877+03	60	92
+20	Agents advised on ensuring shoes are cleaned before entering the floor, also to keep their work stations always cleen	2019-06-06 16:52:29.787851+03	2019-06-06 16:52:29.787878+03	61	90
+21	Agents advised on the Nations league action tonight, channels it will be aired and time, advised to check on the updates tool for more information	2019-06-06 16:52:29.799514+03	2019-06-06 16:52:29.799541+03	61	90
+22	Auto fail- Issues noted.  •\tGrammar . •\tAlways proofread before sending. 	2019-06-07 09:02:39.207047+03	2019-06-07 09:02:39.207076+03	62	92
+23	Issues noted; •\tCustomers query was not resolved. •\tProbing skills were lacking. •\tProduct knowledge was lacking eg; Agent needs to probe more on which Pin the customer needed to be reset.	2019-06-07 09:02:39.224004+03	2019-06-07 09:02:39.224031+03	62	92
+24	Agents must adhere to the schedule\t	2019-06-09 11:36:11.190219+03	2019-06-09 11:36:11.190247+03	63	89
+25	The Live Chat AHT must be handled within stipulated time. 	2019-06-10 09:26:43.227976+03	2019-06-10 09:26:43.228003+03	64	92
+26	All the information provided above by the CSR to ensure that they handled customers accordingly	2019-06-11 08:38:13.354686+03	2019-06-11 08:38:13.354714+03	65	92
+27	CSR to encourage customers to upgrade to GOtv Plus and Max packages so as to enjoy AFCON	2019-06-11 08:38:13.371494+03	2019-06-11 08:38:13.371522+03	65	92
+28	Dabo Dabo offer will end on 15-06-2019, CSR to advise customers accordingly and to ensure that they confirm that information that they are providing are accurate 	2019-06-11 08:38:13.388921+03	2019-06-11 08:38:13.388949+03	65	92
+29	Warning letters	2019-06-12 17:26:47.178815+03	2019-06-12 17:26:47.178843+03	66	154
+30	Agents to close chats within 3 minutes if the sub does not respond so as to avoid Chats dropping.	2019-06-12 17:26:47.196268+03	2019-06-12 17:26:47.196296+03	66	154
+\.
+
+
+--
+-- Name: HuddleAction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public."HuddleAction_id_seq"', 30, true);
+
+
+--
+-- Data for Name: HuddleAgenda; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public."HuddleAgenda" (id, agenda, updated_at, created_at, huddle_id, user_id) FROM stdin;
+2	1. ICC Cricket world cup 2019, available on Supersport 2 at 12PM England vs South Africa.	2019-05-30 09:28:34.198302+03	2019-05-30 09:28:34.198329+03	2	92
+3	2. Tennis, Roland Garros available on SuperSport 5 at 12:PM	2019-05-30 09:28:34.215154+03	2019-05-30 09:28:34.215182+03	2	92
+4	3.FIFA U/20 World Cup New Zealand vs Uruguay 19:00\thrs on SuperSport Seven 7	2019-05-30 09:28:34.232739+03	2019-05-30 09:28:34.232766+03	2	92
+5	4.FIFA U/20 World Cup Norway vs Honduras 19:00 hrs SuperSport 8	2019-05-30 09:28:34.249573+03	2019-05-30 09:28:34.2496+03	2	92
+6	5.IAAF Diamond League Stockholm 21:00 SuperSport Select 3 	2019-05-30 09:28:34.266853+03	2019-05-30 09:28:34.26688+03	2	92
+7	6.IAAF Diamond League Stockholm 21:00 hrs on SuperSport 7	2019-05-30 09:28:34.283945+03	2019-05-30 09:28:34.283973+03	2	92
+14	Campaign offers: agents to confirm is the account has been paid for	2019-05-31 09:23:56.705605+03	2019-05-31 09:23:56.705632+03	6	89
+17	EUEFA Champions league finals 01-06-2019 at 22:00 hrs on Supersport 3 and 10 DStv the same will be aired on GOtv Superspor selct 2	2019-06-01 08:57:33.596167+03	2019-06-01 08:57:33.596194+03	54	92
+18	DStv Thanks, one is eligible if he or she pays before due date, agent to access the account so as to advise accordingly	2019-06-01 08:57:33.622385+03	2019-06-01 08:57:33.622411+03	54	92
+19	Target	2019-06-02 10:54:25.877577+03	2019-06-02 10:54:25.877604+03	55	89
+20	Agents to achieve a target of 30 comms per hour 	2019-06-02 10:54:25.895042+03	2019-06-02 10:54:25.895069+03	55	89
+21	There will be a lot of upgrade and recconnection due to the upcoming AFCON matches that will officially kick off on June 21st 2019	2019-06-03 08:28:50.925203+03	2019-06-03 08:28:50.92523+03	56	92
+22	CSR to avoid dis-positioning as information and E-16 only on Genesys.	2019-06-03 08:28:50.94262+03	2019-06-03 08:28:50.942647+03	56	92
+23	CSR to probe further and ensure that they achieve FCR to avoid getting auto fails on QAs	2019-06-03 08:28:50.959491+03	2019-06-03 08:28:50.959518+03	56	92
+24	If the account is on SRQ, CSR to take the details and forward them to Team Leader who will then call the BD for a quick resolution	2019-06-03 08:28:50.976923+03	2019-06-03 08:28:50.97695+03	56	92
+25	Dispositions	2019-06-03 16:00:19.591949+03	2019-06-03 16:00:19.591975+03	57	90
+26	Autofails	2019-06-03 16:00:19.608727+03	2019-06-03 16:00:19.608754+03	57	90
+27	05-06-2019-GOtv-UEFA Nations League Finals Semi-final 1: Portugal vs Switzerland AT 21:30 hrs on SuperSport Select 4  DStv-UEFA Nations League Finals Semi-final 1: Portugal vs Switzerlan 21:30 hrs on SuperSport 3	2019-06-04 08:25:22.926773+03	2019-06-04 08:25:22.926801+03	58	92
+28	06-06-2019 GOtv-UEFA Nations League Finals Semi-final 2: Netherlands vs England 21:30 hrs on SuperSport Select 4 DStv-UEFA Nations League Finals Semi-final 2: Netherlands vs England 21:30 hrs on SuperSport 3	2019-06-04 08:25:22.943597+03	2019-06-04 08:25:22.943625+03	58	92
+29	CSR to go through the MCK updates and familiarize themselves with the highlights as well as the sporting events that are on schedule	2019-06-04 08:25:22.955549+03	2019-06-04 08:25:22.955577+03	58	92
+30	CVM retention campaign	2019-06-05 17:43:45.568839+03	2019-06-05 17:43:45.568865+03	59	90
+31	Autofails	2019-06-05 17:43:45.580233+03	2019-06-05 17:43:45.58026+03	59	90
+32	 The FIFA U20 World Cup  Sat, 25 May 2019 – Sat, 15 Jun 2019 - SS7A/ SLGO	2019-06-06 08:49:39.680802+03	2019-06-06 08:49:39.680828+03	60	92
+33	FIFA Women’s World Cup Fri 7 June - Sun 7 July - SS3/ SS4/ SL2G/ SL3G	2019-06-06 08:49:39.697654+03	2019-06-06 08:49:39.697681+03	60	92
+34	Formula One     09-Jun-2019 - Grand Prix Du Canada Race - SS6  23-Jun-2019 - Grand Prix De France Race - SS5 30-Jun-2019 - Austria Grand Prix Race - SS6	2019-06-06 08:49:39.715044+03	2019-06-06 08:49:39.715071+03	60	92
+35	IAAF Diamond League 16 June: Rabat  20 June: Eugene	2019-06-06 08:49:39.732135+03	2019-06-06 08:49:39.732161+03	60	92
+36	IAAF World Challenge League     20 June: 58th Ostrava Golden Spike	2019-06-06 08:49:39.749769+03	2019-06-06 08:49:39.749798+03	60	92
+37	ICC Cricket World Cup     30 May to 14 July - SS2	2019-06-06 08:49:39.766145+03	2019-06-06 08:49:39.766174+03	60	92
+38	TOTAL Africa Cup Of Nations 21 June - 19 July 2019	2019-06-06 08:49:39.783563+03	2019-06-06 08:49:39.78359+03	60	92
+39	UEFA EURO 2020 Qualifiers - MATCH THREE 7 June - 11 June	2019-06-06 08:49:39.800401+03	2019-06-06 08:49:39.800428+03	60	92
+40	 UEFA NATIONAS LEAGUE FINAL       5 June: Semi-final 1: Portugal vs Switzerland 6 June: Semi-final 2: Netherlands vs England        9 June: Final 	2019-06-06 08:49:39.909852+03	2019-06-06 08:49:39.909887+03	60	92
+41	Payment made to the wrong account: CSR to capture all the details i.e Name of the customer, right and wrong account, Mpesa transaction code, amount paid and telephone number that was used to make the payment. If the payment was done via My DStv App, advise the customer to make fresh payment as the one that was done earlier will be reversed back to their account withing 24 hours.	2019-06-06 08:49:39.926075+03	2019-06-06 08:49:39.926104+03	60	92
+42	Installer and GO-fundi request: CSR to probe and troubleshoot accordingly, advise about the importance of using GOtena, should the problem persist advise the customer about the installer or GO-fundi, capture all their details i.e full names, location, nearest landmark, telephone number, date and time that they will be available at home.	2019-06-06 08:49:39.943644+03	2019-06-06 08:49:39.943675+03	60	92
+43	keeping work spaces tidy including the floor	2019-06-06 16:52:29.759329+03	2019-06-06 16:52:29.759356+03	61	90
+44	UEFA nations league final	2019-06-06 16:52:29.776609+03	2019-06-06 16:52:29.776637+03	61	90
+45	DStv Now: If a customer is experiencing error 100, do not provide the South African link, but instead take the details and create a case, i.e Smart card number, telephone number email address and full names, thereafter, forward the case number to TL on duty for escalation matrix. 	2019-06-07 09:02:39.138172+03	2019-06-07 09:02:39.1382+03	62	92
+46	UEFA EURO 2020 Qualifiers - MATCH THREE 7 June - 11 June	2019-06-07 09:02:39.155499+03	2019-06-07 09:02:39.155526+03	62	92
+47	FIFA Women’s World Cup      Fri 7 June - Sun 7 July - SS3/ SS4/ SL2G/ SL3G	2019-06-07 09:02:39.172287+03	2019-06-07 09:02:39.172315+03	62	92
+48	ICC Cricket World Cup     30 May to 14 July - SS2	2019-06-07 09:02:39.189731+03	2019-06-07 09:02:39.189758+03	62	92
+49	Attendance	2019-06-09 11:36:11.155944+03	2019-06-09 11:36:11.155972+03	63	89
+50	Lateness	2019-06-09 11:36:11.173336+03	2019-06-09 11:36:11.173363+03	63	89
+51	Live Chat: When CSR receives Live Chat interactions, he or she has to handle the customer within three minutes. If the interaction is past  three minutes and there is no activity, CSR will have to close the interaction and leave a note. 	2019-06-10 09:26:43.199433+03	2019-06-10 09:26:43.19946+03	64	92
+52	As African Cup of Nations (AFCON) draws closer, there will be massive upgrade and recconection as from 15-06-2019. All CSR must prepare themselves for this to ensure all the interactions are managed accordingly. All the FAQs have been shared therefore it is mandatory that CSR go through this to get familiar with everything. 	2019-06-10 09:26:43.216792+03	2019-06-10 09:26:43.216819+03	64	92
+53	The planned removal of Disney Junior CH 60  from the GOtv Value package that was scheduled to take place on the 7th June 2019  has been suspended. Customers can still enjoy watching the channel at the comfort of their home.	2019-06-11 08:38:13.257146+03	2019-06-11 08:38:13.257174+03	65	92
+54	Dabo Dabo GOtv SMS Disconnected customers: GOtv Max and subscribers will pay Ksh. 999 and enjoy 2 months of GOtv MAX at no extra cost. Offer ends on 15/6/2019. T&Cs apply	2019-06-11 08:38:13.274595+03	2019-06-11 08:38:13.274623+03	65	92
+55	GOtv Plus subscribers will pay Ksh. 999 and enjoy 2 months of GOtv MAX package at no extra cost. Upgrade is in 48 hours. Offer ends on 15/6/2019. T&Cs apply	2019-06-11 08:38:13.291474+03	2019-06-11 08:38:13.291501+03	65	92
+56	GOtv Value subscribers will pay Ksh. 749 and enjoy 2 months of GOtv PLUS at no extra cost. Upgrade is in 48 hours. Offer ends on 15/6/2019. T&Cs apply	2019-06-11 08:38:13.308906+03	2019-06-11 08:38:13.308934+03	65	92
+57	To enjoy a wider variety of exciting local and international entertainment the upcoming AFCON from 21 June plus riveting soapies, movies, music, kiddies programming and more, we recommend upgrading to GOtv Plus or GOtv Max.	2019-06-11 08:38:13.325996+03	2019-06-11 08:38:13.326023+03	65	92
+58	Autofails	2019-06-12 17:26:47.144529+03	2019-06-12 17:26:47.144557+03	66	154
+59	Agents to close Chat session when sub is not available.	2019-06-12 17:26:47.161957+03	2019-06-12 17:26:47.161985+03	66	154
+\.
+
+
+--
+-- Name: HuddleAgenda_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public."HuddleAgenda_id_seq"', 59, true);
+
+
+--
+-- Data for Name: HuddleAttendanceView; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public."HuddleAttendanceView" (id, updated_at, created_at, huddle_id, user_id) FROM stdin;
+1368	2019-06-05 17:43:45.090423+03	2019-06-05 17:43:45.090451+03	59	17
+1369	2019-06-05 17:43:45.107464+03	2019-06-05 17:43:45.107491+03	59	30
+1370	2019-06-05 17:43:45.124338+03	2019-06-05 17:43:45.124365+03	59	34
+1371	2019-06-05 17:43:45.14167+03	2019-06-05 17:43:45.141696+03	59	38
+1265	2019-06-01 08:57:33.180432+03	2019-06-01 08:57:33.180459+03	54	103
+1372	2019-06-05 17:43:45.15865+03	2019-06-05 17:43:45.158677+03	59	43
+1373	2019-06-05 17:43:45.175975+03	2019-06-05 17:43:45.176003+03	59	44
+22	2019-05-30 09:28:33.839357+03	2019-05-30 09:28:33.839384+03	2	38
+1266	2019-06-01 08:57:33.197858+03	2019-06-01 08:57:33.197884+03	54	100
+26	2019-05-30 09:28:33.907915+03	2019-05-30 09:28:33.907942+03	2	57
+27	2019-05-30 09:28:33.925328+03	2019-05-30 09:28:33.925355+03	2	58
+28	2019-05-30 09:28:33.942187+03	2019-05-30 09:28:33.942215+03	2	59
+29	2019-05-30 09:28:33.95969+03	2019-05-30 09:28:33.959717+03	2	62
+32	2019-05-30 09:28:34.010707+03	2019-05-30 09:28:34.010735+03	2	68
+33	2019-05-30 09:28:34.028367+03	2019-05-30 09:28:34.028395+03	2	77
+1375	2019-06-05 17:43:45.210142+03	2019-06-05 17:43:45.210169+03	59	56
+36	2019-05-30 09:28:34.079376+03	2019-05-30 09:28:34.079403+03	2	83
+37	2019-05-30 09:28:34.096889+03	2019-05-30 09:28:34.096916+03	2	84
+39	2019-05-30 09:28:34.131208+03	2019-05-30 09:28:34.131236+03	2	86
+40	2019-05-30 09:28:34.14801+03	2019-05-30 09:28:34.148037+03	2	100
+41	2019-05-30 09:28:34.165399+03	2019-05-30 09:28:34.165427+03	2	89
+42	2019-05-30 09:28:34.182216+03	2019-05-30 09:28:34.182243+03	2	92
+1377	2019-06-05 17:43:45.244476+03	2019-06-05 17:43:45.244644+03	59	74
+1378	2019-06-05 17:43:45.261499+03	2019-06-05 17:43:45.261526+03	59	78
+1379	2019-06-05 17:43:45.284746+03	2019-06-05 17:43:45.284773+03	59	97
+1380	2019-06-05 17:43:45.307292+03	2019-06-05 17:43:45.307319+03	59	117
+1381	2019-06-05 17:43:45.324562+03	2019-06-05 17:43:45.324589+03	59	119
+1382	2019-06-05 17:43:45.341508+03	2019-06-05 17:43:45.341535+03	59	120
+1383	2019-06-05 17:43:45.358942+03	2019-06-05 17:43:45.359002+03	59	121
+1384	2019-06-05 17:43:45.381245+03	2019-06-05 17:43:45.381272+03	59	122
+1385	2019-06-05 17:43:45.398853+03	2019-06-05 17:43:45.398882+03	59	123
+1386	2019-06-05 17:43:45.415629+03	2019-06-05 17:43:45.415656+03	59	124
+1387	2019-06-05 17:43:45.431684+03	2019-06-05 17:43:45.431711+03	59	125
+1388	2019-06-05 17:43:45.444236+03	2019-06-05 17:43:45.444263+03	59	127
+1389	2019-06-05 17:43:45.455936+03	2019-06-05 17:43:45.455963+03	59	128
+1390	2019-06-05 17:43:45.47279+03	2019-06-05 17:43:45.472817+03	59	130
+1391	2019-06-05 17:43:45.484717+03	2019-06-05 17:43:45.484744+03	59	131
+1392	2019-06-05 17:43:45.501339+03	2019-06-05 17:43:45.501366+03	59	136
+1393	2019-06-05 17:43:45.513127+03	2019-06-05 17:43:45.513154+03	59	137
+1394	2019-06-05 17:43:45.52998+03	2019-06-05 17:43:45.530006+03	59	141
+1395	2019-06-05 17:43:45.541803+03	2019-06-05 17:43:45.54183+03	59	90
+1396	2019-06-05 17:43:45.558467+03	2019-06-05 17:43:45.558494+03	59	91
+1268	2019-06-01 08:57:33.23214+03	2019-06-01 08:57:33.232167+03	54	82
+1269	2019-06-01 08:57:33.249032+03	2019-06-01 08:57:33.249058+03	54	84
+109	2019-05-31 09:23:56.415847+03	2019-05-31 09:23:56.415874+03	6	38
+112	2019-05-31 09:23:56.467039+03	2019-05-31 09:23:56.467077+03	6	55
+113	2019-05-31 09:23:56.48444+03	2019-05-31 09:23:56.484467+03	6	59
+115	2019-05-31 09:23:56.518693+03	2019-05-31 09:23:56.51872+03	6	62
+117	2019-05-31 09:23:56.553053+03	2019-05-31 09:23:56.55308+03	6	68
+119	2019-05-31 09:23:56.587407+03	2019-05-31 09:23:56.587434+03	6	82
+120	2019-05-31 09:23:56.60416+03	2019-05-31 09:23:56.604187+03	6	84
+121	2019-05-31 09:23:56.621568+03	2019-05-31 09:23:56.621595+03	6	100
+122	2019-05-31 09:23:56.638418+03	2019-05-31 09:23:56.638446+03	6	25
+123	2019-05-31 09:23:56.655981+03	2019-05-31 09:23:56.656008+03	6	2
+124	2019-05-31 09:23:56.672825+03	2019-05-31 09:23:56.672852+03	6	89
+125	2019-05-31 09:23:56.690256+03	2019-05-31 09:23:56.690283+03	6	92
+1272	2019-06-01 08:57:33.300761+03	2019-06-01 08:57:33.300787+03	54	65
+1274	2019-06-01 08:57:33.335031+03	2019-06-01 08:57:33.33506+03	54	61
+1276	2019-06-01 08:57:33.369342+03	2019-06-01 08:57:33.369369+03	54	59
+1277	2019-06-01 08:57:33.386193+03	2019-06-01 08:57:33.386219+03	54	57
+1280	2019-06-01 08:57:33.441013+03	2019-06-01 08:57:33.44104+03	54	48
+1282	2019-06-01 08:57:33.477872+03	2019-06-01 08:57:33.4779+03	54	37
+1397	2019-06-06 08:49:39.237+03	2019-06-06 08:49:39.237027+03	60	25
+1286	2019-06-01 08:57:33.546458+03	2019-06-01 08:57:33.546484+03	54	25
+1399	2019-06-06 08:49:39.270668+03	2019-06-06 08:49:39.270694+03	60	37
+1288	2019-06-01 08:57:33.580795+03	2019-06-01 08:57:33.580822+03	54	92
+1400	2019-06-06 08:49:39.287842+03	2019-06-06 08:49:39.287868+03	60	59
+1401	2019-06-06 08:49:39.304963+03	2019-06-06 08:49:39.30499+03	60	61
+1402	2019-06-06 08:49:39.322227+03	2019-06-06 08:49:39.322254+03	60	62
+1404	2019-06-06 08:49:39.356179+03	2019-06-06 08:49:39.356206+03	60	68
+1405	2019-06-06 08:49:39.373584+03	2019-06-06 08:49:39.37361+03	60	82
+1406	2019-06-06 08:49:39.39042+03	2019-06-06 08:49:39.390447+03	60	83
+1407	2019-06-06 08:49:39.408038+03	2019-06-06 08:49:39.408067+03	60	86
+1408	2019-06-06 08:49:39.42476+03	2019-06-06 08:49:39.424787+03	60	100
+1409	2019-06-06 08:49:39.442145+03	2019-06-06 08:49:39.442171+03	60	103
+1410	2019-06-06 08:49:39.458998+03	2019-06-06 08:49:39.459026+03	60	111
+1411	2019-06-06 08:49:39.476557+03	2019-06-06 08:49:39.476584+03	60	116
+1412	2019-06-06 08:49:39.493289+03	2019-06-06 08:49:39.493316+03	60	121
+1413	2019-06-06 08:49:39.510772+03	2019-06-06 08:49:39.510799+03	60	146
+1414	2019-06-06 08:49:39.527535+03	2019-06-06 08:49:39.527562+03	60	148
+1415	2019-06-06 08:49:39.544974+03	2019-06-06 08:49:39.545+03	60	126
+1417	2019-06-06 08:49:39.579758+03	2019-06-06 08:49:39.579785+03	60	48
+1418	2019-06-06 08:49:39.611141+03	2019-06-06 08:49:39.611168+03	60	2
+1419	2019-06-06 08:49:39.630494+03	2019-06-06 08:49:39.630525+03	60	89
+1420	2019-06-06 08:49:39.64793+03	2019-06-06 08:49:39.647956+03	60	92
+1421	2019-06-06 08:49:39.664775+03	2019-06-06 08:49:39.664801+03	60	94
+1422	2019-06-06 16:52:29.348051+03	2019-06-06 16:52:29.348079+03	61	17
+1291	2019-06-02 10:54:25.65643+03	2019-06-02 10:54:25.656457+03	55	101
+1292	2019-06-02 10:54:25.673226+03	2019-06-02 10:54:25.673257+03	55	82
+1424	2019-06-06 16:52:29.383381+03	2019-06-06 16:52:29.383408+03	61	22
+1295	2019-06-02 10:54:25.724954+03	2019-06-02 10:54:25.72498+03	55	65
+1296	2019-06-02 10:54:25.7419+03	2019-06-02 10:54:25.741927+03	55	62
+1425	2019-06-06 16:52:29.400865+03	2019-06-06 16:52:29.400893+03	61	30
+1298	2019-06-02 10:54:25.776287+03	2019-06-02 10:54:25.776315+03	55	48
+1300	2019-06-02 10:54:25.810467+03	2019-06-02 10:54:25.810493+03	55	37
+1426	2019-06-06 16:52:29.417672+03	2019-06-06 16:52:29.417701+03	61	34
+1302	2019-06-02 10:54:25.844721+03	2019-06-02 10:54:25.844748+03	55	89
+1303	2019-06-02 10:54:25.862141+03	2019-06-02 10:54:25.862167+03	55	94
+1427	2019-06-06 16:52:29.435151+03	2019-06-06 16:52:29.435179+03	61	43
+1428	2019-06-06 16:52:29.452013+03	2019-06-06 16:52:29.452041+03	61	44
+1430	2019-06-06 16:52:29.486304+03	2019-06-06 16:52:29.486331+03	61	74
+1431	2019-06-06 16:52:29.50377+03	2019-06-06 16:52:29.503798+03	61	78
+1432	2019-06-06 16:52:29.520605+03	2019-06-06 16:52:29.520633+03	61	81
+1433	2019-06-06 16:52:29.537969+03	2019-06-06 16:52:29.537997+03	61	110
+1434	2019-06-06 16:52:29.554975+03	2019-06-06 16:52:29.555009+03	61	117
+1435	2019-06-06 16:52:29.572389+03	2019-06-06 16:52:29.572417+03	61	119
+1436	2019-06-06 16:52:29.589186+03	2019-06-06 16:52:29.589214+03	61	120
+1437	2019-06-06 16:52:29.606633+03	2019-06-06 16:52:29.606661+03	61	127
+1438	2019-06-06 16:52:29.623523+03	2019-06-06 16:52:29.62355+03	61	130
+1439	2019-06-06 16:52:29.640917+03	2019-06-06 16:52:29.640945+03	61	133
+1440	2019-06-06 16:52:29.657752+03	2019-06-06 16:52:29.657781+03	61	134
+1441	2019-06-06 16:52:29.679382+03	2019-06-06 16:52:29.679412+03	61	136
+1443	2019-06-06 16:52:29.70949+03	2019-06-06 16:52:29.709518+03	61	56
+1444	2019-06-06 16:52:29.726309+03	2019-06-06 16:52:29.726337+03	61	97
+1445	2019-06-06 16:52:29.743807+03	2019-06-06 16:52:29.743835+03	61	90
+1446	2019-06-07 09:02:38.719585+03	2019-06-07 09:02:38.719612+03	62	24
+1306	2019-06-03 08:28:50.58221+03	2019-06-03 08:28:50.582237+03	56	38
+1308	2019-06-03 08:28:50.617945+03	2019-06-03 08:28:50.617972+03	56	48
+1309	2019-06-03 08:28:50.635417+03	2019-06-03 08:28:50.635444+03	56	59
+1311	2019-06-03 08:28:50.669711+03	2019-06-03 08:28:50.669738+03	56	62
+1312	2019-06-03 08:28:50.686519+03	2019-06-03 08:28:50.686545+03	56	65
+1313	2019-06-03 08:28:50.704157+03	2019-06-03 08:28:50.704184+03	56	68
+1447	2019-06-07 09:02:38.739778+03	2019-06-07 09:02:38.739805+03	62	37
+1316	2019-06-03 08:28:50.755285+03	2019-06-03 08:28:50.755313+03	56	82
+1317	2019-06-03 08:28:50.772673+03	2019-06-03 08:28:50.7727+03	56	83
+1318	2019-06-03 08:28:50.78947+03	2019-06-03 08:28:50.789497+03	56	101
+1320	2019-06-03 08:28:50.823706+03	2019-06-03 08:28:50.823733+03	56	110
+1321	2019-06-03 08:28:50.84112+03	2019-06-03 08:28:50.841147+03	56	113
+1322	2019-06-03 08:28:50.857988+03	2019-06-03 08:28:50.858015+03	56	115
+1323	2019-06-03 08:28:50.875526+03	2019-06-03 08:28:50.875553+03	56	116
+1324	2019-06-03 08:28:50.892362+03	2019-06-03 08:28:50.89239+03	56	92
+1325	2019-06-03 08:28:50.909713+03	2019-06-03 08:28:50.90974+03	56	94
+1448	2019-06-07 09:02:38.756608+03	2019-06-07 09:02:38.756635+03	62	61
+1449	2019-06-07 09:02:38.774006+03	2019-06-07 09:02:38.774033+03	62	62
+1450	2019-06-07 09:02:38.790768+03	2019-06-07 09:02:38.790795+03	62	65
+1451	2019-06-07 09:02:38.808276+03	2019-06-07 09:02:38.808304+03	62	68
+1452	2019-06-07 09:02:38.825064+03	2019-06-07 09:02:38.825091+03	62	82
+1453	2019-06-07 09:02:38.842535+03	2019-06-07 09:02:38.842562+03	62	86
+1454	2019-06-07 09:02:38.85942+03	2019-06-07 09:02:38.859447+03	62	100
+1455	2019-06-07 09:02:38.877027+03	2019-06-07 09:02:38.877054+03	62	103
+1456	2019-06-07 09:02:38.893679+03	2019-06-07 09:02:38.893706+03	62	110
+1457	2019-06-07 09:02:38.911119+03	2019-06-07 09:02:38.911147+03	62	111
+1458	2019-06-07 09:02:38.927979+03	2019-06-07 09:02:38.928006+03	62	115
+1459	2019-06-07 09:02:38.945404+03	2019-06-07 09:02:38.945432+03	62	116
+1460	2019-06-07 09:02:38.962239+03	2019-06-07 09:02:38.962266+03	62	143
+1462	2019-06-07 09:02:38.996563+03	2019-06-07 09:02:38.99659+03	62	146
+1463	2019-06-07 09:02:39.014008+03	2019-06-07 09:02:39.014035+03	62	147
+1464	2019-06-07 09:02:39.03112+03	2019-06-07 09:02:39.031147+03	62	148
+1465	2019-06-07 09:02:39.052366+03	2019-06-07 09:02:39.052394+03	62	150
+1467	2019-06-07 09:02:39.088384+03	2019-06-07 09:02:39.088411+03	62	144
+1468	2019-06-07 09:02:39.105193+03	2019-06-07 09:02:39.105221+03	62	2
+1469	2019-06-07 09:02:39.122591+03	2019-06-07 09:02:39.122618+03	62	92
+1470	2019-06-09 11:36:10.74638+03	2019-06-09 11:36:10.746409+03	63	82
+1471	2019-06-09 11:36:10.768622+03	2019-06-09 11:36:10.76865+03	63	48
+1328	2019-06-03 16:00:19.347552+03	2019-06-03 16:00:19.347579+03	57	30
+1329	2019-06-03 16:00:19.364362+03	2019-06-03 16:00:19.364388+03	57	34
+1472	2019-06-09 11:36:10.786064+03	2019-06-09 11:36:10.786092+03	63	62
+1331	2019-06-03 16:00:19.398682+03	2019-06-03 16:00:19.398709+03	57	43
+1473	2019-06-09 11:36:10.802923+03	2019-06-09 11:36:10.80301+03	63	146
+1474	2019-06-09 11:36:10.820396+03	2019-06-09 11:36:10.820424+03	63	150
+1475	2019-06-09 11:36:10.837193+03	2019-06-09 11:36:10.837222+03	63	151
+1335	2019-06-03 16:00:19.472984+03	2019-06-03 16:00:19.47301+03	57	78
+1477	2019-06-09 11:36:10.871597+03	2019-06-09 11:36:10.871625+03	63	111
+1478	2019-06-09 11:36:10.889088+03	2019-06-09 11:36:10.889116+03	63	116
+1340	2019-06-03 16:00:19.559034+03	2019-06-03 16:00:19.559062+03	57	88
+1341	2019-06-03 16:00:19.576022+03	2019-06-03 16:00:19.576049+03	57	90
+1479	2019-06-09 11:36:10.90581+03	2019-06-09 11:36:10.905839+03	63	86
+1480	2019-06-09 11:36:10.923297+03	2019-06-09 11:36:10.923326+03	63	59
+1481	2019-06-09 11:36:10.940111+03	2019-06-09 11:36:10.940139+03	63	115
+1482	2019-06-09 11:36:10.957603+03	2019-06-09 11:36:10.957631+03	63	147
+1484	2019-06-09 11:36:10.991843+03	2019-06-09 11:36:10.991871+03	63	101
+1485	2019-06-09 11:36:11.008673+03	2019-06-09 11:36:11.008701+03	63	113
+1486	2019-06-09 11:36:11.0261+03	2019-06-09 11:36:11.026128+03	63	24
+1487	2019-06-09 11:36:11.042944+03	2019-06-09 11:36:11.043137+03	63	103
+1488	2019-06-09 11:36:11.06042+03	2019-06-09 11:36:11.060448+03	63	65
+1489	2019-06-09 11:36:11.078108+03	2019-06-09 11:36:11.078137+03	63	37
+1490	2019-06-09 11:36:11.104764+03	2019-06-09 11:36:11.104792+03	63	89
+1491	2019-06-09 11:36:11.142143+03	2019-06-09 11:36:11.142172+03	63	94
+1343	2019-06-04 08:25:22.499422+03	2019-06-04 08:25:22.499449+03	58	25
+1345	2019-06-04 08:25:22.533595+03	2019-06-04 08:25:22.533622+03	58	38
+1348	2019-06-04 08:25:22.585228+03	2019-06-04 08:25:22.585256+03	58	48
+1349	2019-06-04 08:25:22.602072+03	2019-06-04 08:25:22.602099+03	58	55
+1350	2019-06-04 08:25:22.619628+03	2019-06-04 08:25:22.619655+03	58	59
+1352	2019-06-04 08:25:22.653884+03	2019-06-04 08:25:22.653911+03	58	62
+1354	2019-06-04 08:25:22.688215+03	2019-06-04 08:25:22.688242+03	58	68
+1355	2019-06-04 08:25:22.704955+03	2019-06-04 08:25:22.704982+03	58	82
+1356	2019-06-04 08:25:22.722376+03	2019-06-04 08:25:22.722403+03	58	83
+1357	2019-06-04 08:25:22.739286+03	2019-06-04 08:25:22.739313+03	58	101
+1360	2019-06-04 08:25:22.791099+03	2019-06-04 08:25:22.791126+03	58	110
+1361	2019-06-04 08:25:22.811956+03	2019-06-04 08:25:22.811985+03	58	113
+1362	2019-06-04 08:25:22.825265+03	2019-06-04 08:25:22.825293+03	58	115
+1363	2019-06-04 08:25:22.842091+03	2019-06-04 08:25:22.842119+03	58	126
+1364	2019-06-04 08:25:22.859817+03	2019-06-04 08:25:22.859844+03	58	138
+1365	2019-06-04 08:25:22.876415+03	2019-06-04 08:25:22.876442+03	58	89
+1366	2019-06-04 08:25:22.893892+03	2019-06-04 08:25:22.893919+03	58	92
+1367	2019-06-04 08:25:22.910739+03	2019-06-04 08:25:22.910766+03	58	94
+1492	2019-06-10 09:26:42.80126+03	2019-06-10 09:26:42.801287+03	64	48
+1493	2019-06-10 09:26:42.817796+03	2019-06-10 09:26:42.817824+03	64	59
+1494	2019-06-10 09:26:42.835296+03	2019-06-10 09:26:42.835323+03	64	61
+1495	2019-06-10 09:26:42.852178+03	2019-06-10 09:26:42.852205+03	64	62
+1496	2019-06-10 09:26:42.869573+03	2019-06-10 09:26:42.8696+03	64	65
+1497	2019-06-10 09:26:42.886415+03	2019-06-10 09:26:42.886442+03	64	82
+1498	2019-06-10 09:26:42.903866+03	2019-06-10 09:26:42.903893+03	64	83
+1499	2019-06-10 09:26:42.920744+03	2019-06-10 09:26:42.920772+03	64	101
+1500	2019-06-10 09:26:42.93814+03	2019-06-10 09:26:42.938167+03	64	110
+1501	2019-06-10 09:26:42.955424+03	2019-06-10 09:26:42.955453+03	64	111
+1502	2019-06-10 09:26:42.972503+03	2019-06-10 09:26:42.972531+03	64	113
+1503	2019-06-10 09:26:42.98929+03	2019-06-10 09:26:42.989318+03	64	115
+1504	2019-06-10 09:26:43.006782+03	2019-06-10 09:26:43.00681+03	64	126
+1505	2019-06-10 09:26:43.023713+03	2019-06-10 09:26:43.023741+03	64	138
+1506	2019-06-10 09:26:43.04106+03	2019-06-10 09:26:43.041088+03	64	144
+1507	2019-06-10 09:26:43.05794+03	2019-06-10 09:26:43.057968+03	64	146
+1508	2019-06-10 09:26:43.075441+03	2019-06-10 09:26:43.075469+03	64	147
+1509	2019-06-10 09:26:43.092246+03	2019-06-10 09:26:43.092274+03	64	148
+1510	2019-06-10 09:26:43.109616+03	2019-06-10 09:26:43.109645+03	64	151
+1511	2019-06-10 09:26:43.127839+03	2019-06-10 09:26:43.127867+03	64	156
+1512	2019-06-10 09:26:43.149781+03	2019-06-10 09:26:43.149809+03	64	157
+1513	2019-06-10 09:26:43.186796+03	2019-06-10 09:26:43.186824+03	64	92
+1514	2019-06-11 08:38:12.841722+03	2019-06-11 08:38:12.841753+03	65	25
+1515	2019-06-11 08:38:12.85893+03	2019-06-11 08:38:12.85903+03	65	48
+1516	2019-06-11 08:38:12.87568+03	2019-06-11 08:38:12.875709+03	65	55
+1517	2019-06-11 08:38:12.893072+03	2019-06-11 08:38:12.8931+03	65	61
+1518	2019-06-11 08:38:12.909976+03	2019-06-11 08:38:12.910004+03	65	62
+1519	2019-06-11 08:38:12.927503+03	2019-06-11 08:38:12.92753+03	65	83
+1520	2019-06-11 08:38:12.944329+03	2019-06-11 08:38:12.944356+03	65	86
+1521	2019-06-11 08:38:12.961663+03	2019-06-11 08:38:12.961691+03	65	101
+1522	2019-06-11 08:38:12.978509+03	2019-06-11 08:38:12.978537+03	65	110
+1523	2019-06-11 08:38:12.995978+03	2019-06-11 08:38:12.996006+03	65	115
+1524	2019-06-11 08:38:13.012853+03	2019-06-11 08:38:13.012881+03	65	126
+1525	2019-06-11 08:38:13.030282+03	2019-06-11 08:38:13.030311+03	65	138
+1526	2019-06-11 08:38:13.047156+03	2019-06-11 08:38:13.047185+03	65	144
+1528	2019-06-11 08:38:13.081459+03	2019-06-11 08:38:13.081487+03	65	148
+1529	2019-06-11 08:38:13.098892+03	2019-06-11 08:38:13.098921+03	65	147
+1530	2019-06-11 08:38:13.115745+03	2019-06-11 08:38:13.115773+03	65	150
+1531	2019-06-11 08:38:13.133165+03	2019-06-11 08:38:13.133193+03	65	151
+1532	2019-06-11 08:38:13.150004+03	2019-06-11 08:38:13.150032+03	65	155
+1533	2019-06-11 08:38:13.17105+03	2019-06-11 08:38:13.171079+03	65	156
+1534	2019-06-11 08:38:13.18995+03	2019-06-11 08:38:13.189978+03	65	157
+1535	2019-06-11 08:38:13.207423+03	2019-06-11 08:38:13.207451+03	65	89
+1536	2019-06-11 08:38:13.224314+03	2019-06-11 08:38:13.224341+03	65	92
+1537	2019-06-11 08:38:13.241722+03	2019-06-11 08:38:13.24175+03	65	94
+1538	2019-06-12 17:26:46.622168+03	2019-06-12 17:26:46.622198+03	66	17
+1539	2019-06-12 17:26:46.643461+03	2019-06-12 17:26:46.643491+03	66	30
+1540	2019-06-12 17:26:46.660111+03	2019-06-12 17:26:46.660141+03	66	34
+1541	2019-06-12 17:26:46.677545+03	2019-06-12 17:26:46.677574+03	66	43
+1542	2019-06-12 17:26:46.69441+03	2019-06-12 17:26:46.694439+03	66	44
+1543	2019-06-12 17:26:46.711897+03	2019-06-12 17:26:46.711926+03	66	56
+1544	2019-06-12 17:26:46.7291+03	2019-06-12 17:26:46.729135+03	66	69
+1545	2019-06-12 17:26:46.746169+03	2019-06-12 17:26:46.746199+03	66	74
+1546	2019-06-12 17:26:46.763075+03	2019-06-12 17:26:46.763105+03	66	78
+1547	2019-06-12 17:26:46.780522+03	2019-06-12 17:26:46.780552+03	66	81
+1548	2019-06-12 17:26:46.797238+03	2019-06-12 17:26:46.797268+03	66	97
+1549	2019-06-12 17:26:46.814723+03	2019-06-12 17:26:46.814752+03	66	117
+1550	2019-06-12 17:26:46.831577+03	2019-06-12 17:26:46.831606+03	66	119
+1551	2019-06-12 17:26:46.848994+03	2019-06-12 17:26:46.849024+03	66	120
+1552	2019-06-12 17:26:46.86585+03	2019-06-12 17:26:46.865879+03	66	121
+1553	2019-06-12 17:26:46.883363+03	2019-06-12 17:26:46.883393+03	66	122
+1554	2019-06-12 17:26:46.900281+03	2019-06-12 17:26:46.90031+03	66	123
+1555	2019-06-12 17:26:46.917715+03	2019-06-12 17:26:46.917745+03	66	124
+1556	2019-06-12 17:26:46.934472+03	2019-06-12 17:26:46.934502+03	66	125
+1557	2019-06-12 17:26:46.953412+03	2019-06-12 17:26:46.953442+03	66	127
+1558	2019-06-12 17:26:46.968899+03	2019-06-12 17:26:46.968929+03	66	128
+1559	2019-06-12 17:26:47.007917+03	2019-06-12 17:26:47.007947+03	66	131
+1560	2019-06-12 17:26:47.026251+03	2019-06-12 17:26:47.026281+03	66	136
+1561	2019-06-12 17:26:47.043121+03	2019-06-12 17:26:47.04315+03	66	137
+1562	2019-06-12 17:26:47.060562+03	2019-06-12 17:26:47.060592+03	66	141
+1563	2019-06-12 17:26:47.077379+03	2019-06-12 17:26:47.077409+03	66	152
+1564	2019-06-12 17:26:47.095205+03	2019-06-12 17:26:47.095234+03	66	88
+1565	2019-06-12 17:26:47.111682+03	2019-06-12 17:26:47.111712+03	66	92
+1566	2019-06-12 17:26:47.129095+03	2019-06-12 17:26:47.129125+03	66	154
+\.
+
+
+--
+-- Name: HuddleAttendanceView_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public."HuddleAttendanceView_id_seq"', 1566, true);
+
+
+--
+-- Name: Huddle_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public."Huddle_id_seq"', 66, true);
+
+
+--
+-- Data for Name: UserUpdateView; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public."UserUpdateView" (id, viewed, updated_at, created_at, escalation_id, user_id) FROM stdin;
+554	t	2019-06-05 16:52:32.063803+03	2019-06-05 16:52:32.06384+03	5	55
+559	t	2019-06-05 16:53:01.375878+03	2019-06-05 16:53:01.375913+03	11	44
+564	t	2019-06-05 16:55:29.606417+03	2019-06-05 16:55:29.606452+03	11	43
+569	t	2019-06-05 17:02:54.247304+03	2019-06-05 17:02:54.247341+03	11	137
+574	t	2019-06-05 17:17:59.733467+03	2019-06-05 17:17:59.733503+03	11	30
+579	t	2019-06-05 23:50:30.968223+03	2019-06-05 23:50:30.968258+03	13	122
+584	t	2019-06-06 08:04:58.027673+03	2019-06-06 08:04:58.027709+03	12	37
+589	t	2019-06-06 08:35:57.2881+03	2019-06-06 08:35:57.288148+03	12	1
+594	t	2019-06-06 09:28:43.295723+03	2019-06-06 09:28:43.295759+03	13	48
+599	t	2019-06-06 09:41:36.484521+03	2019-06-06 09:41:36.484559+03	14	92
+604	t	2019-06-06 09:45:55.385558+03	2019-06-06 09:45:55.385594+03	14	2
+614	t	2019-06-06 10:32:25.219687+03	2019-06-06 10:32:25.219722+03	14	55
+619	t	2019-06-06 10:49:14.591422+03	2019-06-06 10:49:14.591459+03	14	48
+15	t	2019-05-29 19:22:26.040535+03	2019-05-29 19:22:26.040572+03	2	90
+16	t	2019-05-29 19:24:56.4502+03	2019-05-29 19:24:56.450236+03	2	34
+624	t	2019-06-06 10:50:39.722891+03	2019-06-06 10:50:39.722924+03	12	121
+629	t	2019-06-06 11:16:05.255625+03	2019-06-06 11:16:05.255662+03	13	150
+19	t	2019-05-29 19:28:27.524057+03	2019-05-29 19:28:27.524093+03	2	30
+634	t	2019-06-06 11:17:09.258071+03	2019-06-06 11:17:09.258107+03	4	150
+639	t	2019-06-06 12:25:12.649367+03	2019-06-06 12:25:12.649405+03	14	86
+22	t	2019-05-29 19:41:44.659829+03	2019-05-29 19:41:44.659864+03	2	2
+644	t	2019-06-06 15:39:01.755146+03	2019-06-06 15:39:01.755183+03	14	30
+24	t	2019-05-29 19:45:56.222694+03	2019-05-29 19:45:56.222729+03	2	100
+25	t	2019-05-29 19:54:39.106743+03	2019-05-29 19:54:39.10678+03	2	101
+648	t	2019-06-06 16:28:51.657317+03	2019-06-06 16:28:51.657353+03	11	120
+27	t	2019-05-29 19:55:38.081296+03	2019-05-29 19:55:38.081332+03	2	92
+652	t	2019-06-06 16:44:56.751542+03	2019-06-06 16:44:56.751578+03	14	56
+656	t	2019-06-06 16:46:52.562337+03	2019-06-06 16:46:52.562373+03	13	22
+30	t	2019-05-29 20:02:05.283868+03	2019-05-29 20:02:05.283905+03	2	55
+660	t	2019-06-07 07:13:17.54221+03	2019-06-07 07:13:17.542262+03	14	65
+32	t	2019-05-29 22:14:12.022454+03	2019-05-29 22:14:12.02249+03	2	21
+664	t	2019-06-07 09:08:25.30923+03	2019-06-07 09:08:25.309266+03	14	24
+668	t	2019-06-07 09:51:23.697077+03	2019-06-07 09:51:23.697114+03	13	115
+35	t	2019-05-30 15:10:25.784627+03	2019-05-30 15:10:25.784663+03	2	82
+36	t	2019-05-30 15:12:48.454578+03	2019-05-30 15:12:48.454614+03	2	86
+672	t	2019-06-07 09:58:09.693725+03	2019-06-07 09:58:09.693762+03	12	24
+676	t	2019-06-07 10:24:21.012099+03	2019-06-07 10:24:21.012136+03	2	151
+39	t	2019-05-30 15:33:23.398368+03	2019-05-30 15:33:23.398412+03	2	58
+680	t	2019-06-07 10:25:30.639735+03	2019-06-07 10:25:30.639774+03	11	151
+684	t	2019-06-07 11:18:43.139081+03	2019-06-07 11:18:43.139118+03	14	116
+44	t	2019-05-30 15:44:30.168385+03	2019-05-30 15:44:30.16842+03	2	59
+46	t	2019-05-30 15:46:11.933359+03	2019-05-30 15:46:11.933394+03	2	25
+700	t	2019-06-07 16:30:10.031566+03	2019-06-07 16:30:10.031602+03	10	152
+704	t	2019-06-07 16:30:13.112469+03	2019-06-07 16:30:13.112504+03	14	152
+50	t	2019-05-30 15:47:38.027209+03	2019-05-30 15:47:38.027247+03	2	89
+708	t	2019-06-07 16:40:56.344295+03	2019-06-07 16:40:56.344332+03	14	136
+52	t	2019-05-30 15:48:09.75089+03	2019-05-30 15:48:09.750925+03	2	84
+53	t	2019-05-30 15:48:48.632876+03	2019-05-30 15:48:48.632912+03	2	57
+712	t	2019-06-07 17:01:28.183636+03	2019-06-07 17:01:28.183672+03	13	134
+716	t	2019-06-07 17:26:11.0617+03	2019-06-07 17:26:11.061736+03	18	34
+56	t	2019-05-30 15:59:23.015599+03	2019-05-30 15:59:23.015635+03	2	48
+720	t	2019-06-07 17:47:05.615597+03	2019-06-07 17:47:05.615633+03	13	120
+58	t	2019-05-30 16:07:56.801087+03	2019-05-30 16:07:56.801127+03	2	1
+59	t	2019-05-30 16:09:41.767854+03	2019-05-30 16:09:41.767887+03	2	97
+60	t	2019-05-30 16:44:58.780441+03	2019-05-30 16:44:58.780477+03	2	17
+724	t	2019-06-07 17:53:49.774251+03	2019-06-07 17:53:49.774288+03	18	127
+728	t	2019-06-07 18:50:22.279905+03	2019-06-07 18:50:22.279941+03	18	37
+63	t	2019-05-30 17:39:44.175942+03	2019-05-30 17:39:44.175976+03	2	44
+732	t	2019-06-07 19:38:55.776278+03	2019-06-07 19:38:55.776315+03	13	90
+736	t	2019-06-08 07:39:20.323619+03	2019-06-08 07:39:20.323655+03	18	59
+740	t	2019-06-08 19:16:51.744986+03	2019-06-08 19:16:51.745022+03	18	121
+744	t	2019-06-09 08:28:59.477713+03	2019-06-09 08:28:59.477748+03	18	94
+748	t	2019-06-09 09:23:05.905955+03	2019-06-09 09:23:05.905992+03	18	111
+70	t	2019-05-30 20:57:32.139679+03	2019-05-30 20:57:32.139716+03	2	65
+752	t	2019-06-09 10:03:17.154182+03	2019-06-09 10:03:17.154219+03	18	38
+756	t	2019-06-09 11:21:17.345913+03	2019-06-09 11:21:17.34595+03	18	2
+759	t	2019-06-09 11:25:00.226093+03	2019-06-09 11:25:00.226131+03	19	86
+762	t	2019-06-09 11:44:59.21941+03	2019-06-09 11:44:59.219446+03	19	37
+765	t	2019-06-09 11:45:32.857476+03	2019-06-09 11:45:32.857512+03	18	101
+76	t	2019-05-31 09:21:10.663117+03	2019-05-31 09:21:10.663153+03	2	102
+768	t	2019-06-09 11:46:44.687853+03	2019-06-09 11:46:44.687891+03	19	115
+771	t	2019-06-09 11:57:42.212812+03	2019-06-09 11:57:42.212848+03	11	113
+774	t	2019-06-09 11:58:12.48455+03	2019-06-09 11:58:12.484594+03	14	113
+777	t	2019-06-09 12:04:49.250218+03	2019-06-09 12:04:49.250255+03	19	103
+780	t	2019-06-09 13:47:17.842734+03	2019-06-09 13:47:17.842769+03	19	155
+783	t	2019-06-09 13:49:46.500129+03	2019-06-09 13:49:46.500166+03	13	155
+83	t	2019-05-31 09:51:08.955924+03	2019-05-31 09:51:08.955947+03	4	92
+786	t	2019-06-09 13:50:39.58994+03	2019-06-09 13:50:39.589977+03	10	155
+85	t	2019-05-31 10:00:48.449213+03	2019-05-31 10:00:48.44924+03	4	59
+86	t	2019-05-31 10:03:23.849231+03	2019-05-31 10:03:23.849267+03	4	82
+789	t	2019-06-09 14:14:01.53522+03	2019-06-09 14:14:01.535256+03	5	156
+792	t	2019-06-09 15:09:11.416643+03	2019-06-09 15:09:11.41668+03	19	21
+795	t	2019-06-09 15:47:45.400161+03	2019-06-09 15:47:45.400197+03	19	97
+798	t	2019-06-09 18:11:28.196219+03	2019-06-09 18:11:28.196254+03	18	97
+801	t	2019-06-09 20:15:15.552816+03	2019-06-09 20:15:15.552852+03	18	1
+804	t	2019-06-09 22:40:41.31402+03	2019-06-09 22:40:41.314055+03	18	122
+807	t	2019-06-10 08:07:06.288162+03	2019-06-10 08:07:06.288198+03	18	148
+810	t	2019-06-10 08:21:36.936591+03	2019-06-10 08:21:36.936627+03	18	110
+95	t	2019-05-31 10:15:31.742793+03	2019-05-31 10:15:31.742828+03	4	62
+96	t	2019-05-31 10:22:55.783631+03	2019-05-31 10:22:55.783657+03	4	43
+97	t	2019-05-31 10:23:07.822509+03	2019-05-31 10:23:07.822545+03	2	43
+813	t	2019-06-10 08:24:31.424366+03	2019-06-10 08:24:31.424402+03	18	144
+816	t	2019-06-10 13:17:11.075613+03	2019-06-10 13:17:11.07565+03	18	61
+818	t	2019-06-10 15:28:05.236051+03	2019-06-10 15:28:05.236088+03	19	34
+820	t	2019-06-10 16:15:29.900736+03	2019-06-10 16:15:29.900772+03	18	131
+822	t	2019-06-10 17:58:15.031399+03	2019-06-10 17:58:15.031436+03	19	90
+824	t	2019-06-10 18:02:43.151754+03	2019-06-10 18:02:43.151789+03	20	38
+826	t	2019-06-10 21:31:41.336018+03	2019-06-10 21:31:41.336049+03	21	90
+828	t	2019-06-10 23:56:14.600752+03	2019-06-10 23:56:14.600854+03	21	22
+106	t	2019-05-31 10:39:01.130635+03	2019-05-31 10:39:01.130671+03	4	25
+830	t	2019-06-11 07:29:07.894092+03	2019-06-11 07:29:07.894129+03	20	101
+108	t	2019-05-31 11:23:31.974259+03	2019-05-31 11:23:31.974296+03	4	1
+109	t	2019-05-31 12:10:52.420978+03	2019-05-31 12:10:52.421015+03	4	2
+832	t	2019-06-11 07:54:57.055996+03	2019-06-11 07:54:57.056031+03	20	151
+834	t	2019-06-11 07:58:07.308847+03	2019-06-11 07:58:07.308883+03	20	86
+112	t	2019-05-31 18:36:24.247125+03	2019-05-31 18:36:24.247162+03	4	24
+836	t	2019-06-11 08:01:01.095613+03	2019-06-11 08:01:01.095649+03	20	110
+114	t	2019-05-31 18:36:36.887615+03	2019-05-31 18:36:36.887651+03	2	24
+838	t	2019-06-11 08:26:59.831483+03	2019-06-11 08:26:59.83152+03	21	92
+840	t	2019-06-11 08:41:35.68294+03	2019-06-11 08:41:35.683013+03	20	115
+117	t	2019-05-31 20:35:07.626323+03	2019-05-31 20:35:07.62636+03	4	44
+842	t	2019-06-11 08:50:40.203668+03	2019-06-11 08:50:40.203704+03	20	25
+844	t	2019-06-11 08:59:06.782492+03	2019-06-11 08:59:06.782529+03	20	89
+846	t	2019-06-11 09:00:11.090864+03	2019-06-11 09:00:11.090901+03	20	48
+848	t	2019-06-11 09:02:21.340403+03	2019-06-11 09:02:21.34044+03	21	61
+122	t	2019-06-01 08:07:26.648727+03	2019-06-01 08:07:26.648763+03	4	103
+850	t	2019-06-11 09:41:34.683133+03	2019-06-11 09:41:34.683172+03	21	48
+852	t	2019-06-11 10:05:00.282558+03	2019-06-11 10:05:00.282594+03	21	147
+854	t	2019-06-11 11:09:15.541755+03	2019-06-11 11:09:15.541792+03	21	144
+856	t	2019-06-11 11:09:40.590801+03	2019-06-11 11:09:40.590836+03	21	148
+858	t	2019-06-11 11:09:49.758378+03	2019-06-11 11:09:49.758415+03	20	138
+860	t	2019-06-11 11:09:54.474359+03	2019-06-11 11:09:54.474395+03	18	138
+862	t	2019-06-11 11:10:05.005874+03	2019-06-11 11:10:05.005908+03	13	138
+864	t	2019-06-11 11:10:15.787581+03	2019-06-11 11:10:15.787618+03	11	138
+866	t	2019-06-11 11:11:15.428024+03	2019-06-11 11:11:15.428059+03	21	150
+868	t	2019-06-11 11:11:21.671657+03	2019-06-11 11:11:21.671694+03	19	55
+869	t	2019-06-11 11:11:24.533127+03	2019-06-11 11:11:24.533162+03	20	55
+870	t	2019-06-11 11:11:25.977158+03	2019-06-11 11:11:25.977193+03	21	55
+871	t	2019-06-11 11:20:33.715619+03	2019-06-11 11:20:33.715656+03	21	156
+555	t	2019-06-05 16:52:51.869923+03	2019-06-05 16:52:51.869963+03	10	55
+124	t	2019-06-01 08:08:19.207575+03	2019-06-01 08:08:19.207611+03	2	103
+560	t	2019-06-05 16:53:07.460115+03	2019-06-05 16:53:07.460151+03	12	44
+126	t	2019-06-01 09:17:16.507957+03	2019-06-01 09:17:16.507993+03	4	89
+127	t	2019-06-01 13:56:46.066135+03	2019-06-01 13:56:46.066166+03	5	92
+128	t	2019-06-01 14:08:03.383412+03	2019-06-01 14:08:03.383454+03	5	100
+129	t	2019-06-01 14:11:15.286185+03	2019-06-01 14:11:15.286221+03	5	37
+130	t	2019-06-01 14:14:49.13163+03	2019-06-01 14:14:49.131666+03	5	25
+131	t	2019-06-01 14:16:41.60088+03	2019-06-01 14:16:41.600917+03	5	57
+132	t	2019-06-01 14:21:30.490464+03	2019-06-01 14:21:30.49049+03	5	82
+133	t	2019-06-01 14:23:51.74703+03	2019-06-01 14:23:51.747065+03	5	91
+134	t	2019-06-01 14:58:07.580287+03	2019-06-01 14:58:07.580314+03	4	100
+565	t	2019-06-05 16:55:59.297958+03	2019-06-05 16:55:59.297994+03	13	137
+136	t	2019-06-01 21:00:45.126656+03	2019-06-01 21:00:45.126692+03	5	17
+137	t	2019-06-01 22:03:58.009103+03	2019-06-01 22:03:58.009141+03	5	1
+138	t	2019-06-02 09:27:28.129997+03	2019-06-02 09:27:28.130034+03	5	89
+139	t	2019-06-02 11:08:52.98166+03	2019-06-02 11:08:52.981697+03	5	103
+140	t	2019-06-02 11:11:08.096302+03	2019-06-02 11:11:08.096337+03	5	94
+570	t	2019-06-05 17:04:59.210497+03	2019-06-05 17:04:59.210533+03	13	136
+142	t	2019-06-02 11:11:24.927214+03	2019-06-02 11:11:24.927251+03	4	94
+143	t	2019-06-02 11:11:27.288267+03	2019-06-02 11:11:27.288304+03	2	94
+575	t	2019-06-05 17:18:24.757795+03	2019-06-05 17:18:24.757831+03	12	30
+147	t	2019-06-02 11:12:40.995338+03	2019-06-02 11:12:40.995375+03	5	34
+148	t	2019-06-02 11:12:42.428079+03	2019-06-02 11:12:42.428116+03	4	34
+580	t	2019-06-06 07:27:06.488909+03	2019-06-06 07:27:06.488945+03	13	59
+150	t	2019-06-02 11:16:53.474859+03	2019-06-02 11:16:53.474896+03	5	2
+151	t	2019-06-02 11:34:16.296865+03	2019-06-02 11:34:16.296902+03	5	38
+152	t	2019-06-02 11:35:04.538507+03	2019-06-02 11:35:04.538543+03	4	38
+585	t	2019-06-06 08:05:05.890647+03	2019-06-06 08:05:05.890683+03	11	37
+154	t	2019-06-02 11:36:18.804092+03	2019-06-02 11:36:18.804128+03	2	38
+590	t	2019-06-06 08:57:04.584923+03	2019-06-06 08:57:04.584959+03	13	110
+156	t	2019-06-02 11:51:51.300422+03	2019-06-02 11:51:51.300459+03	5	101
+157	t	2019-06-02 11:52:04.294111+03	2019-06-02 11:52:04.294147+03	4	101
+595	t	2019-06-06 09:34:07.506592+03	2019-06-06 09:34:07.506628+03	13	100
+159	t	2019-06-02 12:02:56.255745+03	2019-06-02 12:02:56.255781+03	5	111
+160	t	2019-06-02 12:06:52.32804+03	2019-06-02 12:06:52.328076+03	4	111
+161	t	2019-06-02 12:16:06.852184+03	2019-06-02 12:16:06.852221+03	5	24
+162	t	2019-06-02 12:28:13.682716+03	2019-06-02 12:28:13.682752+03	5	65
+164	t	2019-06-02 12:32:40.064101+03	2019-06-02 12:32:40.064137+03	2	111
+605	t	2019-06-06 09:52:54.273848+03	2019-06-06 09:52:54.273885+03	13	1
+167	t	2019-06-02 14:41:01.035738+03	2019-06-02 14:41:01.035774+03	5	113
+168	t	2019-06-02 14:42:56.335646+03	2019-06-02 14:42:56.335681+03	4	113
+615	t	2019-06-06 10:44:27.893175+03	2019-06-06 10:44:27.89321+03	13	89
+170	t	2019-06-02 14:43:41.548204+03	2019-06-02 14:43:41.548239+03	2	113
+620	t	2019-06-06 10:49:18.78269+03	2019-06-06 10:49:18.782727+03	14	82
+625	t	2019-06-06 10:50:46.457302+03	2019-06-06 10:50:46.457339+03	13	121
+630	t	2019-06-06 11:16:08.2947+03	2019-06-06 11:16:08.294737+03	12	150
+635	t	2019-06-06 11:31:20.917924+03	2019-06-06 11:31:20.91796+03	2	150
+640	t	2019-06-06 12:27:48.86809+03	2019-06-06 12:27:48.868127+03	14	34
+645	t	2019-06-06 16:18:34.33502+03	2019-06-06 16:18:34.335077+03	14	133
+177	t	2019-06-02 15:20:28.17162+03	2019-06-02 15:20:28.171656+03	5	48
+649	t	2019-06-06 16:31:11.72858+03	2019-06-06 16:31:11.728617+03	13	133
+653	t	2019-06-06 16:45:21.919618+03	2019-06-06 16:45:21.919654+03	14	21
+182	t	2019-06-02 15:28:15.46569+03	2019-06-02 15:28:15.465726+03	4	37
+183	t	2019-06-02 15:28:35.097318+03	2019-06-02 15:28:35.097353+03	2	37
+657	t	2019-06-06 16:46:56.727548+03	2019-06-06 16:46:56.727584+03	14	22
+185	t	2019-06-02 15:34:57.561408+03	2019-06-02 15:34:57.561439+03	2	115
+186	t	2019-06-02 15:35:04.168654+03	2019-06-02 15:35:04.16869+03	4	115
+661	t	2019-06-07 07:13:58.272068+03	2019-06-07 07:13:58.272107+03	11	65
+188	t	2019-06-02 15:42:19.630914+03	2019-06-02 15:42:19.630979+03	2	61
+665	t	2019-06-07 09:25:52.493109+03	2019-06-07 09:25:52.493145+03	14	144
+190	t	2019-06-02 15:42:21.465177+03	2019-06-02 15:42:21.465213+03	4	61
+191	t	2019-06-02 15:42:22.238094+03	2019-06-02 15:42:22.238132+03	5	61
+192	t	2019-06-02 15:43:06.990682+03	2019-06-02 15:43:06.990719+03	5	115
+669	t	2019-06-07 09:51:28.457184+03	2019-06-07 09:51:28.45722+03	14	115
+673	t	2019-06-07 09:58:18.723834+03	2019-06-07 09:58:18.723872+03	13	24
+195	t	2019-06-02 15:44:46.797051+03	2019-06-02 15:44:46.797087+03	5	62
+196	t	2019-06-02 15:44:48.561559+03	2019-06-02 15:44:48.561595+03	2	62
+197	t	2019-06-02 16:48:52.822996+03	2019-06-02 16:48:52.823038+03	4	65
+677	t	2019-06-07 10:24:29.329234+03	2019-06-07 10:24:29.32927+03	4	151
+681	t	2019-06-07 10:26:03.218184+03	2019-06-07 10:26:03.218221+03	12	151
+689	t	2019-06-07 16:15:29.833647+03	2019-06-07 16:15:29.833682+03	14	44
+203	t	2019-06-02 17:45:59.349987+03	2019-06-02 17:45:59.350024+03	5	117
+697	t	2019-06-07 16:30:02.79152+03	2019-06-07 16:30:02.791557+03	2	152
+701	t	2019-06-07 16:30:10.688945+03	2019-06-07 16:30:10.68898+03	11	152
+206	t	2019-06-02 17:46:29.131688+03	2019-06-02 17:46:29.131723+03	4	117
+207	t	2019-06-02 18:27:06.135272+03	2019-06-02 18:27:06.135308+03	2	117
+705	t	2019-06-07 16:35:15.211333+03	2019-06-07 16:35:15.211363+03	18	92
+709	t	2019-06-07 16:49:04.383621+03	2019-06-07 16:49:04.383658+03	18	136
+713	t	2019-06-07 17:01:34.043235+03	2019-06-07 17:01:34.043272+03	14	134
+717	t	2019-06-07 17:40:18.745117+03	2019-06-07 17:40:18.745144+03	18	21
+721	t	2019-06-07 17:49:27.968313+03	2019-06-07 17:49:27.96835+03	14	120
+725	t	2019-06-07 17:54:19.470623+03	2019-06-07 17:54:19.47066+03	18	152
+214	t	2019-06-02 22:55:38.37719+03	2019-06-02 22:55:38.377227+03	5	21
+215	t	2019-06-02 22:59:47.220285+03	2019-06-02 22:59:47.220322+03	4	21
+729	t	2019-06-07 19:03:41.412918+03	2019-06-07 19:03:41.412954+03	14	97
+217	t	2019-06-02 23:06:50.766172+03	2019-06-02 23:06:50.766209+03	4	56
+733	t	2019-06-07 19:39:41.026287+03	2019-06-07 19:39:41.026321+03	18	44
+737	t	2019-06-08 09:13:27.884997+03	2019-06-08 09:13:27.885032+03	18	115
+220	t	2019-06-02 23:07:10.141051+03	2019-06-02 23:07:10.141086+03	5	56
+221	t	2019-06-02 23:12:58.979164+03	2019-06-02 23:12:58.9792+03	5	22
+222	t	2019-06-02 23:13:11.466483+03	2019-06-02 23:13:11.46652+03	4	22
+741	t	2019-06-09 07:51:36.507464+03	2019-06-09 07:51:36.507503+03	18	103
+224	t	2019-06-02 23:16:28.747217+03	2019-06-02 23:16:28.747253+03	2	22
+225	t	2019-06-02 23:30:54.980097+03	2019-06-02 23:30:54.980134+03	5	97
+226	t	2019-06-02 23:31:28.641477+03	2019-06-02 23:31:28.641512+03	4	97
+745	t	2019-06-09 09:03:39.797118+03	2019-06-09 09:03:39.797149+03	19	89
+749	t	2019-06-09 09:23:13.094674+03	2019-06-09 09:23:13.094713+03	19	111
+753	t	2019-06-09 10:03:24.652634+03	2019-06-09 10:03:24.65267+03	19	38
+757	t	2019-06-09 11:21:34.933616+03	2019-06-09 11:21:34.933651+03	19	2
+760	t	2019-06-09 11:44:18.323535+03	2019-06-09 11:44:18.323572+03	18	147
+232	t	2019-06-03 08:01:20.372486+03	2019-06-03 08:01:20.372522+03	5	59
+763	t	2019-06-09 11:45:19.232407+03	2019-06-09 11:45:19.232444+03	18	82
+234	t	2019-06-03 08:49:33.718216+03	2019-06-03 08:49:33.718251+03	5	116
+235	t	2019-06-03 08:50:00.210597+03	2019-06-03 08:50:00.210633+03	4	116
+766	t	2019-06-09 11:45:35.851018+03	2019-06-09 11:45:35.851056+03	14	101
+237	t	2019-06-03 08:51:01.261513+03	2019-06-03 08:51:01.261549+03	2	116
+769	t	2019-06-09 11:49:27.349145+03	2019-06-09 11:49:27.349181+03	19	59
+772	t	2019-06-09 11:57:44.870719+03	2019-06-09 11:57:44.870757+03	12	113
+240	t	2019-06-03 10:46:10.084066+03	2019-06-03 10:46:10.084106+03	4	48
+241	t	2019-06-03 10:48:10.447376+03	2019-06-03 10:48:10.447411+03	5	7
+242	t	2019-06-03 10:54:05.676448+03	2019-06-03 10:54:05.676484+03	4	7
+775	t	2019-06-09 12:02:24.690043+03	2019-06-09 12:02:24.690079+03	18	113
+778	t	2019-06-09 13:45:20.334977+03	2019-06-09 13:45:20.335021+03	4	155
+781	t	2019-06-09 13:49:40.788223+03	2019-06-09 13:49:40.788259+03	18	155
+784	t	2019-06-09 13:50:21.085574+03	2019-06-09 13:50:21.085612+03	12	155
+787	t	2019-06-09 14:11:50.493785+03	2019-06-09 14:11:50.493821+03	19	62
+790	t	2019-06-09 14:14:13.115906+03	2019-06-09 14:14:13.115942+03	14	156
+793	t	2019-06-09 15:40:57.315231+03	2019-06-09 15:40:57.315267+03	18	30
+796	t	2019-06-09 15:59:27.822682+03	2019-06-09 15:59:27.822718+03	19	152
+799	t	2019-06-09 18:13:01.188973+03	2019-06-09 18:13:01.189009+03	13	97
+802	t	2019-06-09 20:16:27.533761+03	2019-06-09 20:16:27.533799+03	19	1
+805	t	2019-06-10 08:06:04.333849+03	2019-06-10 08:06:04.333885+03	18	126
+808	t	2019-06-10 08:07:07.116389+03	2019-06-10 08:07:07.116425+03	19	148
+811	t	2019-06-10 08:21:50.114259+03	2019-06-10 08:21:50.114295+03	19	110
+814	t	2019-06-10 08:25:32.894745+03	2019-06-10 08:25:32.894779+03	19	144
+556	t	2019-06-05 16:52:54.283815+03	2019-06-05 16:52:54.283851+03	11	55
+244	t	2019-06-03 10:55:37.122574+03	2019-06-03 10:55:37.1226+03	2	7
+561	t	2019-06-05 16:53:09.154778+03	2019-06-05 16:53:09.154814+03	13	43
+566	t	2019-06-05 16:58:47.207622+03	2019-06-05 16:58:47.207659+03	11	34
+571	t	2019-06-05 17:06:30.861807+03	2019-06-05 17:06:30.861843+03	11	136
+576	t	2019-06-05 17:18:48.766038+03	2019-06-05 17:18:48.766074+03	13	30
+581	t	2019-06-06 07:38:27.590012+03	2019-06-06 07:38:27.590049+03	11	62
+250	t	2019-06-03 11:19:37.305092+03	2019-06-03 11:19:37.305121+03	10	92
+586	t	2019-06-06 08:05:19.664152+03	2019-06-06 08:05:19.664187+03	10	37
+591	t	2019-06-06 09:00:16.500293+03	2019-06-06 09:00:16.500327+03	11	82
+596	t	2019-06-06 09:40:07.31345+03	2019-06-06 09:40:07.313486+03	14	103
+255	t	2019-06-03 11:23:54.057711+03	2019-06-03 11:23:54.057747+03	10	111
+606	t	2019-06-06 10:00:54.787198+03	2019-06-06 10:00:54.787236+03	14	126
+611	t	2019-06-06 10:16:34.094734+03	2019-06-06 10:16:34.094771+03	13	38
+616	t	2019-06-06 10:44:29.527606+03	2019-06-06 10:44:29.527643+03	14	89
+621	t	2019-06-06 10:49:21.192427+03	2019-06-06 10:49:21.192464+03	14	111
+626	t	2019-06-06 10:50:47.204596+03	2019-06-06 10:50:47.204631+03	14	121
+631	t	2019-06-06 11:16:14.714758+03	2019-06-06 11:16:14.714794+03	11	150
+636	t	2019-06-06 11:35:06.875305+03	2019-06-06 11:35:06.875342+03	14	59
+641	t	2019-06-06 12:28:04.136423+03	2019-06-06 12:28:04.136459+03	14	25
+264	t	2019-06-03 11:28:30.340033+03	2019-06-03 11:28:30.340059+03	10	94
+266	t	2019-06-03 11:50:08.318989+03	2019-06-03 11:50:08.31903+03	10	1
+650	t	2019-06-06 16:31:33.386944+03	2019-06-06 16:31:33.387015+03	12	133
+654	t	2019-06-06 16:46:36.072327+03	2019-06-06 16:46:36.072364+03	11	22
+270	t	2019-06-03 12:07:41.63963+03	2019-06-03 12:07:41.639666+03	10	48
+658	t	2019-06-06 17:40:43.162599+03	2019-06-06 17:40:43.162636+03	14	122
+662	t	2019-06-07 07:13:59.95276+03	2019-06-07 07:13:59.952797+03	12	65
+277	t	2019-06-03 14:09:28.94767+03	2019-06-03 14:09:28.947709+03	10	65
+279	t	2019-06-03 16:45:31.177645+03	2019-06-03 16:45:31.17768+03	10	22
+280	t	2019-06-03 16:59:37.021147+03	2019-06-03 16:59:37.021183+03	5	44
+281	t	2019-06-03 17:00:12.9237+03	2019-06-03 17:00:12.923726+03	10	97
+282	t	2019-06-03 17:00:40.865811+03	2019-06-03 17:00:40.865847+03	10	44
+283	t	2019-06-03 17:00:42.076288+03	2019-06-03 17:00:42.076325+03	10	34
+284	t	2019-06-03 17:15:28.173655+03	2019-06-03 17:15:28.173691+03	5	30
+285	t	2019-06-03 17:33:16.632114+03	2019-06-03 17:33:16.63215+03	10	101
+286	t	2019-06-03 17:59:49.609822+03	2019-06-03 17:59:49.609858+03	10	2
+287	t	2019-06-03 18:36:14.46767+03	2019-06-03 18:36:14.467707+03	5	120
+288	t	2019-06-03 18:37:01.027333+03	2019-06-03 18:37:01.027408+03	10	120
+289	t	2019-06-03 18:37:10.246371+03	2019-06-03 18:37:10.246408+03	4	120
+666	t	2019-06-07 09:46:38.230446+03	2019-06-07 09:46:38.230483+03	14	102
+291	t	2019-06-03 18:37:36.888471+03	2019-06-03 18:37:36.888506+03	2	120
+292	t	2019-06-03 18:37:51.297823+03	2019-06-03 18:37:51.297858+03	10	121
+293	t	2019-06-03 18:38:01.269502+03	2019-06-03 18:38:01.269538+03	5	121
+294	t	2019-06-03 18:38:04.182633+03	2019-06-03 18:38:04.182669+03	4	121
+670	t	2019-06-07 09:58:07.365186+03	2019-06-07 09:58:07.365224+03	10	24
+296	t	2019-06-03 18:38:08.057598+03	2019-06-03 18:38:08.057634+03	2	121
+674	t	2019-06-07 09:59:16.57198+03	2019-06-07 09:59:16.572017+03	14	100
+678	t	2019-06-07 10:24:37.242595+03	2019-06-07 10:24:37.242633+03	5	151
+299	t	2019-06-03 18:47:25.987705+03	2019-06-03 18:47:25.987742+03	2	83
+300	t	2019-06-03 18:47:26.232332+03	2019-06-03 18:47:26.232367+03	4	83
+301	t	2019-06-03 18:47:32.187413+03	2019-06-03 18:47:32.187449+03	5	83
+682	t	2019-06-07 10:26:32.25959+03	2019-06-07 10:26:32.259628+03	13	151
+303	t	2019-06-03 18:50:54.841301+03	2019-06-03 18:50:54.841327+03	10	83
+304	t	2019-06-03 18:51:31.761762+03	2019-06-03 18:51:31.761797+03	5	122
+305	t	2019-06-03 18:51:38.625667+03	2019-06-03 18:51:38.625699+03	10	122
+686	t	2019-06-07 14:20:54.473647+03	2019-06-07 14:20:54.473684+03	14	110
+307	t	2019-06-03 18:51:50.176575+03	2019-06-03 18:51:50.176601+03	4	122
+308	t	2019-06-03 18:51:59.279199+03	2019-06-03 18:51:59.279225+03	2	122
+310	t	2019-06-03 18:56:39.769726+03	2019-06-03 18:56:39.769762+03	4	130
+311	t	2019-06-03 18:56:41.468233+03	2019-06-03 18:56:41.468268+03	5	130
+312	t	2019-06-03 18:56:42.696598+03	2019-06-03 18:56:42.696624+03	10	113
+313	t	2019-06-03 18:56:50.76761+03	2019-06-03 18:56:50.767645+03	5	125
+315	t	2019-06-03 19:01:41.511069+03	2019-06-03 19:01:41.511134+03	5	90
+316	t	2019-06-03 19:01:42.28916+03	2019-06-03 19:01:42.289195+03	10	90
+317	t	2019-06-03 19:01:44.38198+03	2019-06-03 19:01:44.382015+03	4	90
+318	t	2019-06-03 19:07:25.42351+03	2019-06-03 19:07:25.423546+03	2	124
+698	t	2019-06-07 16:30:04.317105+03	2019-06-07 16:30:04.31714+03	4	152
+320	t	2019-06-03 19:08:20.497955+03	2019-06-03 19:08:20.497991+03	4	124
+321	t	2019-06-03 19:08:21.514896+03	2019-06-03 19:08:21.514932+03	5	124
+322	t	2019-06-03 19:08:22.305511+03	2019-06-03 19:08:22.305546+03	10	124
+702	t	2019-06-07 16:30:11.470729+03	2019-06-07 16:30:11.470764+03	12	152
+324	t	2019-06-03 19:09:34.544125+03	2019-06-03 19:09:34.544162+03	10	125
+706	t	2019-06-07 16:39:01.675322+03	2019-06-07 16:39:01.675359+03	18	100
+326	t	2019-06-03 19:09:40.006438+03	2019-06-03 19:09:40.006473+03	4	125
+327	t	2019-06-03 19:09:42.488139+03	2019-06-03 19:09:42.488175+03	2	125
+328	t	2019-06-03 19:09:44.291203+03	2019-06-03 19:09:44.291238+03	2	130
+710	t	2019-06-07 17:01:08.765724+03	2019-06-07 17:01:08.765761+03	11	134
+714	t	2019-06-07 17:12:49.102258+03	2019-06-07 17:12:49.1023+03	18	134
+331	t	2019-06-03 19:09:48.662325+03	2019-06-03 19:09:48.662361+03	10	130
+718	t	2019-06-07 17:40:58.862313+03	2019-06-07 17:40:58.862341+03	18	43
+333	t	2019-06-03 19:18:55.5867+03	2019-06-03 19:18:55.586735+03	5	133
+722	t	2019-06-07 17:49:51.068366+03	2019-06-07 17:49:51.068403+03	18	120
+335	t	2019-06-03 19:19:43.93395+03	2019-06-03 19:19:43.933986+03	4	133
+336	t	2019-06-03 19:19:55.196904+03	2019-06-03 19:19:55.19694+03	10	131
+726	t	2019-06-07 17:59:01.803609+03	2019-06-07 17:59:01.803646+03	2	127
+338	t	2019-06-03 19:20:18.739639+03	2019-06-03 19:20:18.739675+03	5	131
+339	t	2019-06-03 19:20:27.555291+03	2019-06-03 19:20:27.555326+03	2	133
+340	t	2019-06-03 19:20:35.270549+03	2019-06-03 19:20:35.270584+03	10	133
+341	t	2019-06-03 19:20:44.226341+03	2019-06-03 19:20:44.226377+03	4	131
+730	t	2019-06-07 19:38:18.152833+03	2019-06-07 19:38:18.152869+03	18	90
+343	t	2019-06-03 19:20:52.754887+03	2019-06-03 19:20:52.754923+03	2	131
+734	t	2019-06-08 07:31:43.190896+03	2019-06-08 07:31:43.190932+03	18	151
+345	t	2019-06-03 19:26:23.513182+03	2019-06-03 19:26:23.513217+03	10	123
+346	t	2019-06-03 19:27:22.244303+03	2019-06-03 19:27:22.244338+03	5	123
+347	t	2019-06-03 19:27:56.218646+03	2019-06-03 19:27:56.218682+03	4	123
+738	t	2019-06-08 12:37:08.410191+03	2019-06-08 12:37:08.410228+03	18	25
+349	t	2019-06-03 19:29:26.359439+03	2019-06-03 19:29:26.359475+03	2	123
+350	t	2019-06-03 19:30:34.986118+03	2019-06-03 19:30:34.986153+03	10	43
+351	t	2019-06-03 19:30:43.215985+03	2019-06-03 19:30:43.216021+03	5	43
+352	t	2019-06-03 19:31:41.731321+03	2019-06-03 19:31:41.731357+03	10	134
+742	t	2019-06-09 07:55:56.494377+03	2019-06-09 07:55:56.494414+03	18	48
+746	t	2019-06-09 09:10:47.191718+03	2019-06-09 09:10:47.191755+03	19	24
+355	t	2019-06-03 19:36:29.02132+03	2019-06-03 19:36:29.021355+03	4	30
+356	t	2019-06-03 19:36:54.696122+03	2019-06-03 19:36:54.696157+03	5	126
+357	t	2019-06-03 19:37:30.013043+03	2019-06-03 19:37:30.013075+03	10	30
+750	t	2019-06-09 09:41:14.20048+03	2019-06-09 09:41:14.200517+03	19	150
+754	t	2019-06-09 10:33:26.100371+03	2019-06-09 10:33:26.100408+03	19	146
+360	t	2019-06-03 19:41:22.897865+03	2019-06-03 19:41:22.897901+03	2	136
+362	t	2019-06-03 19:41:40.477601+03	2019-06-03 19:41:40.477636+03	10	136
+363	t	2019-06-03 19:41:54.375989+03	2019-06-03 19:41:54.376025+03	5	136
+364	t	2019-06-03 19:41:55.469197+03	2019-06-03 19:41:55.469234+03	5	134
+365	t	2019-06-03 19:42:05.943822+03	2019-06-03 19:42:05.943858+03	4	134
+367	t	2019-06-03 19:46:04.939813+03	2019-06-03 19:46:04.939853+03	2	134
+369	t	2019-06-03 19:51:51.874624+03	2019-06-03 19:51:51.874659+03	10	127
+372	t	2019-06-03 19:52:34.833877+03	2019-06-03 19:52:34.833912+03	5	127
+373	t	2019-06-03 19:54:25.655624+03	2019-06-03 19:54:25.655659+03	2	126
+374	t	2019-06-03 19:54:29.945007+03	2019-06-03 19:54:29.945043+03	4	126
+376	t	2019-06-03 19:54:39.647809+03	2019-06-03 19:54:39.647845+03	10	126
+378	t	2019-06-03 20:01:17.086081+03	2019-06-03 20:01:17.086117+03	2	138
+380	t	2019-06-03 20:01:25.063628+03	2019-06-03 20:01:25.063663+03	4	138
+381	t	2019-06-03 20:01:32.668297+03	2019-06-03 20:01:32.668332+03	5	138
+382	t	2019-06-03 20:02:36.174386+03	2019-06-03 20:02:36.174422+03	10	138
+383	t	2019-06-03 20:08:56.436377+03	2019-06-03 20:08:56.436413+03	4	136
+384	t	2019-06-03 21:12:16.611524+03	2019-06-03 21:12:16.611559+03	5	128
+385	t	2019-06-03 21:29:00.384562+03	2019-06-03 21:29:00.384597+03	10	137
+386	t	2019-06-03 21:29:31.750155+03	2019-06-03 21:29:31.750191+03	5	137
+387	t	2019-06-03 21:29:41.200719+03	2019-06-03 21:29:41.200754+03	4	137
+557	t	2019-06-05 16:52:55.326013+03	2019-06-05 16:52:55.32605+03	12	55
+389	t	2019-06-03 21:29:51.976879+03	2019-06-03 21:29:51.976915+03	2	137
+562	t	2019-06-05 16:53:10.500192+03	2019-06-05 16:53:10.500227+03	4	55
+391	t	2019-06-03 21:32:51.220511+03	2019-06-03 21:32:51.220546+03	4	128
+392	t	2019-06-03 21:33:04.763644+03	2019-06-03 21:33:04.76368+03	10	128
+393	t	2019-06-03 21:33:15.992329+03	2019-06-03 21:33:15.992365+03	2	128
+567	t	2019-06-05 16:58:48.396228+03	2019-06-05 16:58:48.396264+03	12	34
+572	t	2019-06-05 17:06:50.36018+03	2019-06-05 17:06:50.360217+03	12	136
+396	t	2019-06-04 07:32:15.128153+03	2019-06-04 07:32:15.128189+03	10	59
+397	t	2019-06-04 08:33:12.885484+03	2019-06-04 08:33:12.885519+03	10	82
+398	t	2019-06-04 08:36:43.680131+03	2019-06-04 08:36:43.680167+03	10	89
+577	t	2019-06-05 17:21:32.695828+03	2019-06-05 17:21:32.695864+03	13	44
+400	t	2019-06-04 08:59:54.568159+03	2019-06-04 08:59:54.568196+03	10	38
+401	t	2019-06-04 09:09:00.01937+03	2019-06-04 09:09:00.019397+03	10	110
+402	t	2019-06-04 09:09:19.736681+03	2019-06-04 09:09:19.736707+03	5	110
+403	t	2019-06-04 09:09:56.894578+03	2019-06-04 09:09:56.894614+03	4	110
+582	t	2019-06-06 07:38:28.940609+03	2019-06-06 07:38:28.940645+03	12	62
+405	t	2019-06-04 09:10:16.262918+03	2019-06-04 09:10:16.262993+03	2	110
+587	t	2019-06-06 08:16:46.969646+03	2019-06-06 08:16:46.969682+03	13	68
+407	t	2019-06-04 12:39:47.932662+03	2019-06-04 12:39:47.932699+03	10	62
+408	t	2019-06-04 16:05:10.449214+03	2019-06-04 16:05:10.44925+03	10	21
+409	t	2019-06-04 16:27:14.496136+03	2019-06-04 16:27:14.496172+03	10	117
+592	t	2019-06-06 09:00:26.26731+03	2019-06-06 09:00:26.267345+03	12	82
+411	t	2019-06-04 18:43:55.793525+03	2019-06-04 18:43:55.793555+03	11	90
+412	t	2019-06-04 18:48:55.327497+03	2019-06-04 18:48:55.327534+03	11	21
+413	t	2019-06-04 18:49:09.464801+03	2019-06-04 18:49:09.464831+03	11	131
+414	t	2019-06-04 18:53:33.372069+03	2019-06-04 18:53:33.372105+03	11	133
+415	t	2019-06-04 19:15:47.774581+03	2019-06-04 19:15:47.774616+03	11	141
+416	t	2019-06-04 19:17:12.31629+03	2019-06-04 19:17:12.316326+03	10	141
+417	t	2019-06-04 19:17:19.124151+03	2019-06-04 19:17:19.124187+03	5	141
+418	t	2019-06-04 19:17:22.299312+03	2019-06-04 19:17:22.299347+03	4	141
+420	t	2019-06-04 19:17:24.897812+03	2019-06-04 19:17:24.897849+03	2	141
+422	t	2019-06-04 19:19:48.388164+03	2019-06-04 19:19:48.388193+03	12	90
+423	t	2019-06-04 21:23:50.167611+03	2019-06-04 21:23:50.167647+03	12	21
+424	t	2019-06-04 22:02:52.399551+03	2019-06-04 22:02:52.399588+03	12	117
+425	t	2019-06-04 22:03:15.489808+03	2019-06-04 22:03:15.489843+03	11	117
+426	t	2019-06-04 22:15:28.201301+03	2019-06-04 22:15:28.201336+03	12	122
+427	t	2019-06-04 22:15:40.520212+03	2019-06-04 22:15:40.520247+03	11	122
+428	t	2019-06-04 22:56:41.060229+03	2019-06-04 22:56:41.060265+03	12	137
+429	t	2019-06-05 07:26:31.937203+03	2019-06-05 07:26:31.937241+03	12	101
+430	t	2019-06-05 07:27:06.704122+03	2019-06-05 07:27:06.704158+03	11	101
+431	t	2019-06-05 07:54:24.37551+03	2019-06-05 07:54:24.375546+03	11	59
+432	t	2019-06-05 07:55:01.669764+03	2019-06-05 07:55:01.6698+03	12	59
+433	t	2019-06-05 07:55:36.685182+03	2019-06-05 07:55:36.685218+03	11	126
+434	t	2019-06-05 07:55:41.068228+03	2019-06-05 07:55:41.068264+03	12	126
+435	t	2019-06-05 07:58:57.983528+03	2019-06-05 07:58:57.983564+03	11	94
+436	t	2019-06-05 07:59:15.512609+03	2019-06-05 07:59:15.512645+03	12	94
+437	t	2019-06-05 08:00:02.761546+03	2019-06-05 08:00:02.761581+03	12	48
+438	t	2019-06-05 08:45:28.117545+03	2019-06-05 08:45:28.117582+03	12	92
+439	t	2019-06-05 08:49:28.846092+03	2019-06-05 08:49:28.846129+03	10	100
+440	t	2019-06-05 08:49:42.22637+03	2019-06-05 08:49:42.226406+03	12	100
+441	t	2019-06-05 08:50:08.725378+03	2019-06-05 08:50:08.725414+03	11	100
+442	t	2019-06-05 08:50:54.231309+03	2019-06-05 08:50:54.231347+03	4	17
+443	t	2019-06-05 09:03:26.488129+03	2019-06-05 09:03:26.488164+03	10	115
+444	t	2019-06-05 09:03:40.198653+03	2019-06-05 09:03:40.198689+03	11	115
+445	t	2019-06-05 09:05:59.07623+03	2019-06-05 09:05:59.076265+03	12	115
+446	t	2019-06-05 10:41:49.857581+03	2019-06-05 10:41:49.857616+03	12	17
+447	t	2019-06-05 10:41:57.353933+03	2019-06-05 10:41:57.353969+03	11	17
+448	t	2019-06-05 10:55:13.332419+03	2019-06-05 10:55:13.332456+03	11	89
+449	t	2019-06-05 10:55:23.697871+03	2019-06-05 10:55:23.697907+03	12	89
+450	t	2019-06-05 11:36:02.215481+03	2019-06-05 11:36:02.215517+03	11	38
+451	t	2019-06-05 11:36:05.005799+03	2019-06-05 11:36:05.005835+03	12	38
+452	t	2019-06-05 11:44:42.494892+03	2019-06-05 11:44:42.494928+03	11	89
+453	t	2019-06-05 11:44:43.551705+03	2019-06-05 11:44:43.55174+03	12	89
+454	t	2019-06-05 11:57:17.275621+03	2019-06-05 11:57:17.275658+03	11	92
+455	t	2019-06-05 12:30:44.930619+03	2019-06-05 12:30:44.930655+03	11	111
+456	t	2019-06-05 14:44:25.091647+03	2019-06-05 14:44:25.091683+03	11	2
+457	t	2019-06-05 14:44:26.285875+03	2019-06-05 14:44:26.285911+03	12	2
+458	t	2019-06-05 15:08:16.120541+03	2019-06-05 15:08:16.120583+03	12	68
+459	t	2019-06-05 15:08:47.632019+03	2019-06-05 15:08:47.632056+03	11	68
+460	t	2019-06-05 15:08:57.083634+03	2019-06-05 15:08:57.08367+03	10	68
+461	t	2019-06-05 15:08:59.292173+03	2019-06-05 15:08:59.292207+03	5	68
+462	t	2019-06-05 15:09:08.725167+03	2019-06-05 15:09:08.725203+03	4	68
+607	t	2019-06-06 10:10:53.136868+03	2019-06-06 10:10:53.136903+03	14	94
+464	t	2019-06-05 15:09:17.215039+03	2019-06-05 15:09:17.215077+03	2	68
+466	t	2019-06-05 15:13:59.113391+03	2019-06-05 15:13:59.113427+03	12	110
+467	t	2019-06-05 15:14:23.347508+03	2019-06-05 15:14:23.347543+03	11	110
+468	t	2019-06-05 15:29:20.515697+03	2019-06-05 15:29:20.515726+03	13	92
+469	t	2019-06-05 15:30:29.2361+03	2019-06-05 15:30:29.236136+03	13	2
+470	t	2019-06-05 15:33:47.80038+03	2019-06-05 15:33:47.800416+03	10	116
+471	t	2019-06-05 15:33:53.597109+03	2019-06-05 15:33:53.597145+03	11	116
+472	t	2019-06-05 15:33:57.782734+03	2019-06-05 15:33:57.78277+03	12	116
+473	t	2019-06-05 15:34:08.320851+03	2019-06-05 15:34:08.320887+03	13	116
+474	t	2019-06-05 15:48:41.922468+03	2019-06-05 15:48:41.922505+03	13	101
+475	t	2019-06-05 15:49:06.381842+03	2019-06-05 15:49:06.381879+03	12	111
+476	t	2019-06-05 15:49:09.95837+03	2019-06-05 15:49:09.958407+03	13	111
+617	t	2019-06-06 10:45:49.11723+03	2019-06-06 10:45:49.117267+03	14	37
+478	t	2019-06-05 15:51:17.572152+03	2019-06-05 15:51:17.572187+03	2	143
+622	t	2019-06-06 10:50:21.360031+03	2019-06-06 10:50:21.360067+03	11	121
+480	t	2019-06-05 15:51:19.804188+03	2019-06-05 15:51:19.804216+03	4	143
+481	t	2019-06-05 15:51:21.576437+03	2019-06-05 15:51:21.57647+03	5	143
+482	t	2019-06-05 15:51:25.968272+03	2019-06-05 15:51:25.968302+03	10	143
+483	t	2019-06-05 15:51:27.123991+03	2019-06-05 15:51:27.124018+03	11	143
+484	t	2019-06-05 15:51:27.867106+03	2019-06-05 15:51:27.867133+03	12	143
+485	t	2019-06-05 15:51:29.235104+03	2019-06-05 15:51:29.235138+03	13	143
+486	t	2019-06-05 15:52:16.952668+03	2019-06-05 15:52:16.952704+03	10	61
+487	t	2019-06-05 15:52:17.861717+03	2019-06-05 15:52:17.861752+03	11	61
+488	t	2019-06-05 15:52:18.530062+03	2019-06-05 15:52:18.530098+03	12	61
+489	t	2019-06-05 15:52:19.232184+03	2019-06-05 15:52:19.23222+03	13	61
+490	t	2019-06-05 15:53:02.716101+03	2019-06-05 15:53:02.716138+03	13	25
+491	t	2019-06-05 15:53:10.783887+03	2019-06-05 15:53:10.783923+03	13	146
+492	t	2019-06-05 15:53:15.546768+03	2019-06-05 15:53:15.546803+03	12	146
+493	t	2019-06-05 15:53:23.926722+03	2019-06-05 15:53:23.926758+03	11	146
+494	t	2019-06-05 15:53:27.042156+03	2019-06-05 15:53:27.042192+03	10	146
+495	t	2019-06-05 15:53:29.806055+03	2019-06-05 15:53:29.806091+03	5	146
+496	t	2019-06-05 15:53:34.987689+03	2019-06-05 15:53:34.987725+03	4	146
+627	t	2019-06-06 11:11:55.360389+03	2019-06-06 11:11:55.360426+03	14	62
+498	t	2019-06-05 15:53:38.263075+03	2019-06-05 15:53:38.263112+03	2	146
+632	t	2019-06-06 11:17:00.36365+03	2019-06-06 11:17:00.363686+03	10	150
+500	t	2019-06-05 15:54:13.523978+03	2019-06-05 15:54:13.524014+03	12	25
+637	t	2019-06-06 11:58:37.889164+03	2019-06-06 11:58:37.889199+03	14	68
+642	t	2019-06-06 13:22:07.554361+03	2019-06-06 13:22:07.554398+03	14	146
+558	t	2019-06-05 16:52:57.852253+03	2019-06-05 16:52:57.852288+03	13	55
+502	t	2019-06-05 15:57:15.618766+03	2019-06-05 15:57:15.618803+03	2	147
+563	t	2019-06-05 16:53:32.627627+03	2019-06-05 16:53:32.627663+03	12	43
+504	t	2019-06-05 15:57:21.461848+03	2019-06-05 15:57:21.461885+03	4	147
+505	t	2019-06-05 15:57:24.238459+03	2019-06-05 15:57:24.238495+03	5	147
+506	t	2019-06-05 15:57:26.453673+03	2019-06-05 15:57:26.453709+03	10	147
+507	t	2019-06-05 15:57:28.832417+03	2019-06-05 15:57:28.832453+03	11	147
+508	t	2019-06-05 15:57:33.238458+03	2019-06-05 15:57:33.238496+03	12	147
+509	t	2019-06-05 15:57:35.182324+03	2019-06-05 15:57:35.182359+03	13	147
+568	t	2019-06-05 16:59:03.581747+03	2019-06-05 16:59:03.581782+03	13	34
+511	t	2019-06-05 15:58:43.744217+03	2019-06-05 15:58:43.744253+03	13	86
+512	t	2019-06-05 15:58:54.86481+03	2019-06-05 15:58:54.864846+03	12	86
+513	t	2019-06-05 15:58:57.562063+03	2019-06-05 15:58:57.562098+03	11	86
+514	t	2019-06-05 15:59:04.712507+03	2019-06-05 15:59:04.712543+03	5	86
+515	t	2019-06-05 15:59:19.057655+03	2019-06-05 15:59:19.05769+03	4	86
+516	t	2019-06-05 15:59:21.950158+03	2019-06-05 15:59:21.950193+03	10	86
+573	t	2019-06-05 17:13:00.379664+03	2019-06-05 17:13:00.37974+03	11	97
+518	t	2019-06-05 15:59:33.903622+03	2019-06-05 15:59:33.903659+03	2	148
+578	t	2019-06-05 21:12:52.365444+03	2019-06-05 21:12:52.365481+03	11	1
+520	t	2019-06-05 15:59:35.325184+03	2019-06-05 15:59:35.325219+03	4	148
+521	t	2019-06-05 15:59:36.121759+03	2019-06-05 15:59:36.121792+03	5	148
+522	t	2019-06-05 15:59:36.729925+03	2019-06-05 15:59:36.729961+03	10	148
+523	t	2019-06-05 15:59:37.465394+03	2019-06-05 15:59:37.465428+03	11	148
+524	t	2019-06-05 15:59:38.382474+03	2019-06-05 15:59:38.382511+03	12	148
+525	t	2019-06-05 15:59:39.036357+03	2019-06-05 15:59:39.036394+03	13	148
+527	t	2019-06-05 16:00:54.283587+03	2019-06-05 16:00:54.283624+03	13	144
+528	t	2019-06-05 16:02:54.759904+03	2019-06-05 16:02:54.759941+03	12	144
+530	t	2019-06-05 16:04:04.708153+03	2019-06-05 16:04:04.70819+03	11	25
+583	t	2019-06-06 07:38:30.066364+03	2019-06-06 07:38:30.066399+03	13	62
+532	t	2019-06-05 16:04:07.251732+03	2019-06-05 16:04:07.251767+03	10	25
+588	t	2019-06-06 08:31:36.923777+03	2019-06-06 08:31:36.923805+03	13	37
+539	t	2019-06-05 16:07:07.166326+03	2019-06-05 16:07:07.166362+03	11	144
+540	t	2019-06-05 16:07:08.952071+03	2019-06-05 16:07:08.952107+03	10	144
+541	t	2019-06-05 16:07:10.504305+03	2019-06-05 16:07:10.50434+03	5	144
+542	t	2019-06-05 16:07:11.853998+03	2019-06-05 16:07:11.854034+03	4	144
+593	t	2019-06-06 09:28:41.101479+03	2019-06-06 09:28:41.101514+03	11	48
+544	t	2019-06-05 16:07:14.750313+03	2019-06-05 16:07:14.750348+03	2	144
+546	t	2019-06-05 16:23:39.372083+03	2019-06-05 16:23:39.372119+03	13	127
+550	t	2019-06-05 16:26:51.600828+03	2019-06-05 16:26:51.600864+03	13	21
+551	t	2019-06-05 16:30:47.209544+03	2019-06-05 16:30:47.209579+03	13	126
+552	t	2019-06-05 16:37:06.850706+03	2019-06-05 16:37:06.850741+03	12	131
+553	t	2019-06-05 16:40:03.55989+03	2019-06-05 16:40:03.559926+03	13	131
+608	t	2019-06-06 10:10:55.844429+03	2019-06-06 10:10:55.844466+03	13	94
+613	t	2019-06-06 10:28:37.15578+03	2019-06-06 10:28:37.155816+03	14	143
+618	t	2019-06-06 10:49:05.95606+03	2019-06-06 10:49:05.956097+03	13	82
+623	t	2019-06-06 10:50:33.826225+03	2019-06-06 10:50:33.826262+03	14	61
+628	t	2019-06-06 11:15:53.138223+03	2019-06-06 11:15:53.138259+03	14	150
+633	t	2019-06-06 11:17:03.450255+03	2019-06-06 11:17:03.450292+03	5	150
+638	t	2019-06-06 12:07:33.494753+03	2019-06-06 12:07:33.494789+03	14	38
+643	t	2019-06-06 15:24:46.733811+03	2019-06-06 15:24:46.733839+03	14	148
+647	t	2019-06-06 16:22:24.942108+03	2019-06-06 16:22:24.942158+03	14	43
+651	t	2019-06-06 16:31:47.252952+03	2019-06-06 16:31:47.252988+03	12	120
+655	t	2019-06-06 16:46:47.715285+03	2019-06-06 16:46:47.715321+03	12	22
+659	t	2019-06-06 17:58:38.843607+03	2019-06-06 17:58:38.843642+03	12	56
+663	t	2019-06-07 07:14:01.107289+03	2019-06-07 07:14:01.107326+03	13	65
+667	t	2019-06-07 09:47:37.926184+03	2019-06-07 09:47:37.926219+03	13	102
+671	t	2019-06-07 09:58:08.57692+03	2019-06-07 09:58:08.576955+03	11	24
+675	t	2019-06-07 10:03:36.281603+03	2019-06-07 10:03:36.28164+03	14	147
+679	t	2019-06-07 10:25:04.728481+03	2019-06-07 10:25:04.728518+03	10	151
+683	t	2019-06-07 10:27:09.594839+03	2019-06-07 10:27:09.594877+03	14	151
+687	t	2019-06-07 15:19:49.955456+03	2019-06-07 15:19:49.955493+03	14	1
+699	t	2019-06-07 16:30:05.223512+03	2019-06-07 16:30:05.223547+03	5	152
+703	t	2019-06-07 16:30:12.220064+03	2019-06-07 16:30:12.2201+03	13	152
+707	t	2019-06-07 16:39:57.838715+03	2019-06-07 16:39:57.838752+03	18	22
+711	t	2019-06-07 17:01:20.684728+03	2019-06-07 17:01:20.684765+03	12	134
+715	t	2019-06-07 17:19:59.994542+03	2019-06-07 17:19:59.994578+03	14	137
+719	t	2019-06-07 17:43:20.070637+03	2019-06-07 17:43:20.070678+03	18	24
+723	t	2019-06-07 17:53:24.192384+03	2019-06-07 17:53:24.192419+03	14	127
+727	t	2019-06-07 18:17:28.302932+03	2019-06-07 18:17:28.303036+03	18	65
+731	t	2019-06-07 19:38:48.943732+03	2019-06-07 19:38:48.943768+03	14	90
+735	t	2019-06-08 07:38:15.726232+03	2019-06-08 07:38:15.72627+03	18	146
+739	t	2019-06-08 14:11:15.675646+03	2019-06-08 14:11:15.675687+03	18	86
+743	t	2019-06-09 08:18:50.611683+03	2019-06-09 08:18:50.611719+03	18	89
+747	t	2019-06-09 09:14:56.724536+03	2019-06-09 09:14:56.724572+03	18	150
+751	t	2019-06-09 09:42:21.859403+03	2019-06-09 09:42:21.85944+03	19	48
+755	t	2019-06-09 11:11:49.035433+03	2019-06-09 11:11:49.035469+03	19	94
+758	t	2019-06-09 11:23:36.407697+03	2019-06-09 11:23:36.407734+03	19	151
+761	t	2019-06-09 11:44:35.288914+03	2019-06-09 11:44:35.288951+03	19	147
+764	t	2019-06-09 11:45:25.278039+03	2019-06-09 11:45:25.278075+03	19	101
+767	t	2019-06-09 11:45:48.113961+03	2019-06-09 11:45:48.113997+03	19	82
+770	t	2019-06-09 11:49:49.598889+03	2019-06-09 11:49:49.598925+03	19	65
+773	t	2019-06-09 11:57:49.139829+03	2019-06-09 11:57:49.139866+03	13	113
+776	t	2019-06-09 12:02:32.74309+03	2019-06-09 12:02:32.743127+03	19	113
+779	t	2019-06-09 13:45:26.478861+03	2019-06-09 13:45:26.478899+03	5	155
+782	t	2019-06-09 13:49:43.472231+03	2019-06-09 13:49:43.472267+03	14	155
+785	t	2019-06-09 13:50:32.276216+03	2019-06-09 13:50:32.276254+03	11	155
+788	t	2019-06-09 14:12:41.775495+03	2019-06-09 14:12:41.77553+03	18	62
+791	t	2019-06-09 14:14:26.203478+03	2019-06-09 14:14:26.203515+03	19	156
+794	t	2019-06-09 15:41:31.299629+03	2019-06-09 15:41:31.299665+03	19	30
+797	t	2019-06-09 16:16:14.181627+03	2019-06-09 16:16:14.181665+03	19	136
+800	t	2019-06-09 19:57:51.644508+03	2019-06-09 19:57:51.644544+03	19	22
+803	t	2019-06-09 22:40:27.659476+03	2019-06-09 22:40:27.659512+03	19	122
+806	t	2019-06-10 08:06:05.827793+03	2019-06-10 08:06:05.82783+03	19	126
+809	t	2019-06-10 08:16:00.091956+03	2019-06-10 08:16:00.091993+03	19	92
+812	t	2019-06-10 08:23:12.353703+03	2019-06-10 08:23:12.353739+03	19	25
+815	t	2019-06-10 08:39:59.117537+03	2019-06-10 08:39:59.117573+03	13	156
+817	t	2019-06-10 13:17:38.606511+03	2019-06-10 13:17:38.606547+03	19	61
+819	t	2019-06-10 16:15:24.024476+03	2019-06-10 16:15:24.024513+03	14	131
+821	t	2019-06-10 16:15:31.425617+03	2019-06-10 16:15:31.425653+03	19	131
+823	t	2019-06-10 17:59:20.320787+03	2019-06-10 17:59:20.320816+03	20	90
+825	t	2019-06-10 20:46:50.758881+03	2019-06-10 20:46:50.758917+03	20	126
+827	t	2019-06-10 21:54:49.22649+03	2019-06-10 21:54:49.226528+03	20	152
+829	t	2019-06-11 07:29:04.341876+03	2019-06-11 07:29:04.341912+03	21	101
+831	t	2019-06-11 07:31:20.902518+03	2019-06-11 07:31:20.902554+03	21	126
+833	t	2019-06-11 07:55:12.808244+03	2019-06-11 07:55:12.808281+03	21	151
+835	t	2019-06-11 07:58:29.502308+03	2019-06-11 07:58:29.502344+03	21	86
+837	t	2019-06-11 08:01:28.279918+03	2019-06-11 08:01:28.279954+03	21	110
+839	t	2019-06-11 08:27:12.195452+03	2019-06-11 08:27:12.195489+03	20	92
+841	t	2019-06-11 08:41:42.46205+03	2019-06-11 08:41:42.462087+03	21	115
+843	t	2019-06-11 08:51:08.906716+03	2019-06-11 08:51:08.906752+03	21	25
+845	t	2019-06-11 08:59:09.371613+03	2019-06-11 08:59:09.37165+03	21	89
+847	t	2019-06-11 09:02:18.918588+03	2019-06-11 09:02:18.918623+03	20	61
+849	t	2019-06-11 09:26:04.920865+03	2019-06-11 09:26:04.920903+03	21	38
+851	t	2019-06-11 10:04:55.182253+03	2019-06-11 10:04:55.182289+03	20	147
+853	t	2019-06-11 11:09:14.241061+03	2019-06-11 11:09:14.241099+03	20	144
+855	t	2019-06-11 11:09:39.495637+03	2019-06-11 11:09:39.495674+03	20	148
+857	t	2019-06-11 11:09:46.986941+03	2019-06-11 11:09:46.987024+03	21	138
+859	t	2019-06-11 11:09:52.393839+03	2019-06-11 11:09:52.393875+03	19	138
+861	t	2019-06-11 11:09:57.280503+03	2019-06-11 11:09:57.280539+03	14	138
+863	t	2019-06-11 11:10:11.496469+03	2019-06-11 11:10:11.496506+03	12	138
+865	t	2019-06-11 11:10:53.643402+03	2019-06-11 11:10:53.64344+03	20	150
+867	t	2019-06-11 11:11:19.931653+03	2019-06-11 11:11:19.93169+03	18	55
+872	t	2019-06-11 11:21:55.356623+03	2019-06-11 11:21:55.356661+03	21	157
+873	t	2019-06-11 11:22:50.723661+03	2019-06-11 11:22:50.723697+03	20	113
+874	t	2019-06-11 11:22:52.445446+03	2019-06-11 11:22:52.445483+03	21	113
+875	t	2019-06-11 11:23:32.842913+03	2019-06-11 11:23:32.84301+03	20	157
+876	t	2019-06-11 11:23:45.866731+03	2019-06-11 11:23:45.866767+03	19	157
+877	t	2019-06-11 11:23:50.831146+03	2019-06-11 11:23:50.831183+03	5	157
+878	t	2019-06-11 11:24:23.15368+03	2019-06-11 11:24:23.153716+03	10	157
+879	t	2019-06-11 11:24:26.534702+03	2019-06-11 11:24:26.534739+03	11	157
+880	t	2019-06-11 12:18:10.607841+03	2019-06-11 12:18:10.607872+03	22	92
+881	t	2019-06-11 12:39:18.541322+03	2019-06-11 12:39:18.541353+03	22	126
+882	t	2019-06-11 12:41:47.657859+03	2019-06-11 12:41:47.657886+03	22	55
+883	t	2019-06-11 12:46:01.722598+03	2019-06-11 12:46:01.722633+03	18	157
+884	t	2019-06-11 12:46:06.73671+03	2019-06-11 12:46:06.736747+03	14	157
+885	t	2019-06-11 12:46:08.494059+03	2019-06-11 12:46:08.494096+03	13	157
+886	t	2019-06-11 12:46:09.479766+03	2019-06-11 12:46:09.479802+03	12	157
+887	t	2019-06-11 13:01:04.694447+03	2019-06-11 13:01:04.694484+03	22	151
+888	t	2019-06-11 13:16:52.663362+03	2019-06-11 13:16:52.663398+03	22	101
+889	t	2019-06-11 13:17:05.700995+03	2019-06-11 13:17:05.701033+03	22	156
+890	t	2019-06-11 13:17:12.464573+03	2019-06-11 13:17:12.464609+03	22	86
+891	t	2019-06-11 13:17:20.339959+03	2019-06-11 13:17:20.339995+03	22	25
+892	t	2019-06-11 13:17:37.318236+03	2019-06-11 13:17:37.318272+03	22	48
+893	t	2019-06-11 13:18:31.800433+03	2019-06-11 13:18:31.800471+03	22	157
+894	t	2019-06-11 13:18:32.263679+03	2019-06-11 13:18:32.263715+03	20	155
+895	t	2019-06-11 13:18:32.959511+03	2019-06-11 13:18:32.959546+03	21	155
+896	t	2019-06-11 13:18:49.369246+03	2019-06-11 13:18:49.369283+03	22	61
+897	t	2019-06-11 13:18:55.149053+03	2019-06-11 13:18:55.149086+03	22	155
+898	t	2019-06-11 13:20:10.346501+03	2019-06-11 13:20:10.346539+03	22	148
+899	t	2019-06-11 13:21:00.462477+03	2019-06-11 13:21:00.462514+03	22	115
+900	t	2019-06-11 13:22:10.916452+03	2019-06-11 13:22:10.916489+03	22	150
+901	t	2019-06-11 13:23:25.911351+03	2019-06-11 13:23:25.911389+03	20	156
+902	t	2019-06-11 13:23:31.043637+03	2019-06-11 13:23:31.043674+03	18	156
+903	t	2019-06-11 13:23:38.274128+03	2019-06-11 13:23:38.274165+03	12	156
+904	t	2019-06-11 13:23:43.439656+03	2019-06-11 13:23:43.439692+03	11	156
+905	t	2019-06-11 13:23:47.416439+03	2019-06-11 13:23:47.416476+03	10	156
+906	t	2019-06-11 13:24:54.163618+03	2019-06-11 13:24:54.163654+03	22	138
+907	t	2019-06-11 13:25:08.021592+03	2019-06-11 13:25:08.021629+03	22	113
+908	t	2019-06-11 13:29:06.566467+03	2019-06-11 13:29:06.566505+03	22	83
+909	t	2019-06-11 13:31:14.676431+03	2019-06-11 13:31:14.676466+03	21	83
+910	t	2019-06-11 13:31:19.528081+03	2019-06-11 13:31:19.528117+03	20	83
+911	t	2019-06-11 13:31:21.00449+03	2019-06-11 13:31:21.004527+03	19	83
+912	t	2019-06-11 13:31:23.53621+03	2019-06-11 13:31:23.536246+03	18	83
+913	t	2019-06-11 13:31:25.436435+03	2019-06-11 13:31:25.436471+03	14	83
+914	t	2019-06-11 13:32:38.711621+03	2019-06-11 13:32:38.711657+03	13	83
+915	t	2019-06-11 13:32:40.603556+03	2019-06-11 13:32:40.603593+03	12	83
+916	t	2019-06-11 13:32:43.348447+03	2019-06-11 13:32:43.348485+03	11	83
+917	t	2019-06-11 14:51:38.042522+03	2019-06-11 14:51:38.042558+03	22	38
+918	t	2019-06-11 16:14:55.02126+03	2019-06-11 16:14:55.021296+03	21	121
+919	t	2019-06-11 16:16:03.885329+03	2019-06-11 16:16:03.885366+03	22	121
+920	t	2019-06-11 16:16:13.933372+03	2019-06-11 16:16:13.933408+03	20	121
+921	t	2019-06-11 16:16:28.88514+03	2019-06-11 16:16:28.885177+03	19	121
+922	t	2019-06-11 16:18:07.986477+03	2019-06-11 16:18:07.986513+03	22	21
+923	t	2019-06-11 16:19:32.693414+03	2019-06-11 16:19:32.693451+03	21	21
+924	t	2019-06-11 16:32:11.332494+03	2019-06-11 16:32:11.332529+03	22	117
+925	t	2019-06-11 16:33:04.379199+03	2019-06-11 16:33:04.379236+03	13	117
+926	t	2019-06-11 16:33:06.263894+03	2019-06-11 16:33:06.26393+03	14	117
+927	t	2019-06-11 16:33:06.791353+03	2019-06-11 16:33:06.791391+03	18	117
+928	t	2019-06-11 16:33:07.628428+03	2019-06-11 16:33:07.628465+03	19	117
+929	t	2019-06-11 16:33:08.123829+03	2019-06-11 16:33:08.123866+03	20	117
+930	t	2019-06-11 16:33:08.863596+03	2019-06-11 16:33:08.863632+03	21	117
+931	t	2019-06-11 16:34:03.382746+03	2019-06-11 16:34:03.382782+03	22	44
+932	t	2019-06-11 16:37:59.668895+03	2019-06-11 16:37:59.668932+03	22	30
+933	t	2019-06-11 16:39:43.060911+03	2019-06-11 16:39:43.060947+03	22	97
+934	t	2019-06-11 16:46:19.282631+03	2019-06-11 16:46:19.282668+03	20	21
+935	t	2019-06-11 17:08:46.699556+03	2019-06-11 17:08:46.699592+03	19	43
+936	t	2019-06-11 17:09:21.003954+03	2019-06-11 17:09:21.00399+03	22	43
+937	t	2019-06-11 17:14:32.395014+03	2019-06-11 17:14:32.395052+03	21	34
+938	t	2019-06-11 17:14:45.191921+03	2019-06-11 17:14:45.191957+03	22	34
+939	t	2019-06-11 17:14:55.24891+03	2019-06-11 17:14:55.248947+03	20	34
+940	t	2019-06-11 17:15:03.855995+03	2019-06-11 17:15:03.856032+03	21	43
+941	t	2019-06-11 17:15:27.047455+03	2019-06-11 17:15:27.04749+03	20	43
+942	t	2019-06-11 17:16:43.335166+03	2019-06-11 17:16:43.335202+03	22	125
+943	t	2019-06-11 17:17:53.463304+03	2019-06-11 17:17:53.46334+03	20	125
+944	t	2019-06-11 17:17:59.91984+03	2019-06-11 17:17:59.919876+03	22	141
+945	t	2019-06-11 17:18:04.787526+03	2019-06-11 17:18:04.787562+03	21	141
+946	t	2019-06-11 17:18:05.695104+03	2019-06-11 17:18:05.695141+03	19	125
+947	t	2019-06-11 17:19:13.595983+03	2019-06-11 17:19:13.596015+03	13	125
+948	t	2019-06-11 17:19:23.748361+03	2019-06-11 17:19:23.748397+03	14	125
+949	t	2019-06-11 17:19:28.436435+03	2019-06-11 17:19:28.436471+03	12	125
+950	t	2019-06-11 17:19:31.315585+03	2019-06-11 17:19:31.315622+03	11	125
+951	t	2019-06-11 17:24:50.184711+03	2019-06-11 17:24:50.184749+03	22	124
+952	t	2019-06-11 17:26:05.802925+03	2019-06-11 17:26:05.80302+03	18	141
+953	t	2019-06-11 17:37:19.789589+03	2019-06-11 17:37:19.789625+03	22	133
+954	t	2019-06-11 17:39:23.227282+03	2019-06-11 17:39:23.22732+03	21	133
+955	t	2019-06-11 17:39:31.312394+03	2019-06-11 17:39:31.31243+03	20	133
+956	t	2019-06-11 17:39:49.308419+03	2019-06-11 17:39:49.308456+03	19	133
+957	t	2019-06-11 17:39:53.131009+03	2019-06-11 17:39:53.131048+03	18	133
+958	t	2019-06-11 18:07:21.848529+03	2019-06-11 18:07:21.848566+03	12	97
+959	t	2019-06-11 18:08:33.883672+03	2019-06-11 18:08:33.883709+03	21	30
+960	t	2019-06-11 18:08:40.774501+03	2019-06-11 18:08:40.77454+03	20	30
+961	t	2019-06-11 21:31:50.926098+03	2019-06-11 21:31:50.926135+03	20	122
+962	t	2019-06-11 21:31:58.609655+03	2019-06-11 21:31:58.609691+03	21	122
+963	t	2019-06-11 21:32:02.721998+03	2019-06-11 21:32:02.722034+03	22	122
+964	t	2019-06-11 21:43:44.5454+03	2019-06-11 21:43:44.545437+03	22	90
+965	t	2019-06-12 07:38:13.355464+03	2019-06-12 07:38:13.355503+03	22	100
+966	t	2019-06-12 07:41:23.591613+03	2019-06-12 07:41:23.591649+03	21	100
+967	t	2019-06-12 07:41:44.226344+03	2019-06-12 07:41:44.226381+03	20	100
+968	t	2019-06-12 07:43:30.293404+03	2019-06-12 07:43:30.293441+03	19	100
+969	t	2019-06-12 07:54:32.67727+03	2019-06-12 07:54:32.677306+03	22	62
+970	t	2019-06-12 07:54:52.673769+03	2019-06-12 07:54:52.673805+03	21	62
+971	t	2019-06-12 08:22:18.791595+03	2019-06-12 08:22:18.791632+03	22	147
+972	t	2019-06-12 08:37:04.633734+03	2019-06-12 08:37:04.63377+03	22	110
+973	t	2019-06-12 08:45:32.690257+03	2019-06-12 08:45:32.690293+03	22	89
+974	t	2019-06-12 09:08:58.615672+03	2019-06-12 09:08:58.615709+03	20	111
+975	t	2019-06-12 09:09:11.881639+03	2019-06-12 09:09:11.881676+03	21	111
+976	t	2019-06-12 09:09:48.267952+03	2019-06-12 09:09:48.267989+03	22	111
+977	t	2019-06-12 09:15:27.156444+03	2019-06-12 09:15:27.156481+03	22	22
+978	t	2019-06-12 09:16:58.669679+03	2019-06-12 09:16:58.669716+03	20	22
+979	t	2019-06-12 09:55:39.595481+03	2019-06-12 09:55:39.595517+03	22	158
+980	t	2019-06-12 12:00:38.575014+03	2019-06-12 12:00:38.575075+03	13	158
+981	t	2019-06-12 12:00:54.146003+03	2019-06-12 12:00:54.146039+03	21	158
+982	t	2019-06-12 16:36:24.495211+03	2019-06-12 16:36:24.495247+03	20	136
+983	t	2019-06-12 16:36:37.192103+03	2019-06-12 16:36:37.19214+03	21	136
+984	t	2019-06-12 16:36:59.552269+03	2019-06-12 16:36:59.552304+03	22	136
+985	t	2019-06-12 17:01:47.014241+03	2019-06-12 17:01:47.014278+03	21	152
+986	t	2019-06-12 17:01:51.064641+03	2019-06-12 17:01:51.064676+03	22	152
+987	t	2019-06-12 17:44:08.061862+03	2019-06-12 17:44:08.061893+03	23	154
+988	t	2019-06-12 17:44:25.522081+03	2019-06-12 17:44:25.522118+03	22	154
+989	t	2019-06-12 17:44:27.785479+03	2019-06-12 17:44:27.785517+03	21	154
+990	t	2019-06-12 17:44:29.666744+03	2019-06-12 17:44:29.66678+03	20	154
+991	t	2019-06-12 17:44:30.775132+03	2019-06-12 17:44:30.775169+03	19	154
+992	t	2019-06-12 17:44:32.540359+03	2019-06-12 17:44:32.540396+03	18	154
+993	t	2019-06-12 17:44:33.804195+03	2019-06-12 17:44:33.804229+03	14	154
+994	t	2019-06-12 17:44:35.549941+03	2019-06-12 17:44:35.549978+03	13	154
+995	t	2019-06-12 17:44:36.69903+03	2019-06-12 17:44:36.699067+03	12	154
+996	t	2019-06-12 17:44:39.417009+03	2019-06-12 17:44:39.417045+03	11	154
+997	t	2019-06-12 18:10:27.482282+03	2019-06-12 18:10:27.482319+03	23	126
+998	t	2019-06-12 19:19:08.283687+03	2019-06-12 19:19:08.283726+03	23	21
+999	t	2019-06-12 22:51:21.530711+03	2019-06-12 22:51:21.530747+03	23	30
+1000	t	2019-06-12 23:44:12.281928+03	2019-06-12 23:44:12.281965+03	23	122
+\.
+
+
+--
+-- Name: UserUpdateView_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public."UserUpdateView_id_seq"', 1000, true);
+
+
+--
+-- Data for Name: accounts_user; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public.accounts_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined, user_type) FROM stdin;
+147	pbkdf2_sha256$150000$s1CknUvIVxRH$zj9ELTBW1tZlWQrPUgnUS7lBlLaBW2p//lzeB3aR65M=	\N	f	margrate.gathirimu@technobrainbpo.com	Margrate	Gathirimu	margrate.gathirimu@technobrainbpo.com	f	t	2019-06-05 15:54:43.875764+03	2
+43	pbkdf2_sha256$150000$JloLXAtIo4pn$knrMqGG8sjkd4+8lJS2SYUobDsYIIK/DGE041N1J5FU=	\N	f	esther.adhiambo	Esther	Adhiambo	esther.adhiambo@technobrainbpo.com	f	t	2019-05-29 15:20:19.155507+03	2
+25	pbkdf2_sha256$150000$EMTnKf8PBNID$0Obh5SwLFLCK3bwMuRS/YMliJSF69haYMfWvL+brQEs=	\N	f	beryl.onyango	Beryl	Onyango	beryl.onyango@technobrainbpo.com	f	t	2019-05-29 15:19:08.864731+03	2
+151	pbkdf2_sha256$150000$w13I5Vm2QGmT$/c4dp9QGNJ6L++e5/4gGk7Rum1YOvgRkzo1CsTfvwHw=	\N	f	agnes.mueni@technobrainbpo.com	Agnes	Mueni	agnes.mueni@technobrainbpo.com	f	t	2019-06-07 10:14:40.368802+03	2
+24	pbkdf2_sha256$150000$Fve0eH4VU8fF$u5tIrOmXvngmbgpMiPmL2X7ZumSS/fskSPkUY9M1Nio=	\N	f	cynthia.njogu	Cynthia	Njogu	cynthia.njogu@technobrainbpo.com	f	t	2019-05-29 15:19:05.368109+03	2
+37	pbkdf2_sha256$150000$PfyXH8aIl9hn$bj4tnJC8x2OKar9mjpHHCxLOkZG4pGtzdRfLYFIKAvs=	\N	f	rodley.onyango	Rodley	Onyango	rodley.onyango@technobrainbpo.com	f	t	2019-05-29 15:19:51.869392+03	2
+155	pbkdf2_sha256$150000$ZFrQSUKONrEm$afgBhDOVzKH7wUCnh+pZzI3J9TcynLfkluaMxqMuVpI=	\N	f	esther.njumbi@technobrainbpo.com	Esther	Njumbi	esther.njumbi@technobrainbpo.com	f	t	2019-06-09 13:42:24.006262+03	2
+17	pbkdf2_sha256$150000$9X1SysbmVbZ4$nqXilnZZtXVpD0NvOK8evu3U4dQ6EfspzC0vOX4O8GM=	\N	f	meso.maureen	Maureen	Meso	meso.maureen@technobrainbpo.com	f	t	2019-05-29 15:18:40.522328+03	2
+30	pbkdf2_sha256$150000$atbueU8eUi70$RMdiEzXvcEt2RSFBZcHSGiUTn7KB3rchWEURw6Omd+Y=	\N	f	rose.munyasa	Rose	Munyasa	rose.munyasa@technobrainbpo.com	f	t	2019-05-29 15:19:26.819481+03	2
+34	pbkdf2_sha256$150000$C1DT9YraWo2z$Yi151NBgGtWdDmsQ/n4rNNbsMtGeLM+tgjrT3UG/Ils=	\N	f	oketch.camins	Camins	Oketch	oketch.camins@technobrainbpo.com	f	t	2019-05-29 15:19:41.262896+03	2
+44	pbkdf2_sha256$150000$bonTbqa4OHnA$N3yOq3IluEl4EIeRlx53sAvGkB//ljnFRexFtM9bMFc=	\N	f	tina.cherop	Tina	Cherop	tina.cherop@technobrainbpo.com	f	t	2019-05-29 15:20:22.653869+03	2
+51	pbkdf2_sha256$150000$mdVUo1Atq1tK$b6L8svibfthV9S+7er1yn+MDNOzmwzFmYz6euPG0p9Y=	\N	f	lavina.awino	Lavina	Awino	lavina.awino@technobrainbpo.com	f	t	2019-05-29 15:20:47.723289+03	2
+21	pbkdf2_sha256$150000$9SuLxFfBcqsT$HtdaFdCjnPxi6gShAg25iQVGDmJDbzdf1WwckXQsUxA=	\N	f	susan.wangu	Susan	Chege	susan.wangu@technobrainbpo.com	f	t	2019-05-29 15:18:54.59037+03	2
+38	pbkdf2_sha256$150000$364EwTBTr96t$aHSVLKhE7yy8Ti78c/IAxcEW7WIK3ymcaaN+Q858Zr0=	\N	f	deborah.bonareri	Deborah	Bonareri	deborah.bonareri@technobrainbpo.com	f	t	2019-05-29 15:19:55.381246+03	2
+7	pbkdf2_sha256$150000$5M4uZ6E7XbeW$QFNZ/vL9AyvWMsAqmlEAcRqJ6nZitjTaPqzibIIOVP0=	\N	f	newish.koech	Newish	Koech	newish.koech@technobraingroup.com	f	t	2019-05-29 14:23:04.939258+03	1
+48	pbkdf2_sha256$150000$Vu5AYtLWsYCo$WoMFUFL3WhomA88R145ugWyikPWD5sVeW7exQ64NxFU=	\N	f	mercy.ndegwa	Mercy	Ndegwa	mercy.ndegwa@technobrainbpo.com	f	t	2019-05-29 15:20:36.781823+03	2
+2	pbkdf2_sha256$150000$AzzwKZ8DMzDL$QtLUBPXPouZsHGYuEU9G7591iMp5xK0bwmpvZ/6+vq4=	\N	f	janet.otieno	Janet	Otieno	janet.otieno@technobrainbpo.com	f	t	2019-05-29 13:40:58.072009+03	1
+22	pbkdf2_sha256$150000$NixIrZ7IDI5L$x/0sBRJiu96+Ch1vhlVFF7+sRTfPBN7VNDSyxl+R45w=	\N	f	sabrinah.wasambula	Sabrinah	Wasambula	sabrinah.wasambula@technobrainbpo.com	f	t	2019-05-29 15:18:58.097016+03	2
+55	pbkdf2_sha256$150000$w0HmfEBU86fB$Q/Yd4mvLJEDigpvvEca85kuQUygOdK+JBXvJmdUk4CY=	\N	f	charles.mutinda	Charles	Mutinda	charles.mutinda@technobrainbpo.com	f	t	2019-05-29 15:21:08.92755+03	2
+156	pbkdf2_sha256$150000$oXLANsp3H3lv$89JoWJrVrhrS8eOAitHn4xY9gDsxW7E5gJBn4FRfwS0=	\N	f	isiah.wekesa@technobrainbpo.com	Isiah	Wekesa	isiah.wekesa@technobrainbpo.com	f	t	2019-06-09 14:08:47.384125+03	2
+58	pbkdf2_sha256$150000$lpVm21pgptd0$/82hj3kz0yTdxKXqtBlkrvrBIFQP5WdOQNdDrrJwOzg=	\N	f	jackline.kendi	Jackline	Kendi	jackline.kendi@technobrainbpo.com	f	t	2019-05-29 15:21:19.494174+03	2
+59	pbkdf2_sha256$150000$TordUMx9fnwG$eVsp5fNepqF9Dqtpn7S3oTpYJ73Ik7TmDaGYIDiSAhU=	\N	f	brenda.nyaboke	Brenda	Nyaboke	brenda.nyaboke@technobrainbpo.com	f	t	2019-05-29 15:21:23.251372+03	2
+56	pbkdf2_sha256$150000$wqIdnQEggYhZ$rbz1fsKwkGBb63m7KlhyVFsEOFl3gkWfCTfmRHFH/sE=	\N	f	elsie.opondo	Elsie	opondo	elsie.opondo@technobrainbpo.com	f	t	2019-05-29 15:21:12.426689+03	2
+152	pbkdf2_sha256$150000$acqGouj4Mfb5$aOsFGB4HyNlM/qmP/QsRDnSIK4L2/hUxc33QQPwLdV8=	\N	f	bildad.maloba@technobrainbpo.com	Bildad	Maloba	bildad.maloba@technobrainbpo.com	f	t	2019-06-07 16:24:50.489532+03	2
+69	pbkdf2_sha256$150000$Ngra9Qp7llQE$XynUlnF++1FOPjAI7LiiQNifgM8lXKo4E3pJAWIy7dY=	\N	f	maureen.adhiambo	Maureen	Adhiambo	maureen.adhiambo@technobrainbpo.com	f	t	2019-05-29 15:22:09.120529+03	2
+62	pbkdf2_sha256$150000$m72d5uzI9jA4$9KPiLzvhNV3tNyRkg6ycy9LzdXI9EPATtADR5Fd9tig=	\N	f	everlyn.akinyi	Everlyn	Akinyi	everlyn.akinyi@technobrainbpo.com	f	t	2019-05-29 15:21:41.973822+03	2
+71	pbkdf2_sha256$150000$e4QPHAAAoqCl$BBRij2pGKZwBuK8Q3K+BLejtDG1ct9pikl+xgBH6S64=	\N	f	mercy.mbithe	Mercy	Mbithe	mercy.mbithe@technobrainbpo.com	f	t	2019-05-29 15:22:16.12084+03	2
+74	pbkdf2_sha256$150000$C1S22HxxIkGv$Q2NB8ypYTkiA4UTDKlG2wVaRjsOEQLdb5ksFded3c0I=	\N	f	janestella.musinzi	Janestella	Musinzi	janestella.musinzi@technobrainbpo.com	f	t	2019-05-29 15:22:26.965842+03	2
+148	pbkdf2_sha256$150000$QupueNSnZw0T$gbTrzuJEcjwa6ji5Dcdx2uLU9/T0UY5ZcofCLoJKtwQ=	\N	f	tabitha.gathenga@technobrainbpo.com	Tabitha	Gathenga	tabitha.gathenga@technobrainbpo.com	f	t	2019-06-05 15:56:28.936783+03	2
+77	pbkdf2_sha256$150000$76iE9iPsZrtT$Q26B7acrH13a2c2a2JFqcHNfQLTzGlGDSeE+/lUqzvQ=	\N	f	stephen.mariga	Stephen	Mariga	stephen.mariga@technobrainbpo.com	f	t	2019-05-29 15:22:37.509717+03	2
+78	pbkdf2_sha256$150000$wq5xl6YJbxj5$x58iZ3zbqKicD9J/TPf0RgP2s94cU1EIIGVDuJI9kYs=	\N	f	jackson.onyango	Jackson	Onyango	jackson.onyango@technobrainbpo.com	f	t	2019-05-29 15:22:40.996511+03	2
+68	pbkdf2_sha256$150000$1IkCUCR4HP9X$JMuiKdyPU3fK1dbPsRkPiDtDOoBnXxVtz2dbY+OtPQ4=	\N	f	olivia.wasonga	Olivia	Wasonga	olivia.wasonga@technobrainbpo.com	f	t	2019-05-29 15:22:05.599385+03	2
+81	pbkdf2_sha256$150000$KhcOwSEZO75p$ExCkzEktqBN6tpdO+FPrtn8WGZC42PD9/PgnBU0IO0A=	\N	f	saida.mwajuma	Saida	Mwajuma	saida.mwajuma@technobrainbpo.com	f	t	2019-05-29 15:22:51.454794+03	2
+84	pbkdf2_sha256$150000$qthZxc8Tdmdj$KSCKgGa8nW4Och8SmPfmyHDoNzJg/GpP7PgEbzcGA7A=	\N	f	winnie.achieng	Winnie	Achieng	winnie.achieng@technobrainbpo.com	f	t	2019-05-29 15:23:02.3085+03	2
+86	pbkdf2_sha256$150000$WpJCXWNjsAJW$H9gnTS9EYXAUZgd6pZOFyfFRvi8fNAAeTPxzCAoD+MA=	\N	f	dennis.gachihi	Dennis	Gichiri	dennis.gachihi@technobrainbpo.com	f	t	2019-05-29 15:23:09.362636+03	2
+88	pbkdf2_sha256$150000$Tk1R7YnKlHRs$jzeVDRukiR2hIwKu01eCsUiunpaa6ZToecjLz9gvLiM=	\N	f	melody.mideva	Melody	Mideva	melody.mideva@technobrainbpo.com	f	t	2019-05-29 15:23:17.980788+03	1
+89	pbkdf2_sha256$150000$gmh5ot2Y3CvH$uRDySCxHV1SXvB+kUbCcvo3rhiv5cprFV1P36CHjafs=	\N	f	caroline.gatwiri	Caroline	Gatwiri	caroline.gatwiri@technobrainbpo.com	f	t	2019-05-29 15:23:24.848987+03	1
+90	pbkdf2_sha256$150000$CHjV8cwkQY8J$PESnYQ47O1YMObbmY5eC3rNcl6zR062SlUNNgaZjqdY=	\N	f	elvis.okero	Elvis	Okero	elvis.okero@technobrainbpo.com	f	t	2019-05-29 15:23:28.350604+03	1
+91	pbkdf2_sha256$150000$65GrNuCA7gZ4$kXIDuUU2WcxQZCMBRQI8YIwEJCBn7FM70pGLvzmFa+E=	\N	f	edwin.omurwa	Edwin	Omurwa	edwin.omurwa@technobrainbpo.com	f	t	2019-05-29 15:23:31.853346+03	1
+82	pbkdf2_sha256$150000$ChU32vYDH8Q2$6lV/SALqU1Y8nBwYtMV8xi58+sx7N5cb/MW1LiJvgfA=	\N	f	nancy.nekesa	Nancy	Nekesa	nancy.nekesa@technobrainbpo.com	f	t	2019-05-29 15:22:55.266113+03	2
+57	pbkdf2_sha256$150000$a4XWtgsTuGQ2$9BduWYXm9CEnqWjNRVEFhZWdWBBFM2wJo1SevX8+rQg=	\N	f	sharon.ongotta	Sharon	Ongotta	sharon.ongotta@technobrainbpo.com	f	t	2019-05-29 15:21:15.961109+03	2
+65	pbkdf2_sha256$150000$rRVvP5sVNhd5$yO06htXW3mYfTeRThw5PWJr9GLAjYe7B1SxZw9H22rw=	\N	f	jael.wafula	Jael	Wafula	jael.wafula@technobrainbpo.com	f	t	2019-05-29 15:21:54.006742+03	2
+61	pbkdf2_sha256$150000$FvSbEa8ofF8j$gT7gReW7cj35pUSdAYSlpus3QXZim7L7mV8Ead/oPTw=	\N	f	lillian.ngila	Lillian	Ngila	lillian.ngila@technobrainbpo.com	f	t	2019-05-29 15:21:30.288882+03	2
+92	pbkdf2_sha256$150000$kJ6toukFT3t0$nHydSQvS9Qrs9gTdiqxoYS3EgVdhrywq/1ZLRduyHxw=	\N	f	patrick.solomon	Patrick	Solomon	patrick.solomon@technobrainbpo.com	f	t	2019-05-29 15:23:35.408873+03	1
+94	pbkdf2_sha256$150000$hSieLiVeLeQz$PK3tbzHY13A42XPxWoF8mBC4Cct3DL588m2Cremrx28=	\N	f	nancy.awuor	Nancy	Odanga	nancy.awuor@technobrainbpo.com	f	t	2019-05-29 15:23:42.460609+03	1
+83	pbkdf2_sha256$150000$UwAa1aiqLAWl$/dC9icev/7kXppRv5PNl4thi9bmxiAnRlKN6DfGbkp0=	\N	f	joy.kiragu	Joy	Kiragu	joy.kiragu@technobrainbpo.com	f	t	2019-05-29 15:22:58.79668+03	2
+95	pbkdf2_sha256$150000$zz0uT9D11yDb$EOvYzpvdq71eYaWP45f37tuFuWm679Pro6GcYfxGuTE=	\N	f	sidney.kiprono	Sidd	Sidd	sidney.kiprono@technobrainbpo.com	f	t	2019-05-29 15:23:45.972802+03	1
+97	pbkdf2_sha256$150000$MZEkQIsiT6Q5$dU2LMQtluUAhiPa+IM+WqIR1UBCJNk2TlcWxVgA8klc=	\N	f	peris.eshtuma@technobrainbpo.com	Peris	Eshtuma	peris.eshtuma@technobrainbpo.com	f	t	2019-05-29 19:10:10.470408+03	2
+123	pbkdf2_sha256$150000$2uIHuQ7iFNAS$iuUoCehmaeDbEd1InJQ/ppkt2PEBHHQil5P7TljpmCw=	\N	f	linda.shannon@technobrainbpo.com	Linda	Shannon	linda.shannon@technobrainbpo.com	f	t	2019-06-03 18:43:03.898564+03	2
+105	pbkdf2_sha256$150000$TB5vqemmUjf8$OshpVDBpDOp0Sx++2nAXywqQn3tLOQCQ+Eg6igINQCY=	\N	f	get.nada	Sidney	Kiprono	sidd@getnada.com	f	t	2019-05-31 10:42:34.741314+03	1
+100	pbkdf2_sha256$150000$cDm66i79EEu3$NgODnT0yC2fOvBWeQcExSg1xnXrwO/A2yq3gj6XCHoc=	\N	f	ann.okore@technobrainbpo.com	Ann	Okore	ann.okore@technobrainbpo.com	f	t	2019-05-29 19:17:19.85217+03	2
+101	pbkdf2_sha256$150000$g8qw5PiWCxzP$JYyRgCAPImMIt9gxR71khPDlcKtE1VgG1nR4sDpzmXo=	\N	f	purity.gitari@technobrainbpo.com	Purity	Gitari	purity.gitari@technobrainbpo.com	f	t	2019-05-29 19:41:24.977589+03	2
+102	pbkdf2_sha256$150000$BZGlaN9pFAm0$E5Li0EGgmD6T3tZKe0qSYrOgWDa5jg6ypB2FmZQaa9U=	\N	f	balaji.padmanabhan	Balaji	Padmanabhan	balaji.padmanabhan@technobraingroup.com	f	t	2019-05-31 09:16:29.236761+03	1
+103	pbkdf2_sha256$150000$huIcRkG3G7Z1$jBILIkwOYeyyCC2Li/Pj3yIPVyx5yAxHce0Ypn5T/38=	\N	f	nancy.mukoma@technobrainbpo.com	Nancy	Mukoma	nancy.mukoma@technobrainbpo.com	f	t	2019-05-31 10:05:30.427299+03	2
+116	pbkdf2_sha256$150000$6AKEyk3RE1dc$dq6VQ1qrQL2pJrbEBSq4aMskBXerduAL0cijKYMyblg=	\N	f	emmah.ndirangu@technobrainbpo.com	Emmah	Ndirangu	emmah.ndirangu@technobrainbpo.com	f	t	2019-06-02 15:55:24.139886+03	2
+117	pbkdf2_sha256$150000$lNRbieXQQvwx$S5Awjq+ISCliMsg4ESUcAGTywLZEHxt8J0GRYCTwTKE=	\N	f	joan.omamo@technobrainbpo.com	Joan	Omamo	joan.omamo@technobrainbpo.com	f	t	2019-06-02 17:41:23.984922+03	2
+1	pbkdf2_sha256$150000$5oc2F8YOmJMv$Q+Vis+uOTubzmD73wv8CTSdu3bAWoSCMWfXmYBo/0JI=	2019-06-07 12:25:33.526909+03	t	sidd	Sidney	Kiprono		t	t	2019-05-29 13:38:54+03	0
+121	pbkdf2_sha256$150000$fNFHlmhqKN8c$l8kF3TZGQjR3TK/KmdkNZrYjEtna/cvrRS/doTsChl8=	\N	f	ruth.nangari@technobrainbpo.com	Ruth	Nangari	ruth.nangari@technobrainbpo.com	f	t	2019-06-03 18:30:54.613119+03	2
+157	pbkdf2_sha256$150000$JFOAccY29gTA$7M2AOh8+bqcqJBBfwrz5gxqNd1W3gIMw0yODRlJC/2I=	\N	f	sophia.wanyika@technobrainbpo.com	Sophia	Wanyika	sophia.wanyika@technobrainbpo.com	f	t	2019-06-09 14:13:17.185815+03	2
+111	pbkdf2_sha256$150000$AJ8TcFazxaY2$ZGfiut+Y8lu/h7cZlXb2blNa0jKeArozwJcVwIpan88=	\N	f	leah.njoroge@technobrainbpo.com	Leah	Njoroge	leah.njoroge@technobrainbpo.com	f	t	2019-06-02 11:45:13.029721+03	2
+110	pbkdf2_sha256$150000$2UMIbDeUMAXF$beNxrEjuQeMRniIQ0jMn3SynWZfQhhw9X7bdrIaIy5k=	\N	f	maureen.chebii@technobrainbpo.com	Maureen	Chebii	maureen.chebii@technobrainbpo.com	f	t	2019-06-02 11:42:06.396852+03	2
+115	pbkdf2_sha256$150000$E0ypnjpCFkfI$UbQsksnBRnEiI0AfhbUkazW6dXgh0AsF0WGGLgW9sWk=	\N	f	sandra.awuor@technobrainbpo.com	Sandra	Awuor	sandra.awuor@technobrainbpo.com	f	t	2019-06-02 15:33:18.468213+03	2
+125	pbkdf2_sha256$150000$rUaMPW1DS3nO$bPyfCg12qbVzo6/r8iq7gVK5o9bD1HrXDmlqIIOCrFE=	\N	f	immaculate.nyaboke@technobrainbpo.com	immaculate.	Nyaboke	immaculate.nyaboke@technobrainbpo.com	f	t	2019-06-03 18:49:08.338343+03	2
+113	pbkdf2_sha256$150000$XUjntAHVChW5$5z72biB7Wwqgd1fC8w+3tw3ZV8XmvowmqWyy62LLj/I=	\N	f	george.ndiritu@technobrainbpo.com	George	Ndiritu	george.ndiritu@technobrainbpo.com	f	t	2019-06-02 13:08:10.683473+03	2
+126	pbkdf2_sha256$150000$ZAWYWeTUwKmL$7dKcE2pXTOxbSUPwqiNeF420FaSArPMFgWz28OKFq8Q=	\N	f	twanna.iasa@technobrainbpo.com	Twanna	iasa	twanna.iasa@technobrainbpo.com	f	t	2019-06-03 18:49:49.082679+03	2
+124	pbkdf2_sha256$150000$lzhrugskfg20$KEW9KF4jlKX6mAwz4cMWuM+EAg4Tv13wHjnZB3uwx0M=	\N	f	kadra.anyango@technobrainbpo.com	Kadra	Anyango	kadra.anyango@technobrainbpo.com	f	t	2019-06-03 18:48:25.28547+03	2
+119	pbkdf2_sha256$150000$a9eRtF4j4l1c$bCdVwQeMM3P5BxXbWH4oYlvgH9mVWDJWroFCcK716sw=	\N	f	peris.eshituma	peris	Eshituma	peris.eshituma@technobrainbpo.com	f	t	2019-06-03 15:19:43.397465+03	2
+120	pbkdf2_sha256$150000$NyIv2acD7fg5$nxs5VE3TmFj5MGwqV0v0E4asGupCuvPnZrgu69sd00s=	\N	f	esther.githinji@technobrainbpo.com	Esther	Githinji	esther.githinji@technobrainbpo.com	f	t	2019-06-03 18:30:18.975583+03	2
+122	pbkdf2_sha256$150000$B0v72NqcitKe$agTP6u6aNnRdPAMjl1UyJtPLYTk7OYwE3QQMob+qZL4=	\N	f	esther.kwamboka@technobrainbpo.com	Esther	Kwamboka	esther.kwamboka@technobrainbpo.com	f	t	2019-06-03 18:42:31.445882+03	2
+127	pbkdf2_sha256$150000$133BblzJtllE$U138+Nhy2334Ke7LiV8WNyYlQDzZxepS6sXW7uHGey0=	\N	f	anthony.oduol@technobrainbpo.com	Anthony	Oduol	anthony.oduol@technobrainbpo.com	f	t	2019-06-03 18:50:31.767416+03	2
+128	pbkdf2_sha256$150000$G60X0EHg6Npm$fg4zlC3+U7tb+XixE1jqb1dZysE1nsamm0X0Wm7ccCI=	\N	f	daphney.awuor@technobrainbpo.com	daphney	awuor	daphney.awuor@technobrainbpo.com	f	t	2019-06-03 18:51:10.182658+03	2
+130	pbkdf2_sha256$150000$Y2HFOLcwPTxw$xeCXMXF30XXx1yr5WN3hSxgLCxfww3Xh63h34ex8pmY=	\N	f	chris.kuria@technobrainbpo.com	Chris	Kuria	chris.kuria@technobrainbpo.com	f	t	2019-06-03 18:52:20.110629+03	2
+131	pbkdf2_sha256$150000$3PrZ4lNfMJij$prI9OUMV4phKCq9mrm+diyZxi77XFSlfOvk8Mo8ZIIg=	\N	f	boniface.kinyanjui@technobrainbpo.com	Boniface	Kinyanjui	boniface.kinyanjui@technobrainbpo.com	f	t	2019-06-03 18:52:59.142069+03	2
+133	pbkdf2_sha256$150000$U3sdJG8pNxCI$mOx+obLFmc1p91L40wN3xuDK2i0zV9Adfn6tP5eCXl0=	\N	f	emily.nelima@technobrainbpo.com	Emily	Nelima	emily.nelima@technobrainbpo.com	f	t	2019-06-03 19:13:23.51578+03	2
+150	pbkdf2_sha256$150000$JPASqwRoF65y$1rOoVD/sgx9ECYz7sW5X0dFPuIUWGDpOcojnm7fh+pA=	\N	f	faith.okune@technobrainbpo.com	Faith	Okune	faith.okune@technobrainbpo.com	f	t	2019-06-06 10:58:33.643625+03	2
+136	pbkdf2_sha256$150000$yCOoHAVZY2rg$XozoMHOS1R4Zw2w286gQhnqCe7G4qxCBIzYLtum7PJU=	\N	f	edward.njoroge@technobrainbpo.com	Edward	Njoroge	edward.njoroge@technobrainbpo.com	f	t	2019-06-03 19:29:45.380936+03	2
+137	pbkdf2_sha256$150000$kGchIrI9771S$TwNbw3sEUzxEos4SpU66Q7/xj5MX7z6w0l49CI+lFIo=	\N	f	susan.cherotich@technobrainbpo.com	Susan	Cherotich	susan.cherotich@technobrainbpo.com	f	t	2019-06-03 19:30:15.553489+03	2
+144	pbkdf2_sha256$150000$Ge2HXXUdpjrR$hWvKcVyR5VFF5FNT8U7LSnhkZ4JfcoU9fMHYJJ1Tcz0=	\N	f	lilian.moraa@technobrainbpo.com	Lilian	Moraa	lilian.moraa@technobrainbpo.com	f	t	2019-06-05 15:47:51.933378+03	2
+142	pbkdf2_sha256$150000$BYE0EcChaoja$VTec8nxD0VaUBtWtHYjr3wKkXqd7Pay35xxgOLazt9k=	\N	f	carol.asca@technobrainbpo.com	Carol	Asca	carol.asca@technobrainbpo.com	f	t	2019-06-05 15:43:24.74774+03	2
+143	pbkdf2_sha256$150000$wZ6PFpBL0jlt$cuyQh0AjSKH/SHA/nTXq4jaR0gaG+5N1qQ87ueq2Cb8=	\N	f	elizabeth.maina@technobrainbpo.com	Elizabeth	Maina	elizabeth.maina@technobrainbpo.com	f	t	2019-06-05 15:44:16.890217+03	2
+146	pbkdf2_sha256$150000$oXmHYIIRI049$/YJlJqNr+zr8Rl+AjFj30J0jsjN81bhsxjbNILsU48M=	\N	f	irene.adongo@technobrainbpo.com	Irene.	Adongo	irene.adongo@technobrainbpo.com	f	t	2019-06-05 15:49:47.421966+03	2
+154	pbkdf2_sha256$150000$Je7NGwkleR5q$J5Px4eKjy8Da4dtSdnSVASh5G+6twlrAQyU3rL7YUSE=	\N	f	harrison.kagwimharrison.kagwima@technobrainbpo.coma@technobrainbpo.com	Harrison	Kagwima	harrison.kagwima@technobrainbpo.com	f	t	2019-06-07 16:40:13.237104+03	1
+134	pbkdf2_sha256$150000$fsNoZPJ9Pomj$1iXMZzFL2cF53IJS8j5bTlZ5xPyntW/bKP0+dhnxD1k=	\N	f	harriet.kasamba@technobrainbpo.com	Harriet	Kasamba	harriet.kasamba@technobrainbpo.com	f	t	2019-06-03 19:15:31.168599+03	2
+141	pbkdf2_sha256$150000$4r8NXWM9PBTB$4SDEoV8r1xfWE5iXWByw4FQOScxUysE1/9smIuXS8eo=	\N	f	bernad.otieno@technobrainbpo.com	Bernad	Otieno	bernad.otieno@technobrainbpo.com	f	t	2019-06-04 19:04:22.215425+03	2
+138	pbkdf2_sha256$150000$1WnSUNySE0za$a+7ALkKJR9pJyTNb4kfRtiobHXCkZzFKncAQsd3tWms=	\N	f	peninah.oswaga@technobrainbpo.com	Peninah	Oswaga	peninah.oswaga@technobrainbpo.com	f	t	2019-06-03 20:00:16.604253+03	2
+158	pbkdf2_sha256$150000$C09EckY2jzAO$vtyVDD6iwN/dDNjZ1eyFXBucZaw8zTIGbcuGjcaQh0E=	\N	f	ruth.timina@technobrainbpo.com	Ruth	Timina	ruth.timina@technobrainbpo.com	f	t	2019-06-12 09:42:30.96469+03	2
+\.
+
+
+--
+-- Data for Name: accounts_user_groups; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public.accounts_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: accounts_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public.accounts_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: accounts_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public.accounts_user_id_seq', 158, true);
+
+
+--
+-- Data for Name: accounts_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public.accounts_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: accounts_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public.accounts_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public.auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public.auth_group_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add log entry	1	add_logentry
+2	Can change log entry	1	change_logentry
+3	Can delete log entry	1	delete_logentry
+4	Can view log entry	1	view_logentry
+5	Can add permission	2	add_permission
+6	Can change permission	2	change_permission
+7	Can delete permission	2	delete_permission
+8	Can view permission	2	view_permission
+9	Can add group	3	add_group
+10	Can change group	3	change_group
+11	Can delete group	3	delete_group
+12	Can view group	3	view_group
+13	Can add content type	4	add_contenttype
+14	Can change content type	4	change_contenttype
+15	Can delete content type	4	delete_contenttype
+16	Can view content type	4	view_contenttype
+17	Can add session	5	add_session
+18	Can change session	5	change_session
+19	Can delete session	5	delete_session
+20	Can view session	5	view_session
+21	Can add user	6	add_user
+22	Can change user	6	change_user
+23	Can delete user	6	delete_user
+24	Can view user	6	view_user
+25	Can add Escalation	7	add_escalation
+26	Can change Escalation	7	change_escalation
+27	Can delete Escalation	7	delete_escalation
+28	Can view Escalation	7	view_escalation
+29	Can add Huddle	8	add_huddle
+30	Can change Huddle	8	change_huddle
+31	Can delete Huddle	8	delete_huddle
+32	Can view Huddle	8	view_huddle
+33	Can add UserUpdateView	9	add_userupdateview
+34	Can change UserUpdateView	9	change_userupdateview
+35	Can delete UserUpdateView	9	delete_userupdateview
+36	Can view UserUpdateView	9	view_userupdateview
+37	Can add HuddleAttendanceView	10	add_huddleattendanceview
+38	Can change HuddleAttendanceView	10	change_huddleattendanceview
+39	Can delete HuddleAttendanceView	10	delete_huddleattendanceview
+40	Can view HuddleAttendanceView	10	view_huddleattendanceview
+41	Can add HuddleAgenda	11	add_huddleagenda
+42	Can change HuddleAgenda	11	change_huddleagenda
+43	Can delete HuddleAgenda	11	delete_huddleagenda
+44	Can view HuddleAgenda	11	view_huddleagenda
+45	Can add HuddleAction	12	add_huddleaction
+46	Can change HuddleAction	12	change_huddleaction
+47	Can delete HuddleAction	12	delete_huddleaction
+48	Can view HuddleAction	12	view_huddleaction
+49	Can add Attachment	13	add_attachment
+50	Can change Attachment	13	change_attachment
+51	Can delete Attachment	13	delete_attachment
+52	Can view Attachment	13	view_attachment
+53	Can add ClarificationSubject	14	add_clarificationsubject
+54	Can change ClarificationSubject	14	change_clarificationsubject
+55	Can delete ClarificationSubject	14	delete_clarificationsubject
+56	Can view ClarificationSubject	14	view_clarificationsubject
+57	Can add Clarification	15	add_clarification
+58	Can change Clarification	15	change_clarification
+59	Can delete Clarification	15	delete_clarification
+60	Can view Clarification	15	view_clarification
+\.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 60, true);
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+1	2019-05-29 13:39:54.637073+03	1	Sidney Kiprono 1	2	[{"changed": {"fields": ["first_name", "last_name"]}}]	6	1
+2	2019-05-29 16:59:24.449974+03	20	Peris Eshituma 20	2	[{"changed": {"fields": ["first_name"]}}]	6	1
+3	2019-06-01 07:47:32.833307+03	52	52 Harrison Kagwima 93	3		8	1
+4	2019-06-01 07:47:32.859455+03	51	51 Harrison Kagwima 93	3		8	1
+5	2019-06-01 07:47:32.876853+03	50	50 Harrison Kagwima 93	3		8	1
+6	2019-06-01 07:47:32.894207+03	49	49 Harrison Kagwima 93	3		8	1
+7	2019-06-01 07:47:32.911317+03	48	48 Harrison Kagwima 93	3		8	1
+8	2019-06-01 07:47:32.928336+03	47	47 Harrison Kagwima 93	3		8	1
+9	2019-06-01 07:47:32.945714+03	46	46 Harrison Kagwima 93	3		8	1
+10	2019-06-01 07:47:32.962553+03	45	45 Harrison Kagwima 93	3		8	1
+11	2019-06-01 07:47:32.97999+03	44	44 Harrison Kagwima 93	3		8	1
+12	2019-06-01 07:47:32.996819+03	43	43 Harrison Kagwima 93	3		8	1
+13	2019-06-01 07:47:33.014294+03	42	42 Harrison Kagwima 93	3		8	1
+14	2019-06-01 07:47:33.031182+03	41	41 Harrison Kagwima 93	3		8	1
+15	2019-06-01 07:47:33.048574+03	40	40 Harrison Kagwima 93	3		8	1
+16	2019-06-01 07:47:33.065305+03	39	39 Harrison Kagwima 93	3		8	1
+17	2019-06-01 07:47:33.082782+03	38	38 Harrison Kagwima 93	3		8	1
+18	2019-06-01 07:47:33.09964+03	37	37 Harrison Kagwima 93	3		8	1
+19	2019-06-01 07:47:33.117084+03	36	36 Harrison Kagwima 93	3		8	1
+20	2019-06-01 07:47:33.134038+03	35	35 Harrison Kagwima 93	3		8	1
+21	2019-06-01 07:47:33.15151+03	34	34 Harrison Kagwima 93	3		8	1
+22	2019-06-01 07:47:33.168292+03	33	33 Harrison Kagwima 93	3		8	1
+23	2019-06-01 07:47:33.185738+03	32	32 Harrison Kagwima 93	3		8	1
+24	2019-06-01 07:47:33.202575+03	31	31 Harrison Kagwima 93	3		8	1
+25	2019-06-01 07:47:33.220019+03	30	30 Harrison Kagwima 93	3		8	1
+26	2019-06-01 07:47:33.236911+03	29	29 Harrison Kagwima 93	3		8	1
+27	2019-06-01 07:47:33.254388+03	28	28 Harrison Kagwima 93	3		8	1
+28	2019-06-01 07:47:33.271146+03	27	27 Harrison Kagwima 93	3		8	1
+29	2019-06-01 07:47:33.288653+03	26	26 Harrison Kagwima 93	3		8	1
+30	2019-06-01 07:47:33.305461+03	25	25 Harrison Kagwima 93	3		8	1
+31	2019-06-01 07:47:33.322818+03	24	24 Harrison Kagwima 93	3		8	1
+32	2019-06-01 07:47:33.33969+03	23	23 Harrison Kagwima 93	3		8	1
+33	2019-06-01 07:47:33.35713+03	22	22 Harrison Kagwima 93	3		8	1
+34	2019-06-01 07:47:33.37396+03	21	21 Harrison Kagwima 93	3		8	1
+35	2019-06-01 07:47:33.391481+03	20	20 Harrison Kagwima 93	3		8	1
+36	2019-06-01 07:47:33.408335+03	19	19 Harrison Kagwima 93	3		8	1
+37	2019-06-01 07:47:33.425781+03	18	18 Harrison Kagwima 93	3		8	1
+38	2019-06-01 07:47:33.442689+03	17	17 Harrison Kagwima 93	3		8	1
+39	2019-06-01 07:47:33.460067+03	16	16 Harrison Kagwima 93	3		8	1
+40	2019-06-01 07:47:33.476894+03	15	15 Harrison Kagwima 93	3		8	1
+41	2019-06-01 07:47:33.494361+03	14	14 Harrison Kagwima 93	3		8	1
+42	2019-06-01 07:47:33.511234+03	13	13 Harrison Kagwima 93	3		8	1
+43	2019-06-01 07:47:33.528656+03	12	12 Harrison Kagwima 93	3		8	1
+44	2019-06-01 07:47:33.545509+03	11	11 Harrison Kagwima 93	3		8	1
+45	2019-06-01 07:47:33.562934+03	10	10 Harrison Kagwima 93	3		8	1
+46	2019-06-01 07:47:33.579772+03	9	9 Harrison Kagwima 93	3		8	1
+47	2019-06-01 07:47:33.597223+03	8	8 Harrison Kagwima 93	3		8	1
+48	2019-06-01 07:47:57.00609+03	7	7 Harrison Kagwima 93	3		8	1
+49	2019-06-01 07:50:54.638713+03	4	4 Harrison Kagwima 93	3		8	1
+50	2019-06-01 07:50:54.66602+03	3	3 Harrison Kagwima 93	3		8	1
+51	2019-06-03 11:50:42.896898+03	9	9 WEEKLY CONTENT HIGHLIGHTS	3		7	1
+52	2019-06-03 11:50:42.919275+03	8	8 WEEKLY CONTENT HIGHLIGHTS	3		7	1
+53	2019-06-03 11:50:42.941208+03	7	7 WEEKLY CONTENT HIGHLIGHTS	3		7	1
+54	2019-06-03 11:50:42.965149+03	6	6 WEEKLY CONTENT HIGHLIGHTS	3		7	1
+55	2019-06-06 09:52:36.153983+03	16	16 AUTO FAIL 	3		7	1
+56	2019-06-06 09:52:36.181216+03	15	15 AUTO FAIL 	3		7	1
+57	2019-06-07 12:25:44.842292+03	17	17 PUSH NOTIFICATION TEST	3		7	1
+\.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 57, true);
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public.django_content_type (id, app_label, model) FROM stdin;
+1	admin	logentry
+2	auth	permission
+3	auth	group
+4	contenttypes	contenttype
+5	sessions	session
+6	accounts	user
+7	mckescapp	escalation
+8	mckescapp	huddle
+9	mckescapp	userupdateview
+10	mckescapp	huddleattendanceview
+11	mckescapp	huddleagenda
+12	mckescapp	huddleaction
+13	mckescapp	attachment
+14	mckescapp	clarificationsubject
+15	mckescapp	clarification
+\.
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 15, true);
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public.django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2019-05-29 13:38:29.737923+03
+2	contenttypes	0002_remove_content_type_name	2019-05-29 13:38:29.767124+03
+3	auth	0001_initial	2019-05-29 13:38:29.966451+03
+4	auth	0002_alter_permission_name_max_length	2019-05-29 13:38:30.222531+03
+5	auth	0003_alter_user_email_max_length	2019-05-29 13:38:30.245961+03
+6	auth	0004_alter_user_username_opts	2019-05-29 13:38:30.26912+03
+7	auth	0005_alter_user_last_login_null	2019-05-29 13:38:30.297243+03
+8	auth	0006_require_contenttypes_0002	2019-05-29 13:38:30.312079+03
+9	auth	0007_alter_validators_add_error_messages	2019-05-29 13:38:30.337517+03
+10	auth	0008_alter_user_username_max_length	2019-05-29 13:38:30.360517+03
+11	auth	0009_alter_user_last_name_max_length	2019-05-29 13:38:30.389115+03
+12	auth	0010_alter_group_name_max_length	2019-05-29 13:38:30.419964+03
+13	auth	0011_update_proxy_permissions	2019-05-29 13:38:30.445452+03
+14	accounts	0001_initial	2019-05-29 13:38:30.68404+03
+15	admin	0001_initial	2019-05-29 13:38:31.100939+03
+16	admin	0002_logentry_remove_auto_add	2019-05-29 13:38:31.222436+03
+17	admin	0003_logentry_add_action_flag_choices	2019-05-29 13:38:31.250287+03
+18	mckescapp	0001_initial	2019-05-29 13:38:31.786681+03
+19	sessions	0001_initial	2019-05-29 13:38:32.340656+03
+20	mckescapp	0002_auto_20190531_1725	2019-05-31 17:25:31.150786+03
+21	mckescapp	0003_huddle_image	2019-06-03 09:58:30.867887+03
+22	mckescapp	0004_remove_userupdateview_uid	2019-06-06 08:35:40.045737+03
+23	mckescapp	0005_clarification_clarificationsubject	2019-06-06 15:11:26.838564+03
+\.
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+--
+
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 23, true);
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: root
+--
+
+COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
+uv22zlns9e5dqha6a1yhibwv2g1p84x4	ZWEzYTJlZGQzN2M0NzE2NTQ1MGE5ODE2YjUwMWRiY2M1Y2U2YmE4ZTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI4ODdjNDlmYTBiOTc0Zjc1ZjBjYzUyYzE3MGRlNjRjYzA4YWM3YmE5In0=	2019-06-12 16:58:35.700165+03
+co0zos23s9r5jj46qmjstx46g55m9wot	ZWEzYTJlZGQzN2M0NzE2NTQ1MGE5ODE2YjUwMWRiY2M1Y2U2YmE4ZTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI4ODdjNDlmYTBiOTc0Zjc1ZjBjYzUyYzE3MGRlNjRjYzA4YWM3YmE5In0=	2019-06-13 18:20:35.68839+03
+gg3h7mvv6dupooq65hwoonf1rnwgm1qr	ZWEzYTJlZGQzN2M0NzE2NTQ1MGE5ODE2YjUwMWRiY2M1Y2U2YmE4ZTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI4ODdjNDlmYTBiOTc0Zjc1ZjBjYzUyYzE3MGRlNjRjYzA4YWM3YmE5In0=	2019-06-14 17:30:16.259778+03
+14tyvnzzj9gwrcb8rbi9r55i44yjbuem	ZWEzYTJlZGQzN2M0NzE2NTQ1MGE5ODE2YjUwMWRiY2M1Y2U2YmE4ZTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI4ODdjNDlmYTBiOTc0Zjc1ZjBjYzUyYzE3MGRlNjRjYzA4YWM3YmE5In0=	2019-06-17 10:01:52.510605+03
+bqu2enp0o495f5wyizjda6x21aliprnu	ZWEzYTJlZGQzN2M0NzE2NTQ1MGE5ODE2YjUwMWRiY2M1Y2U2YmE4ZTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI4ODdjNDlmYTBiOTc0Zjc1ZjBjYzUyYzE3MGRlNjRjYzA4YWM3YmE5In0=	2019-06-17 11:47:46.909134+03
+\.
+
+
+--
+-- Name: Attachment_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Attachment"
+    ADD CONSTRAINT "Attachment_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: ClarificationSubject_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."ClarificationSubject"
+    ADD CONSTRAINT "ClarificationSubject_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Clarification_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Clarification"
+    ADD CONSTRAINT "Clarification_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Escalation_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Escalation"
+    ADD CONSTRAINT "Escalation_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: HuddleAction_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAction"
+    ADD CONSTRAINT "HuddleAction_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: HuddleAgenda_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAgenda"
+    ADD CONSTRAINT "HuddleAgenda_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: HuddleAttendanceView_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAttendanceView"
+    ADD CONSTRAINT "HuddleAttendanceView_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Huddle_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Huddle"
+    ADD CONSTRAINT "Huddle_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: UserUpdateView_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."UserUpdateView"
+    ADD CONSTRAINT "UserUpdateView_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: accounts_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user_groups
+    ADD CONSTRAINT accounts_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: accounts_user_groups_user_id_group_id_59c0b32f_uniq; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user_groups
+    ADD CONSTRAINT accounts_user_groups_user_id_group_id_59c0b32f_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- Name: accounts_user_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user
+    ADD CONSTRAINT accounts_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: accounts_user_user_permi_user_id_permission_id_2ab516c2_uniq; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user_user_permissions
+    ADD CONSTRAINT accounts_user_user_permi_user_id_permission_id_2ab516c2_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: accounts_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user_user_permissions
+    ADD CONSTRAINT accounts_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: accounts_user_username_key; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user
+    ADD CONSTRAINT accounts_user_username_key UNIQUE (username);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_permission_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_codename_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_model_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: Attachment_escalation_id_be9c8b40; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "Attachment_escalation_id_be9c8b40" ON public."Attachment" USING btree (escalation_id);
+
+
+--
+-- Name: ClarificationSubject_responder_id_e9929784; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "ClarificationSubject_responder_id_e9929784" ON public."ClarificationSubject" USING btree (responder_id);
+
+
+--
+-- Name: ClarificationSubject_sender_id_18ffd3fd; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "ClarificationSubject_sender_id_18ffd3fd" ON public."ClarificationSubject" USING btree (sender_id);
+
+
+--
+-- Name: Clarification_responder_id_57e48135; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "Clarification_responder_id_57e48135" ON public."Clarification" USING btree (responder_id);
+
+
+--
+-- Name: Clarification_sender_id_74cd80c5; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "Clarification_sender_id_74cd80c5" ON public."Clarification" USING btree (sender_id);
+
+
+--
+-- Name: Clarification_subject_id_a0841988; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "Clarification_subject_id_a0841988" ON public."Clarification" USING btree (subject_id);
+
+
+--
+-- Name: Escalation_user_id_cd3587f7; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "Escalation_user_id_cd3587f7" ON public."Escalation" USING btree (user_id);
+
+
+--
+-- Name: HuddleAction_huddle_id_dcb4da72; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "HuddleAction_huddle_id_dcb4da72" ON public."HuddleAction" USING btree (huddle_id);
+
+
+--
+-- Name: HuddleAction_user_id_477f15de; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "HuddleAction_user_id_477f15de" ON public."HuddleAction" USING btree (user_id);
+
+
+--
+-- Name: HuddleAgenda_huddle_id_7ff03c6c; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "HuddleAgenda_huddle_id_7ff03c6c" ON public."HuddleAgenda" USING btree (huddle_id);
+
+
+--
+-- Name: HuddleAgenda_user_id_e12cba5f; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "HuddleAgenda_user_id_e12cba5f" ON public."HuddleAgenda" USING btree (user_id);
+
+
+--
+-- Name: HuddleAttendanceView_huddle_id_0998e648; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "HuddleAttendanceView_huddle_id_0998e648" ON public."HuddleAttendanceView" USING btree (huddle_id);
+
+
+--
+-- Name: HuddleAttendanceView_user_id_75e88de3; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "HuddleAttendanceView_user_id_75e88de3" ON public."HuddleAttendanceView" USING btree (user_id);
+
+
+--
+-- Name: Huddle_user_id_e014fe18; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "Huddle_user_id_e014fe18" ON public."Huddle" USING btree (user_id);
+
+
+--
+-- Name: UserUpdateView_escalation_id_151544ac; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "UserUpdateView_escalation_id_151544ac" ON public."UserUpdateView" USING btree (escalation_id);
+
+
+--
+-- Name: UserUpdateView_user_id_184e1c2c; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX "UserUpdateView_user_id_184e1c2c" ON public."UserUpdateView" USING btree (user_id);
+
+
+--
+-- Name: accounts_user_groups_group_id_bd11a704; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX accounts_user_groups_group_id_bd11a704 ON public.accounts_user_groups USING btree (group_id);
+
+
+--
+-- Name: accounts_user_groups_user_id_52b62117; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX accounts_user_groups_user_id_52b62117 ON public.accounts_user_groups USING btree (user_id);
+
+
+--
+-- Name: accounts_user_user_permissions_permission_id_113bb443; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX accounts_user_user_permissions_permission_id_113bb443 ON public.accounts_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: accounts_user_user_permissions_user_id_e4f0a161; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX accounts_user_user_permissions_user_id_e4f0a161 ON public.accounts_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: accounts_user_username_6088629e_like; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX accounts_user_username_6088629e_like ON public.accounts_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON public.auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX auth_group_permissions_group_id_b120cbf9 ON public.auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id_84c5c92e; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX auth_group_permissions_permission_id_84c5c92e ON public.auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id_2f476e4b; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX auth_permission_content_type_id_2f476e4b ON public.auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_content_type_id_c4bce8eb; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX django_admin_log_content_type_id_c4bce8eb ON public.django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX django_admin_log_user_id_c564eba6 ON public.django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_expire_date_a5c62663; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX django_session_expire_date_a5c62663 ON public.django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: root
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON public.django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: Attachment_escalation_id_be9c8b40_fk_Escalation_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Attachment"
+    ADD CONSTRAINT "Attachment_escalation_id_be9c8b40_fk_Escalation_id" FOREIGN KEY (escalation_id) REFERENCES public."Escalation"(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ClarificationSubject_responder_id_e9929784_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."ClarificationSubject"
+    ADD CONSTRAINT "ClarificationSubject_responder_id_e9929784_fk_accounts_user_id" FOREIGN KEY (responder_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ClarificationSubject_sender_id_18ffd3fd_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."ClarificationSubject"
+    ADD CONSTRAINT "ClarificationSubject_sender_id_18ffd3fd_fk_accounts_user_id" FOREIGN KEY (sender_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: Clarification_responder_id_57e48135_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Clarification"
+    ADD CONSTRAINT "Clarification_responder_id_57e48135_fk_accounts_user_id" FOREIGN KEY (responder_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: Clarification_sender_id_74cd80c5_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Clarification"
+    ADD CONSTRAINT "Clarification_sender_id_74cd80c5_fk_accounts_user_id" FOREIGN KEY (sender_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: Clarification_subject_id_a0841988_fk_ClarificationSubject_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Clarification"
+    ADD CONSTRAINT "Clarification_subject_id_a0841988_fk_ClarificationSubject_id" FOREIGN KEY (subject_id) REFERENCES public."ClarificationSubject"(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: Escalation_user_id_cd3587f7_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Escalation"
+    ADD CONSTRAINT "Escalation_user_id_cd3587f7_fk_accounts_user_id" FOREIGN KEY (user_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: HuddleAction_huddle_id_dcb4da72_fk_Huddle_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAction"
+    ADD CONSTRAINT "HuddleAction_huddle_id_dcb4da72_fk_Huddle_id" FOREIGN KEY (huddle_id) REFERENCES public."Huddle"(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: HuddleAction_user_id_477f15de_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAction"
+    ADD CONSTRAINT "HuddleAction_user_id_477f15de_fk_accounts_user_id" FOREIGN KEY (user_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: HuddleAgenda_huddle_id_7ff03c6c_fk_Huddle_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAgenda"
+    ADD CONSTRAINT "HuddleAgenda_huddle_id_7ff03c6c_fk_Huddle_id" FOREIGN KEY (huddle_id) REFERENCES public."Huddle"(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: HuddleAgenda_user_id_e12cba5f_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAgenda"
+    ADD CONSTRAINT "HuddleAgenda_user_id_e12cba5f_fk_accounts_user_id" FOREIGN KEY (user_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: HuddleAttendanceView_huddle_id_0998e648_fk_Huddle_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAttendanceView"
+    ADD CONSTRAINT "HuddleAttendanceView_huddle_id_0998e648_fk_Huddle_id" FOREIGN KEY (huddle_id) REFERENCES public."Huddle"(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: HuddleAttendanceView_user_id_75e88de3_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."HuddleAttendanceView"
+    ADD CONSTRAINT "HuddleAttendanceView_user_id_75e88de3_fk_accounts_user_id" FOREIGN KEY (user_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: Huddle_user_id_e014fe18_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."Huddle"
+    ADD CONSTRAINT "Huddle_user_id_e014fe18_fk_accounts_user_id" FOREIGN KEY (user_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: UserUpdateView_escalation_id_151544ac_fk_Escalation_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."UserUpdateView"
+    ADD CONSTRAINT "UserUpdateView_escalation_id_151544ac_fk_Escalation_id" FOREIGN KEY (escalation_id) REFERENCES public."Escalation"(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: UserUpdateView_user_id_184e1c2c_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public."UserUpdateView"
+    ADD CONSTRAINT "UserUpdateView_user_id_184e1c2c_fk_accounts_user_id" FOREIGN KEY (user_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: accounts_user_groups_group_id_bd11a704_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user_groups
+    ADD CONSTRAINT accounts_user_groups_group_id_bd11a704_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: accounts_user_groups_user_id_52b62117_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user_groups
+    ADD CONSTRAINT accounts_user_groups_user_id_52b62117_fk_accounts_user_id FOREIGN KEY (user_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: accounts_user_user_p_permission_id_113bb443_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user_user_permissions
+    ADD CONSTRAINT accounts_user_user_p_permission_id_113bb443_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: accounts_user_user_p_user_id_e4f0a161_fk_accounts_; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.accounts_user_user_permissions
+    ADD CONSTRAINT accounts_user_user_p_user_id_e4f0a161_fk_accounts_ FOREIGN KEY (user_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissio_permission_id_84c5c92e_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permission_content_type_id_2f476e4b_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: root
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_accounts_user_id FOREIGN KEY (user_id) REFERENCES public.accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

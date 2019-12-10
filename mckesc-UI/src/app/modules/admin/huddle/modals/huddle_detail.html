@@ -1,0 +1,41 @@
+<h4 class="d-flex justify-content-center">Huddle Sheet</h4>
+<mat-dialog-content class="mat-typography">
+	<div class="row">
+		<p class="col-md-12" style="text-align: center; background-color: #0095da; color: #ffffff; font-weight: bold; ">PRE & POST SHIFT ANALYSIS</p>
+    <table class="col-md-12" style="border-collapse: collapse;  width: 100%;">
+      <tr style="border: 1px solid #000000; width: 100%;">
+        <td style="border: 1px solid #000000; width: 40%; text-align: left;"> Shift Name </td>
+        <td style="border: 1px solid #000000; width: 60%; text-align: left;"> {{huddle?.shift_name}} </td>
+      </tr>
+      <tr style="border: 1px solid #000000; width: 100%;">
+        <td style="border: 1px solid #000000; width: 40%; text-align: left;"> Conducted By </td>
+        <td style="border: 1px solid #000000; width: 60%; text-align: left; white-space:pre"> 
+          <span *ngFor="let admin of huddle?.conducted_by; let i = index"> <b>{{i+1}}.</b> {{admin.user__first_name}} {{admin.user__last_name}}  <br> </span>
+        </td>
+      </tr>
+    </table>
+
+		<br>
+		<p class="col-md-12 mt-2" style="text-align: center; background-color: #0095da; color: #ffffff; font-weight: bold; ">Huddle Discussion Notes</p>
+    <table class="col-md-12" style="border-collapse: collapse;  width: 100%;">
+      <tr *ngFor="let agenda of huddle?.agenda" style="border: 1px solid #000000; width: 100%;">
+        <td style="width: 100%; text-align: center;" scope="row"> {{agenda.agenda}} </td>
+      </tr>
+    </table>
+    <p class="col-md-12 mt-2" style="text-align: center; background-color: #0095da; color: #ffffff; font-weight: bold; ">Huddle Actions</p>
+    <table class="col-md-12" style="border-collapse: collapse;  width: 100%;">
+      <tr *ngFor="let action of huddle?.action" style="border: 1px solid #000000; width: 100%;">
+        <td style="width: 100%; text-align: center;" scope="row"> {{action.action}} </td>
+      </tr>
+    </table>
+    <div class="col-md-12 mt-2" *ngIf="huddle?.image != '' && huddle?.image != null">
+  		<p style="width: 100%; text-align: center; background-color: #0095da; color: #ffffff; font-weight: bold; ">Attachment</p>
+      <img [src]="src" alt="huddle?.image" style="height: auto; width: 100%;">
+    </div>
+		<p class="col-md-12 mt-2" style="text-align: center; background-color: #0095da; color: #ffffff; font-weight: bold; ">Attendess</p>
+    <div  class="col-md-6" *ngFor="let agent of huddle?.attendees" style="border: 1px solid #000000; width: 40%;">{{agent.user__first_name}} {{agent.user__last_name}}</div>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" style="background: lightblue;">
+  <button mat-raised-button mat-dialog-close style="margin-right: 1.2em;">Close</button>
+</mat-dialog-actions>

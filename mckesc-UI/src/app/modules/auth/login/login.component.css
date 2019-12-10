@@ -1,0 +1,22 @@
+.cross-validation-error input {
+  border-left: 5px solid red;
+}
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  
+  font-size: 20px;
+  padding: 5px;
+  z-index: 100;
+  color: #ffffff;
+}
+.image {
+    margin: auto;
+    width: 70%;
+    padding: 10px;
+}
+.snackbarcolor{
+  background-color: lightgreen;
+  color: #000000;
+}

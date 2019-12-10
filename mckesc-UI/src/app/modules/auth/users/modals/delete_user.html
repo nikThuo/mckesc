@@ -1,0 +1,19 @@
+<h2 mat-dialog-title style="background: lightblue; padding: 1em; color: #000000">Delete User </h2>
+<mat-dialog-content class="mat-typography">
+	<h4>Are you sure you want to delete this account ?</h4>
+	<span><b>User</b> : {{user.first_name }} {{user.last_name }}</span><br>
+	<span><b>Username</b> : {{user.username }}</span><br>
+	<span><b>Email</b> : {{user.email }}</span><br>
+	<br>
+	<br>
+	<br>
+</mat-dialog-content>
+<mat-dialog-actions align="end" style="background: lightblue;">
+  <button 
+  	mat-raised-button 
+  	(click)="deleteUser();"
+  	style="margin-right: 1.2em; background: #f54d38; color: #ffffff;">
+  	<mat-icon>delete</mat-icon> Delete
+  </button>
+  <button mat-raised-button mat-dialog-close style="margin-right: 1.2em;">Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,26 @@
+env
+
+# Vscode
+.vscode
+
+# migrations
+*/migrations/*.py
+*/migrations/__pycache__/*.pyc
+*/__pycache__/*.pyc
+
+*/*.pyc
+
+# db
+*.sqlite3
+db.*
+
+# sys logs
+/logs
+
+mckecsapp/static/images/
+
+my_project.dot
+my_project_visualized.png
+
+# media
+/media

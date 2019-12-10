@@ -1,0 +1,26 @@
+<p class="d-flex justify-content-center"><b>Update Info</b></p>
+<mat-dialog-content class="mat-typography">
+	<div class="row">
+    <div class="col-md-8">
+      <p style="text-align: center; background-color: lightgreen; font-weight: bold; ">Viewed</p>
+      <table style="border-collapse: collapse;  width: 100%;">
+        <tr *ngFor="let item of update?.has_viewed" style="border: 1px solid #000000; width: 100%;">
+          <td style="width: 50%;"> {{item?.user}} </td>
+          <td style="width: 50%;"> {{item?.datetime | timeAgo}}</td>
+          <!-- <td style="width: 50%;"> <b>On: </b>{{item?.datetime | date : 'y-MM-dd'}} <b> At: </b>{{item?.datetime | date : 'h:mm a'}} </td> -->
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-4">
+  		<p style="text-align: center; background-color: #f54d38; color: #ffffff; font-weight: bold; ">Not Viewed</p>
+      <table style="border-collapse: collapse;  width: 100%;">
+        <tr *ngFor="let value of update?.hasnot_viewed" style="border: 1px solid #000000; width: 100%;">
+          <td style="width: 100%;"> {{value?.user}} </td>
+        </tr>
+      </table>
+    </div>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" style="background: lightblue;">
+  <button mat-raised-button mat-dialog-close style="margin-right: 1.2em;">Close</button>
+</mat-dialog-actions>
